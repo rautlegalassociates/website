@@ -38,7 +38,7 @@ export const DashboardSettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6 max-w-7xl">
       {/* Header */}
       <div className="pb-2 border-b border-[#E2DBCD]">
         <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-[#B38E51] font-semibold mb-1">
