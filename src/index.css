@@ -70,6 +70,27 @@
   .font-editorial {
     font-family: var(--font-serif);
   }
+
+  /* Ensure all buttons, links, and interactive elements have pointer cursors */
+  button,
+  [role="button"],
+  a,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  summary,
+  select {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [role="button"][aria-disabled="true"],
+  [disabled],
+  input[type="button"]:disabled,
+  input[type="submit"]:disabled,
+  input[type="reset"]:disabled {
+    cursor: not-allowed;
+  }
 }
 
 /* Explicit utility classes for scrollable containers */

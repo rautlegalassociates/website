@@ -216,7 +216,7 @@ export const ResourcesPage: React.FC = () => {
 
         {/* Section: Common Legal Questions & Statutory FAQs in Nepal (JSON-LD FAQPage backed) */}
         <section className="mb-16 pt-10 border-t border-[#E2DBCD]">
-          <div className="max-w-3xl mb-10">
+          <div className=" mb-10">
             <div className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#B38E51] font-semibold mb-2">
               <HelpCircle className="w-4 h-4 text-[#C7A56A]" />
               <span>
@@ -234,7 +234,7 @@ export const ResourcesPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="space-y-4 max-w-4xl">
+          <div className="space-y-4">
             {RESOURCES_PAGE_FAQS.map((faq, idx) => {
               const isOpen = openFaqIndex === idx;
               return (
