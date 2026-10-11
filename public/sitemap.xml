@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Practice Areas Specialized Sitemap -->
+  <sitemap>
+    <loc>https://rautlegalassociates.com/sitemap-practice-areas.xml</loc>
+    <lastmod>2026-10-11</lastmod>
+  </sitemap>
+
+  <!-- Core Firm Pages Sitemap -->
+  <sitemap>
+    <loc>https://rautlegalassociates.com/sitemap-main.xml</loc>
+    <lastmod>2026-10-11</lastmod>
+  </sitemap>
+
+  <!-- Legal Articles & Statutory Resources Sitemap -->
+  <sitemap>
+    <loc>https://rautlegalassociates.com/sitemap-resources.xml</loc>
+    <lastmod>2026-10-11</lastmod>
+  </sitemap>
+
+  <!-- Legal Counsel & Advocates Profile Sitemap -->
+  <sitemap>
+    <loc>https://rautlegalassociates.com/sitemap-lawyers.xml</loc>
+    <lastmod>2026-10-11</lastmod>
+  </sitemap>
+</sitemapindex>

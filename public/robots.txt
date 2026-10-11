@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Sitemap Index & Specialized Sitemaps
+Sitemap: https://rautlegalassociates.com/sitemap.xml
+Sitemap: https://rautlegalassociates.com/sitemap-practice-areas.xml
+Sitemap: https://rautlegalassociates.com/sitemap-main.xml
+Sitemap: https://rautlegalassociates.com/sitemap-resources.xml
+Sitemap: https://rautlegalassociates.com/sitemap-lawyers.xml
