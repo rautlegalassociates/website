@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Scale, ArrowLeft, Home, CalendarCheck } from 'lucide-react';
-import { FIRM_DETAILS } from '../data/firm';
-import { SEOHead } from '../components/common/SEOHead';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Scale, ArrowLeft, Home, CalendarCheck } from "lucide-react";
+import { FIRM_DETAILS } from "../data/firm";
+import { SEOHead } from "../components/common/SEOHead";
 
 export const NotFoundPage: React.FC = () => {
   return (
@@ -26,7 +26,8 @@ export const NotFoundPage: React.FC = () => {
         </h1>
 
         <p className="text-sm text-slate-600 leading-relaxed mb-8">
-          The page or resource you are seeking may have been renamed, moved, or is temporarily unavailable under this URL path.
+          The page or resource you are seeking may have been renamed, moved, or
+          is temporarily unavailable under this URL path.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3">

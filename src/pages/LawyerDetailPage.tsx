@@ -1,11 +1,18 @@
-import React from 'react';
-import { useParams, Link, Navigate } from 'react-router-dom';
-import { Breadcrumbs } from '../components/common/Breadcrumbs';
-import { LegalDisclaimer } from '../components/common/LegalDisclaimer';
-import { LAWYERS } from '../data/lawyers';
-import { FIRM_DETAILS } from '../data/firm';
-import { Scale, MapPin, Globe, CheckCircle2, CalendarCheck, Phone, ArrowRight } from 'lucide-react';
-import { SEOHead } from '../components/common/SEOHead';
+import React from "react";
+import { useParams, Link, Navigate } from "react-router-dom";
+import { Breadcrumbs } from "../components/common/Breadcrumbs";
+import { LegalDisclaimer } from "../components/common/LegalDisclaimer";
+import { LAWYERS } from "../data/lawyers";
+import { FIRM_DETAILS } from "../data/firm";
+import {
+  Scale,
+  MapPin,
+  Globe,
+  CheckCircle2,
+  CalendarCheck,
+  Phone,
+} from "lucide-react";
+import { SEOHead } from "../components/common/SEOHead";
 
 export const LawyerDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -17,70 +24,87 @@ export const LawyerDetailPage: React.FC = () => {
   }
 
   const initials = lawyer.name
-    .replace('Adv.', '')
+    .replace("Adv.", "")
     .trim()
-    .split(' ')
+    .split(" ")
     .map((n) => n[0])
-    .join('')
+    .join("")
     .substring(0, 2);
 
   return (
     <div className="bg-[#F7F5F0] py-12 sm:py-16">
       <SEOHead
         title={`${lawyer.name} | Advocate in Kathmandu`}
-        description={`${lawyer.shortBio.slice(0, 85)} Practice: ${lawyer.practiceAreas.slice(0, 2).join(', ')}. Book consultation for NPR 500.`}
+        description={`${lawyer.shortBio.slice(0, 85)} Practice: ${lawyer.practiceAreas.slice(0, 2).join(", ")}. Book consultation for NPR 500.`}
         canonicalPath={`/team/${lawyer.slug}`}
         ogType="profile"
-        ogImage={lawyer.imageUrl || '/og-image.svg'}
+        ogImage={lawyer.imageUrl || "/og-image.svg"}
         ogImageAlt={`${lawyer.name} — Profile Portrait`}
         keywords={[
           lawyer.name,
           `${lawyer.name} Kathmandu`,
-          'advocate Nepal',
-          ...lawyer.practiceAreas.map(p => p.toLowerCase()),
-          'Raut Legal Associates'
+          "advocate Nepal",
+          ...lawyer.practiceAreas.map((p) => p.toLowerCase()),
+          "Raut Legal Associates",
         ]}
         jsonLd={{
-          '@context': 'https://schema.org',
-          '@graph': [
+          "@context": "https://schema.org",
+          "@graph": [
             {
-              '@type': 'Person',
-              'name': lawyer.name,
-              'jobTitle': lawyer.designation,
-              ...(lawyer.imageUrl ? { 'image': `https://rautlegalassociates.com${lawyer.imageUrl}` } : {}),
-              'worksFor': {
-                '@type': 'LegalService',
-                'name': 'Raut Legal Associates',
-                'telephone': '+9779706410516',
-                'address': {
-                  '@type': 'PostalAddress',
-                  'streetAddress': 'Basundhara-5',
-                  'addressLocality': 'Tokha, Kathmandu',
-                  'addressCountry': 'NP'
-                }
+              "@type": "Person",
+              name: lawyer.name,
+              jobTitle: lawyer.designation,
+              ...(lawyer.imageUrl
+                ? { image: `https://rautlegalassociates.com${lawyer.imageUrl}` }
+                : {}),
+              worksFor: {
+                "@type": "LegalService",
+                name: "Raut Legal Associates",
+                telephone: "+9779706410516",
+                address: {
+                  "@type": "PostalAddress",
+                  streetAddress: "Basundhara-5",
+                  addressLocality: "Tokha, Kathmandu",
+                  addressCountry: "NP",
+                },
               },
-              'knowsAbout': lawyer.practiceAreas,
-              'address': {
-                '@type': 'PostalAddress',
-                'addressLocality': 'Kathmandu',
-                'addressCountry': 'NP'
-              }
+              knowsAbout: lawyer.practiceAreas,
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Kathmandu",
+                addressCountry: "NP",
+              },
             },
             {
-              '@type': 'BreadcrumbList',
-              'itemListElement': [
-                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://rautlegalassociates.com/' },
-                { '@type': 'ListItem', 'position': 2, 'name': 'Our Lawyers', 'item': 'https://rautlegalassociates.com/team' },
-                { '@type': 'ListItem', 'position': 3, 'name': lawyer.name, 'item': `https://rautlegalassociates.com/team/${lawyer.slug}` }
-              ]
-            }
-          ]
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: "https://rautlegalassociates.com/",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Our Lawyers",
+                  item: "https://rautlegalassociates.com/team",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 3,
+                  name: lawyer.name,
+                  item: `https://rautlegalassociates.com/team/${lawyer.slug}`,
+                },
+              ],
+            },
+          ],
         }}
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Breadcrumbs
           items={[
-            { label: 'Our Lawyers', path: '/team' },
+            { label: "Our Lawyers", path: "/team" },
             { label: lawyer.name },
           ]}
         />
@@ -125,11 +149,13 @@ export const LawyerDetailPage: React.FC = () => {
                 </div>
                 <div className="flex items-start gap-2">
                   <Globe className="w-4 h-4 text-[#C7A56A] shrink-0 mt-0.5" />
-                  <span>Languages: {lawyer.languages.join(', ')}</span>
+                  <span>Languages: {lawyer.languages.join(", ")}</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <Scale className="w-4 h-4 text-[#C7A56A] shrink-0 mt-0.5" />
-                  <span className="text-[11px] text-slate-400">{lawyer.barRegistration}</span>
+                  <span className="text-[11px] text-slate-400">
+                    {lawyer.barRegistration}
+                  </span>
                 </div>
               </div>
 
@@ -162,7 +188,14 @@ export const LawyerDetailPage: React.FC = () => {
               </h2>
               <div className="space-y-4 text-sm text-slate-700 leading-relaxed">
                 {lawyer.fullBio.map((para, idx) => (
-                  <p key={idx} className={para.startsWith('[') ? 'text-xs text-slate-500 italic bg-[#EDE8DD]/60 p-3 rounded-sm border border-[#E2DBCD]' : ''}>
+                  <p
+                    key={idx}
+                    className={
+                      para.startsWith("[")
+                        ? "text-xs text-slate-500 italic bg-[#EDE8DD]/60 p-3 rounded-sm border border-[#E2DBCD]"
+                        : ""
+                    }
+                  >
                     {para}
                   </p>
                 ))}
@@ -199,9 +232,9 @@ export const LawyerDetailPage: React.FC = () => {
                   <div
                     key={idx}
                     className={`p-3.5 rounded-sm border text-xs sm:text-sm ${
-                      q.startsWith('[')
-                        ? 'bg-[#EDE8DD]/50 border-dashed border-[#C7A56A]/50 text-slate-600'
-                        : 'bg-[#FAF8F5] border-[#E2DBCD] text-slate-800 font-medium'
+                      q.startsWith("[")
+                        ? "bg-[#EDE8DD]/50 border-dashed border-[#C7A56A]/50 text-slate-600"
+                        : "bg-[#FAF8F5] border-[#E2DBCD] text-slate-800 font-medium"
                     }`}
                   >
                     {q}

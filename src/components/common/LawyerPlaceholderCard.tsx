@@ -1,20 +1,22 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Lawyer } from '../../types';
-import { ArrowRight, Scale, MapPin } from 'lucide-react';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Lawyer } from "../../types";
+import { ArrowRight, Scale, MapPin } from "lucide-react";
 
 interface LawyerCardProps {
   lawyer: Lawyer;
 }
 
-export const LawyerPlaceholderCard: React.FC<LawyerCardProps> = ({ lawyer }) => {
+export const LawyerPlaceholderCard: React.FC<LawyerCardProps> = ({
+  lawyer,
+}) => {
   // Extract initials for monogram
   const initials = lawyer.name
-    .replace('Adv.', '')
+    .replace("Adv.", "")
     .trim()
-    .split(' ')
+    .split(" ")
     .map((n) => n[0])
-    .join('')
+    .join("")
     .substring(0, 2);
 
   return (
@@ -77,7 +79,10 @@ export const LawyerPlaceholderCard: React.FC<LawyerCardProps> = ({ lawyer }) => 
             </div>
             <ul className="text-xs text-slate-700 space-y-1">
               {lawyer.practiceAreas.slice(0, 3).map((area, idx) => (
-                <li key={idx} className="flex items-center gap-1.5 text-slate-600">
+                <li
+                  key={idx}
+                  className="flex items-center gap-1.5 text-slate-600"
+                >
                   <span className="w-1 h-1 rounded-full bg-[#C7A56A]" />
                   <span>{area}</span>
                 </li>

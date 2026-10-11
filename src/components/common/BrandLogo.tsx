@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
 interface BrandLogoProps {
-  variant?: 'horizontal' | 'mark' | 'full' | 'compact';
-  theme?: 'dark' | 'light';
+  variant?: "horizontal" | "mark" | "full" | "compact";
+  theme?: "dark" | "light";
   className?: string;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: "sm" | "md" | "lg" | "xl";
 }
 
 /**
@@ -17,18 +17,18 @@ interface BrandLogoProps {
  * - High-end gold gradient palette (#FFF2D6, #DFBF7E, #C7A56A, #9E7835) paired with deep navy (#101C2C)
  */
 export const BrandLogo: React.FC<BrandLogoProps> = ({
-  variant = 'horizontal',
-  theme = 'dark',
-  className = '',
-  size = 'md',
+  variant = "horizontal",
+  theme = "dark",
+  className = "",
+  size = "md",
 }) => {
-  const isLight = theme === 'light';
+  const isLight = theme === "light";
 
   const markSizeMap = {
-    sm: 'w-8 h-8',
-    md: 'w-10 h-10',
-    lg: 'w-14 h-14',
-    xl: 'w-24 h-24',
+    sm: "w-8 h-8",
+    md: "w-10 h-10",
+    lg: "w-14 h-14",
+    xl: "w-24 h-24",
   };
 
   // Minimalist Serif Monogram 'RLA' Vector Crest
@@ -61,7 +61,13 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
         </radialGradient>
 
         <filter id="rlaGlow" x="-15%" y="-15%" width="130%" height="130%">
-          <feDropShadow dx="0" dy="1.5" stdDeviation="2" floodColor="#000" floodOpacity="0.35" />
+          <feDropShadow
+            dx="0"
+            dy="1.5"
+            stdDeviation="2"
+            floodColor="#000"
+            floodOpacity="0.35"
+          />
         </filter>
       </defs>
 
@@ -136,29 +142,38 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
 
         {/* Subtle Minimalist Scales of Justice Pivot / Axis Dot */}
         <circle cx="80" cy="41" r="2.5" fill="url(#rlaGoldSheen)" />
-        <line x1="68" y1="41" x2="92" y2="41" stroke="url(#rlaGoldSheen)" strokeWidth="0.75" />
+        <line
+          x1="68"
+          y1="41"
+          x2="92"
+          y2="41"
+          stroke="url(#rlaGoldSheen)"
+          strokeWidth="0.75"
+        />
       </g>
     </svg>
   );
 
   // 1. Mark Only Variant
-  if (variant === 'mark') {
+  if (variant === "mark") {
     return (
-      <div className={`inline-flex items-center justify-center shrink-0 ${className}`}>
+      <div
+        className={`inline-flex items-center justify-center shrink-0 ${className}`}
+      >
         <RlaMonogramSvg />
       </div>
     );
   }
 
   // 2. Compact Variant (Mobile navigation)
-  if (variant === 'compact') {
+  if (variant === "compact") {
     return (
       <div className={`inline-flex items-center gap-3 shrink-0 ${className}`}>
         <RlaMonogramSvg customClass="w-9 h-9 sm:w-10 sm:h-10" />
         <div className="flex flex-col">
           <span
             className={`font-serif text-lg sm:text-xl font-bold tracking-[0.12em] leading-none ${
-              isLight ? 'text-[#101C2C]' : 'text-[#F7F5F0]'
+              isLight ? "text-[#101C2C]" : "text-[#F7F5F0]"
             }`}
           >
             RAUT
@@ -172,14 +187,14 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   }
 
   // 3. Horizontal Lockup (Standard Navbar & Footer)
-  if (variant === 'horizontal') {
+  if (variant === "horizontal") {
     return (
       <div className={`inline-flex items-center gap-3.5 shrink-0 ${className}`}>
         <RlaMonogramSvg customClass="w-10 h-10 sm:w-11 sm:h-11" />
         <div className="flex flex-col">
           <span
             className={`font-serif text-xl sm:text-2xl font-bold tracking-[0.15em] leading-none ${
-              isLight ? 'text-[#101C2C]' : 'text-[#F7F5F0]'
+              isLight ? "text-[#101C2C]" : "text-[#F7F5F0]"
             }`}
           >
             RAUT
@@ -204,7 +219,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
       {/* Primary Wordmark */}
       <h2
         className={`font-serif text-3xl sm:text-4xl font-bold tracking-[0.2em] mt-3.5 leading-tight ${
-          isLight ? 'text-[#101C2C]' : 'text-white'
+          isLight ? "text-[#101C2C]" : "text-white"
         }`}
       >
         RAUT
@@ -226,7 +241,8 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
 
       {/* Practice Pillars */}
       <div className="text-[9px] tracking-[0.24em] uppercase text-slate-400 mt-2 font-light">
-        Corporate &nbsp;|&nbsp; Civil &nbsp;|&nbsp; Criminal &nbsp;|&nbsp; Advisory
+        Corporate &nbsp;|&nbsp; Civil &nbsp;|&nbsp; Criminal &nbsp;|&nbsp;
+        Advisory
       </div>
     </div>
   );

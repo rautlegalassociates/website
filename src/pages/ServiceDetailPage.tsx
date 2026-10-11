@@ -1,20 +1,18 @@
-import React from 'react';
-import { useParams, Link, Navigate } from 'react-router-dom';
-import { Breadcrumbs } from '../components/common/Breadcrumbs';
-import { LegalDisclaimer } from '../components/common/LegalDisclaimer';
-import { PRACTICE_AREAS } from '../data/practiceAreas';
-import { FIRM_DETAILS } from '../data/firm';
+import React from "react";
+import { useParams, Link, Navigate } from "react-router-dom";
+import { Breadcrumbs } from "../components/common/Breadcrumbs";
+import { LegalDisclaimer } from "../components/common/LegalDisclaimer";
+import { PRACTICE_AREAS } from "../data/practiceAreas";
+import { FIRM_DETAILS } from "../data/firm";
 import {
   CheckCircle2,
-  FileCheck,
   HelpCircle,
   CalendarCheck,
   Phone,
-  Scale,
   ArrowRight,
   ListChecks,
-} from 'lucide-react';
-import { SEOHead } from '../components/common/SEOHead';
+} from "lucide-react";
+import { SEOHead } from "../components/common/SEOHead";
 
 export const ServiceDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -26,82 +24,107 @@ export const ServiceDetailPage: React.FC = () => {
   }
 
   // Construct structured data graph: Service, Breadcrumbs, and FAQs
-  const faqSchema = practiceArea.faqs.length > 0 ? {
-    '@type': 'FAQPage',
-    'mainEntity': practiceArea.faqs.map(faq => ({
-      '@type': 'Question',
-      'name': faq.question,
-      'acceptedAnswer': {
-        '@type': 'Answer',
-        'text': faq.answer
-      }
-    }))
-  } : null;
+  const faqSchema =
+    practiceArea.faqs.length > 0
+      ? {
+          "@type": "FAQPage",
+          mainEntity: practiceArea.faqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: faq.answer,
+            },
+          })),
+        }
+      : null;
 
   return (
     <div className="bg-[#F7F5F0] py-12 sm:py-16">
       <SEOHead
         title={`${practiceArea.title} | Raut Legal Nepal`}
-        description={`${practiceArea.shortDescription.length > 110 ? practiceArea.shortDescription.slice(0, 110).trim() + '...' : practiceArea.shortDescription} Initial matter review fee: NPR 500 in Kathmandu.`}
+        description={`${practiceArea.shortDescription.length > 110 ? practiceArea.shortDescription.slice(0, 110).trim() + "..." : practiceArea.shortDescription} Initial matter review fee: NPR 500 in Kathmandu.`}
         canonicalPath={`/services/${practiceArea.slug}`}
         keywords={[
           practiceArea.title.toLowerCase(),
           `${practiceArea.title.toLowerCase()} Nepal`,
           `${practiceArea.title.toLowerCase()} Kathmandu`,
-          'advocates in Kathmandu',
-          'Nepal legal procedure',
-          'Raut Legal Associates'
+          "advocates in Kathmandu",
+          "Nepal legal procedure",
+          "Raut Legal Associates",
         ]}
         jsonLd={{
-          '@context': 'https://schema.org',
-          '@graph': [
+          "@context": "https://schema.org",
+          "@graph": [
             {
-              '@type': 'Service',
-              'name': practiceArea.title,
-              'description': practiceArea.overview,
-              'provider': {
-                '@type': 'LegalService',
-                'name': 'Raut Legal Associates',
-                'telephone': '+9779706410516',
-                'areaServed': [
-                  { '@type': 'Country', 'name': 'Nepal' },
-                  { '@type': 'AdministrativeArea', 'name': 'Kathmandu District' },
-                  { '@type': 'AdministrativeArea', 'name': 'Lalitpur District' },
-                  { '@type': 'AdministrativeArea', 'name': 'Bhaktapur District' },
-                  { '@type': 'AdministrativeArea', 'name': 'Kaski District (Pokhara)' },
-                  { '@type': 'AdministrativeArea', 'name': 'Chitwan District' },
-                  { '@type': 'AdministrativeArea', 'name': 'Rupandehi District (Butwal)' }
+              "@type": "Service",
+              name: practiceArea.title,
+              description: practiceArea.overview,
+              provider: {
+                "@type": "LegalService",
+                name: "Raut Legal Associates",
+                telephone: "+9779706410516",
+                areaServed: [
+                  { "@type": "Country", name: "Nepal" },
+                  { "@type": "AdministrativeArea", name: "Kathmandu District" },
+                  { "@type": "AdministrativeArea", name: "Lalitpur District" },
+                  { "@type": "AdministrativeArea", name: "Bhaktapur District" },
+                  {
+                    "@type": "AdministrativeArea",
+                    name: "Kaski District (Pokhara)",
+                  },
+                  { "@type": "AdministrativeArea", name: "Chitwan District" },
+                  {
+                    "@type": "AdministrativeArea",
+                    name: "Rupandehi District (Butwal)",
+                  },
                 ],
-                'address': {
-                  '@type': 'PostalAddress',
-                  'streetAddress': 'Basundhara-5',
-                  'addressLocality': 'Tokha, Kathmandu',
-                  'addressCountry': 'NP'
-                }
+                address: {
+                  "@type": "PostalAddress",
+                  streetAddress: "Basundhara-5",
+                  addressLocality: "Tokha, Kathmandu",
+                  addressCountry: "NP",
+                },
               },
-              'offers': {
-                '@type': 'Offer',
-                'price': '500',
-                'priceCurrency': 'NPR',
-                'description': 'Initial matter consultation and document evaluation'
-              }
+              offers: {
+                "@type": "Offer",
+                price: "500",
+                priceCurrency: "NPR",
+                description:
+                  "Initial matter consultation and document evaluation",
+              },
             },
             {
-              '@type': 'BreadcrumbList',
-              'itemListElement': [
-                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://rautlegalassociates.com/' },
-                { '@type': 'ListItem', 'position': 2, 'name': 'Practice Areas', 'item': 'https://rautlegalassociates.com/services' },
-                { '@type': 'ListItem', 'position': 3, 'name': practiceArea.title, 'item': `https://rautlegalassociates.com/services/${practiceArea.slug}` }
-              ]
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: "https://rautlegalassociates.com/",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Practice Areas",
+                  item: "https://rautlegalassociates.com/services",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 3,
+                  name: practiceArea.title,
+                  item: `https://rautlegalassociates.com/services/${practiceArea.slug}`,
+                },
+              ],
             },
-            ...(faqSchema ? [faqSchema] : [])
-          ]
+            ...(faqSchema ? [faqSchema] : []),
+          ],
         }}
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Breadcrumbs
           items={[
-            { label: 'Practice Areas', path: '/services' },
+            { label: "Practice Areas", path: "/services" },
             { label: practiceArea.title },
           ]}
         />
@@ -129,7 +152,8 @@ export const ServiceDetailPage: React.FC = () => {
               NPR {FIRM_DETAILS.consultationFeeNPR}
             </div>
             <p className="text-xs text-slate-300 leading-relaxed mb-6">
-              Discuss this specific legal matter with an advocate in Tokha, Kathmandu or online.
+              Discuss this specific legal matter with an advocate in Tokha,
+              Kathmandu or online.
             </p>
 
             <Link
@@ -225,11 +249,15 @@ export const ServiceDetailPage: React.FC = () => {
                   </h2>
                 </div>
                 <p className="text-xs text-slate-600 mb-6 leading-relaxed">
-                  To maximize the productivity of your initial consultation, prepare clear copies of these records where applicable:
+                  To maximize the productivity of your initial consultation,
+                  prepare clear copies of these records where applicable:
                 </p>
                 <ul className="space-y-2.5">
                   {practiceArea.documentChecklist.map((doc, idx) => (
-                    <li key={idx} className="flex items-start gap-2.5 text-xs text-slate-700">
+                    <li
+                      key={idx}
+                      className="flex items-start gap-2.5 text-xs text-slate-700"
+                    >
                       <span className="w-1.5 h-1.5 rounded-full bg-[#C7A56A] mt-1.5 shrink-0" />
                       <span>{doc}</span>
                     </li>

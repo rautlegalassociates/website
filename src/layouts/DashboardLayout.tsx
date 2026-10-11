@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   CalendarCheck,
@@ -9,28 +9,25 @@ import {
   ExternalLink,
   Menu,
   X,
-  Scale,
   Shield,
   Clock,
-  Phone,
-  User,
-} from 'lucide-react';
-import { BrandLogo } from '../components/common/BrandLogo';
+} from "lucide-react";
+import { BrandLogo } from "../components/common/BrandLogo";
 import {
   getActiveSession,
   logoutStaff,
   getAllAppointments,
   getAllInquiries,
   StaffUser,
-} from '../services/dashboardStorage';
-import { FIRM_DETAILS } from '../data/firm';
+} from "../services/dashboardStorage";
+import { FIRM_DETAILS } from "../data/firm";
 
 export const DashboardLayout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [session, setSession] = useState<StaffUser | null>(getActiveSession());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [currentTime, setCurrentTime] = useState('');
+  const [currentTime, setCurrentTime] = useState("");
   const [pendingAppointmentsCount, setPendingAppointmentsCount] = useState(0);
   const [unreadInquiriesCount, setUnreadInquiriesCount] = useState(0);
 
@@ -39,8 +36,10 @@ export const DashboardLayout: React.FC = () => {
     setSession(getActiveSession());
     const apps = getAllAppointments();
     const inqs = getAllInquiries();
-    setPendingAppointmentsCount(apps.filter((a) => a.status === 'pending').length);
-    setUnreadInquiriesCount(inqs.filter((i) => i.status === 'unread').length);
+    setPendingAppointmentsCount(
+      apps.filter((a) => a.status === "pending").length,
+    );
+    setUnreadInquiriesCount(inqs.filter((i) => i.status === "unread").length);
   };
 
   useEffect(() => {
@@ -48,66 +47,66 @@ export const DashboardLayout: React.FC = () => {
 
     // Listen to local storage changes
     const handleStorageChange = () => syncData();
-    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener("storage", handleStorageChange);
 
     // Live clock
     const updateTime = () => {
       const now = new Date();
       setCurrentTime(
-        now.toLocaleDateString('en-US', {
-          weekday: 'short',
-          month: 'short',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-        })
+        now.toLocaleDateString("en-US", {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
       );
     };
     updateTime();
     const interval = setInterval(updateTime, 1000 * 30);
 
     return () => {
-      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener("storage", handleStorageChange);
       clearInterval(interval);
     };
   }, []);
 
   const handleLogout = () => {
     logoutStaff();
-    navigate('/login', { replace: true });
+    navigate("/login", { replace: true });
   };
 
   const navItems = [
     {
-      label: 'Overview',
-      path: '/dashboard',
+      label: "Overview",
+      path: "/dashboard",
       icon: LayoutDashboard,
       badge: null,
     },
     {
-      label: 'Appointments',
-      path: '/dashboard/appointments',
+      label: "Appointments",
+      path: "/dashboard/appointments",
       icon: CalendarCheck,
       badge: pendingAppointmentsCount > 0 ? pendingAppointmentsCount : null,
-      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+      badgeColor: "bg-amber-500/20 text-amber-300 border-amber-500/40",
     },
     {
-      label: 'Contacts & Queries',
-      path: '/dashboard/contacts',
+      label: "Contacts & Queries",
+      path: "/dashboard/contacts",
       icon: MessageSquare,
       badge: unreadInquiriesCount > 0 ? unreadInquiriesCount : null,
-      badgeColor: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
+      badgeColor: "bg-rose-500/20 text-rose-300 border-rose-500/40",
     },
     {
-      label: 'Chamber Settings',
-      path: '/dashboard/settings',
+      label: "Chamber Settings",
+      path: "/dashboard/settings",
       icon: Settings,
       badge: null,
     },
   ];
 
   const isActive = (path: string) => {
-    if (path === '/dashboard') return location.pathname === '/dashboard';
+    if (path === "/dashboard") return location.pathname === "/dashboard";
     return location.pathname.startsWith(path);
   };
 
@@ -153,18 +152,18 @@ export const DashboardLayout: React.FC = () => {
                 <div className="w-7 h-7 rounded-full bg-[#101C2C] border border-[#C7A56A] flex items-center justify-center text-[#C7A56A] text-xs font-bold font-serif">
                   {session?.name
                     ? session.name
-                        .replace('Adv.', '')
+                        .replace("Adv.", "")
                         .trim()
                         .slice(0, 2)
                         .toUpperCase()
-                    : 'SR'}
+                    : "SR"}
                 </div>
                 <div className="hidden sm:block text-left">
                   <div className="text-xs font-semibold text-white leading-tight">
-                    {session?.name || 'Adv. Sahil Raut Gaddi'}
+                    {session?.name || "Adv. Sahil Raut Gaddi"}
                   </div>
                   <div className="text-[10px] text-[#C7A56A] font-medium leading-none">
-                    {session?.role || 'Senior Advocate'}
+                    {session?.role || "Senior Advocate"}
                   </div>
                 </div>
               </div>
@@ -185,7 +184,11 @@ export const DashboardLayout: React.FC = () => {
                 className="lg:hidden p-2 text-slate-300 hover:text-white rounded-sm hover:bg-[#17283F]"
                 aria-label="Toggle navigation"
               >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                {mobileMenuOpen ? (
+                  <X className="w-5 h-5" />
+                ) : (
+                  <Menu className="w-5 h-5" />
+                )}
               </button>
             </div>
           </div>
@@ -204,15 +207,17 @@ export const DashboardLayout: React.FC = () => {
                     to={item.path}
                     className={`flex items-center gap-2 py-3 px-4 text-xs font-medium border-b-2 transition-colors ${
                       active
-                        ? 'border-[#C7A56A] text-[#C7A56A] bg-[#142236]/50 font-semibold'
-                        : 'border-transparent text-slate-300 hover:text-white hover:bg-[#17283F]/30'
+                        ? "border-[#C7A56A] text-[#C7A56A] bg-[#142236]/50 font-semibold"
+                        : "border-transparent text-slate-300 hover:text-white hover:bg-[#17283F]/30"
                     }`}
                   >
-                    <Icon className={`w-4 h-4 ${active ? 'text-[#C7A56A]' : 'text-slate-400'}`} />
+                    <Icon
+                      className={`w-4 h-4 ${active ? "text-[#C7A56A]" : "text-slate-400"}`}
+                    />
                     <span>{item.label}</span>
                     {item.badge !== null && (
                       <span
-                        className={`ml-1.5 text-[10px] font-bold px-1.5 py-0.2 rounded-full border ${item.badgeColor || 'bg-slate-700 text-slate-200'}`}
+                        className={`ml-1.5 text-[10px] font-bold px-1.5 py-0.2 rounded-full border ${item.badgeColor || "bg-slate-700 text-slate-200"}`}
                       >
                         {item.badge}
                       </span>
@@ -237,8 +242,8 @@ export const DashboardLayout: React.FC = () => {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`flex items-center justify-between p-2.5 rounded-sm text-xs font-medium ${
                     active
-                      ? 'bg-[#17283F] text-[#C7A56A] font-semibold'
-                      : 'text-slate-300 hover:bg-[#17283F]/50 hover:text-white'
+                      ? "bg-[#17283F] text-[#C7A56A] font-semibold"
+                      : "text-slate-300 hover:bg-[#17283F]/50 hover:text-white"
                   }`}
                 >
                   <div className="flex items-center gap-2.5">
@@ -247,7 +252,7 @@ export const DashboardLayout: React.FC = () => {
                   </div>
                   {item.badge !== null && (
                     <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${item.badgeColor || 'bg-slate-700 text-slate-200'}`}
+                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${item.badgeColor || "bg-slate-700 text-slate-200"}`}
                     >
                       {item.badge}
                     </span>
@@ -285,10 +290,15 @@ export const DashboardLayout: React.FC = () => {
       <footer className="bg-white border-t border-[#E2DBCD] py-4 text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
           <div>
-            <strong className="text-slate-700">{FIRM_DETAILS.name}</strong> · Chamber Management System (Tokha, Kathmandu)
+            <strong className="text-slate-700">{FIRM_DETAILS.name}</strong> ·
+            Chamber Management System (Tokha, Kathmandu)
           </div>
           <div>
-            Chamber Hours: <span className="text-slate-700 font-medium">{FIRM_DETAILS.officeHours}</span> · Direct: {FIRM_DETAILS.phoneDisplay}
+            Chamber Hours:{" "}
+            <span className="text-slate-700 font-medium">
+              {FIRM_DETAILS.officeHours}
+            </span>{" "}
+            · Direct: {FIRM_DETAILS.phoneDisplay}
           </div>
         </div>
       </footer>

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import {
   Lock,
   Mail,
@@ -12,11 +12,15 @@ import {
   CheckCircle2,
   KeyRound,
   ArrowLeft,
-} from 'lucide-react';
-import { BrandLogo } from '../components/common/BrandLogo';
-import { SEOHead } from '../components/common/SEOHead';
-import { DEMO_STAFF_USERS, loginStaff, getActiveSession } from '../services/dashboardStorage';
-import { FIRM_DETAILS } from '../data/firm';
+} from "lucide-react";
+import { BrandLogo } from "../components/common/BrandLogo";
+import { SEOHead } from "../components/common/SEOHead";
+import {
+  DEMO_STAFF_USERS,
+  loginStaff,
+  getActiveSession,
+} from "../services/dashboardStorage";
+import { FIRM_DETAILS } from "../data/firm";
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -25,16 +29,18 @@ export const LoginPage: React.FC = () => {
   // If already logged in, redirect to dashboard
   const currentSession = getActiveSession();
   if (currentSession) {
-    navigate('/dashboard', { replace: true });
+    navigate("/dashboard", { replace: true });
   }
 
-  const [email, setEmail] = useState('sahil@rautlegalassociates.com');
-  const [password, setPassword] = useState('admin123');
+  const [email, setEmail] = useState("sahil@rautlegalassociates.com");
+  const [password, setPassword] = useState("admin123");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/dashboard';
+  const from =
+    (location.state as { from?: { pathname: string } })?.from?.pathname ||
+    "/dashboard";
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,21 +50,26 @@ export const LoginPage: React.FC = () => {
     setTimeout(() => {
       // Find staff user by email or allow demo password 'admin123'
       const matchedUser = DEMO_STAFF_USERS.find(
-        (u) => u.email.toLowerCase() === email.trim().toLowerCase()
+        (u) => u.email.toLowerCase() === email.trim().toLowerCase(),
       );
 
       if (matchedUser && password.trim().length >= 4) {
         loginStaff(matchedUser);
         setIsLoading(false);
         navigate(from, { replace: true });
-      } else if (password.trim() === 'admin123' || password.trim() === 'raut123') {
+      } else if (
+        password.trim() === "admin123" ||
+        password.trim() === "raut123"
+      ) {
         // Fallback demo user
         loginStaff(DEMO_STAFF_USERS[0]);
         setIsLoading(false);
         navigate(from, { replace: true });
       } else {
         setIsLoading(false);
-        setError('Invalid credentials. Please use the demo accounts below or enter valid chamber details.');
+        setError(
+          "Invalid credentials. Please use the demo accounts below or enter valid chamber details.",
+        );
       }
     }, 450);
   };
@@ -66,7 +77,7 @@ export const LoginPage: React.FC = () => {
   const handleQuickSelect = (userIndex: number) => {
     const user = DEMO_STAFF_USERS[userIndex];
     setEmail(user.email);
-    setPassword('admin123');
+    setPassword("admin123");
     setError(null);
   };
 
@@ -110,7 +121,8 @@ export const LoginPage: React.FC = () => {
               Staff Portal Sign In
             </h1>
             <p className="text-xs text-slate-400 mt-2">
-              Access appointment schedules, client legal inquiries, and chamber case records.
+              Access appointment schedules, client legal inquiries, and chamber
+              case records.
             </p>
           </div>
 
@@ -144,12 +156,14 @@ export const LoginPage: React.FC = () => {
                 <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
                   Password
                 </label>
-                <span className="text-[11px] text-slate-400">Demo: <strong className="text-slate-300">admin123</strong></span>
+                <span className="text-[11px] text-slate-400">
+                  Demo: <strong className="text-slate-300">admin123</strong>
+                </span>
               </div>
               <div className="relative">
                 <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3 pointer-events-none" />
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -162,7 +176,11 @@ export const LoginPage: React.FC = () => {
                   className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-200 transition-colors p-0.5"
                   aria-label="Toggle password visibility"
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
                 </button>
               </div>
             </div>
@@ -202,18 +220,22 @@ export const LoginPage: React.FC = () => {
                   onClick={() => handleQuickSelect(idx)}
                   className={`w-full text-left p-2.5 rounded-sm border text-xs flex items-center justify-between transition-colors cursor-pointer ${
                     email === user.email
-                      ? 'bg-[#17283F] border-[#C7A56A] text-white'
-                      : 'bg-[#0C1522]/70 border-[#223A5C]/50 text-slate-300 hover:bg-[#17283F]/60 hover:border-slate-500'
+                      ? "bg-[#17283F] border-[#C7A56A] text-white"
+                      : "bg-[#0C1522]/70 border-[#223A5C]/50 text-slate-300 hover:bg-[#17283F]/60 hover:border-slate-500"
                   }`}
                 >
                   <div>
                     <div className="font-semibold">{user.name}</div>
-                    <div className="text-[11px] text-slate-400">{user.role} · {user.email}</div>
+                    <div className="text-[11px] text-slate-400">
+                      {user.role} · {user.email}
+                    </div>
                   </div>
                   {email === user.email ? (
                     <CheckCircle2 className="w-4 h-4 text-[#C7A56A]" />
                   ) : (
-                    <span className="text-[10px] text-[#C7A56A] font-medium uppercase tracking-wider">Select</span>
+                    <span className="text-[10px] text-[#C7A56A] font-medium uppercase tracking-wider">
+                      Select
+                    </span>
                   )}
                 </button>
               ))}
@@ -229,7 +251,10 @@ export const LoginPage: React.FC = () => {
 
       {/* Footer */}
       <div className="relative z-10 py-5 text-center text-xs text-slate-400 border-t border-[#223A5C]/30">
-        <span>&copy; {new Date().getFullYear()} {FIRM_DETAILS.name}. Basundhara-5, Tokha, Kathmandu, Nepal.</span>
+        <span>
+          &copy; {new Date().getFullYear()} {FIRM_DETAILS.name}. Basundhara-5,
+          Tokha, Kathmandu, Nepal.
+        </span>
       </div>
     </div>
   );

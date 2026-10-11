@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Breadcrumbs } from '../components/common/Breadcrumbs';
-import { LegalDisclaimer } from '../components/common/LegalDisclaimer';
-import { ConsultationBanner } from '../components/common/ConsultationBanner';
-import { ARTICLES } from '../data/articles';
-import { RESOURCES_PAGE_FAQS, getResourcesFAQSchema } from '../data/faqs';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { Breadcrumbs } from "../components/common/Breadcrumbs";
+import { LegalDisclaimer } from "../components/common/LegalDisclaimer";
+import { ConsultationBanner } from "../components/common/ConsultationBanner";
+import { ARTICLES } from "../data/articles";
+import { RESOURCES_PAGE_FAQS, getResourcesFAQSchema } from "../data/faqs";
 import {
   Search,
   ArrowRight,
@@ -12,25 +12,25 @@ import {
   AlertTriangle,
   HelpCircle,
   ChevronDown,
-} from 'lucide-react';
-import { SEOHead } from '../components/common/SEOHead';
+} from "lucide-react";
+import { SEOHead } from "../components/common/SEOHead";
 
 export const ResourcesPage: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   const categories = [
-    'All',
-    'Corporate Law',
-    'Commercial Contracts',
-    'Litigation & Courts',
-    'Property Law',
+    "All",
+    "Corporate Law",
+    "Commercial Contracts",
+    "Litigation & Courts",
+    "Property Law",
   ];
 
   const filteredArticles = ARTICLES.filter((art) => {
     const matchesCat =
-      selectedCategory === 'All' || art.category === selectedCategory;
+      selectedCategory === "All" || art.category === selectedCategory;
     const matchesSearch =
       art.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       art.summary.toLowerCase().includes(searchQuery.toLowerCase());
@@ -39,20 +39,20 @@ export const ResourcesPage: React.FC = () => {
 
   const resourcesStructuredData = [
     {
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
       itemListElement: [
         {
-          '@type': 'ListItem',
+          "@type": "ListItem",
           position: 1,
-          name: 'Home',
-          item: 'https://rautlegalassociates.com/',
+          name: "Home",
+          item: "https://rautlegalassociates.com/",
         },
         {
-          '@type': 'ListItem',
+          "@type": "ListItem",
           position: 2,
-          name: 'Legal Resources',
-          item: 'https://rautlegalassociates.com/resources',
+          name: "Legal Resources",
+          item: "https://rautlegalassociates.com/resources",
         },
       ],
     },
@@ -66,18 +66,18 @@ export const ResourcesPage: React.FC = () => {
         description="Read expert legal guides on Nepalese company registration, contract risks, property due diligence, and court litigation under the Muluki Codes."
         canonicalPath="/resources"
         keywords={[
-          'legal articles Nepal',
-          'company registration Nepal guide',
-          'Muluki Civil Code articles',
-          'land due diligence Kathmandu',
-          'cheque bounce law Nepal',
-          'divorce law Nepal',
-          'Nepal law insights',
+          "legal articles Nepal",
+          "company registration Nepal guide",
+          "Muluki Civil Code articles",
+          "land due diligence Kathmandu",
+          "cheque bounce law Nepal",
+          "divorce law Nepal",
+          "Nepal law insights",
         ]}
         jsonLd={resourcesStructuredData}
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Breadcrumbs items={[{ label: 'Legal Resources' }]} />
+        <Breadcrumbs items={[{ label: "Legal Resources" }]} />
 
         {/* Page Header */}
         <div className="max-w-3xl mb-12">
@@ -88,7 +88,8 @@ export const ResourcesPage: React.FC = () => {
             Legal Insights & Publications
           </h1>
           <p className="mt-4 text-base sm:text-lg text-slate-700 leading-relaxed font-light">
-            Educational articles and procedural overviews of Nepalese corporate, civil, property, and dispute resolution jurisprudence.
+            Educational articles and procedural overviews of Nepalese corporate,
+            civil, property, and dispute resolution jurisprudence.
           </p>
         </div>
 
@@ -96,7 +97,10 @@ export const ResourcesPage: React.FC = () => {
         <div className="mb-10 p-4 bg-[#EDE8DD] border border-[#C7A56A]/50 rounded-sm flex items-start gap-3 text-xs text-slate-700">
           <AlertTriangle className="w-4 h-4 text-[#B38E51] shrink-0 mt-0.5" />
           <div>
-            <strong>Editorial & Statutory Review Notice:</strong> All published articles are prepared for educational guidance and represent draft overviews subject to ongoing legislative updates under Nepalese law. Consult a licensed advocate for individual case assessments.
+            <strong>Editorial & Statutory Review Notice:</strong> All published
+            articles are prepared for educational guidance and represent draft
+            overviews subject to ongoing legislative updates under Nepalese law.
+            Consult a licensed advocate for individual case assessments.
           </div>
         </div>
 
@@ -110,8 +114,8 @@ export const ResourcesPage: React.FC = () => {
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-3.5 py-1.5 text-xs font-medium rounded-xs transition-colors ${
                   selectedCategory === cat
-                    ? 'bg-[#101C2C] text-[#F7F5F0] shadow-xs'
-                    : 'text-slate-700 hover:text-[#101C2C]'
+                    ? "bg-[#101C2C] text-[#F7F5F0] shadow-xs"
+                    : "text-slate-700 hover:text-[#101C2C]"
                 }`}
               >
                 {cat}
@@ -144,7 +148,9 @@ export const ResourcesPage: React.FC = () => {
               <div>
                 {/* Clean unboxed metadata with bullet separators */}
                 <div className="flex items-center gap-2 text-xs text-slate-500 mb-3">
-                  <span className="text-[#B38E51] font-semibold">{art.category}</span>
+                  <span className="text-[#B38E51] font-semibold">
+                    {art.category}
+                  </span>
                   <span aria-hidden="true">·</span>
                   <span>{art.publishedDate}</span>
                   <span aria-hidden="true">·</span>
@@ -171,7 +177,9 @@ export const ResourcesPage: React.FC = () => {
               </div>
 
               <div className="pt-4 border-t border-[#EDE8DD] flex items-center justify-between">
-                <span className="text-[11px] text-slate-400">By {art.author}</span>
+                <span className="text-[11px] text-slate-400">
+                  By {art.author}
+                </span>
                 <Link
                   to={`/resources/${art.slug}`}
                   className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#101C2C] group-hover:text-[#B38E51] transition-colors"
@@ -196,8 +204,8 @@ export const ResourcesPage: React.FC = () => {
             </p>
             <button
               onClick={() => {
-                setSelectedCategory('All');
-                setSearchQuery('');
+                setSelectedCategory("All");
+                setSearchQuery("");
               }}
               className="text-xs text-[#B38E51] font-semibold underline"
             >
@@ -211,13 +219,18 @@ export const ResourcesPage: React.FC = () => {
           <div className="max-w-3xl mb-10">
             <div className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#B38E51] font-semibold mb-2">
               <HelpCircle className="w-4 h-4 text-[#C7A56A]" />
-              <span>Statutory & Procedural FAQ · नेपालका प्रचलित कानूनी सवालहरू</span>
+              <span>
+                Statutory & Procedural FAQ · नेपालका प्रचलित कानूनी सवालहरू
+              </span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-[#101C2C]">
               Common Legal Questions in Nepal
             </h2>
             <p className="mt-3 text-sm text-slate-600 leading-relaxed font-light">
-              Authoritative answers to frequently searched statutory questions covering company incorporation, property transfer deeds, cheque bounce prosecution, divorce grounds, digital evidence, and limitation periods.
+              Authoritative answers to frequently searched statutory questions
+              covering company incorporation, property transfer deeds, cheque
+              bounce prosecution, divorce grounds, digital evidence, and
+              limitation periods.
             </p>
           </div>
 
@@ -249,7 +262,7 @@ export const ResourcesPage: React.FC = () => {
                     </div>
                     <div
                       className={`w-7 h-7 rounded-full bg-[#EDE8DD] flex items-center justify-center shrink-0 mt-0.5 text-[#101C2C] transition-transform duration-200 ${
-                        isOpen ? 'rotate-180 bg-[#101C2C] text-[#C7A56A]' : ''
+                        isOpen ? "rotate-180 bg-[#101C2C] text-[#C7A56A]" : ""
                       }`}
                     >
                       <ChevronDown className="w-4 h-4" />

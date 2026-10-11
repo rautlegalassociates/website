@@ -1,7 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { CalendarCheck, Phone, CheckCircle, ArrowRight } from 'lucide-react';
-import { FIRM_DETAILS } from '../../data/firm';
+import React from "react";
+import { Link } from "react-router-dom";
+import { CalendarCheck, Phone, CheckCircle, ArrowRight } from "lucide-react";
+import { FIRM_DETAILS } from "../../data/firm";
 
 export const ConsultationBanner: React.FC = () => {
   return (
@@ -22,7 +22,9 @@ export const ConsultationBanner: React.FC = () => {
               </h2>
 
               <p className="text-base sm:text-lg text-slate-300 max-w-2xl leading-relaxed">
-                Request an appointment with our legal team to discuss your legal concerns, review critical documents, and understand the appropriate next steps under Nepalese law.
+                Request an appointment with our legal team to discuss your legal
+                concerns, review critical documents, and understand the
+                appropriate next steps under Nepalese law.
               </p>
 
               <div className="pt-2 flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-slate-300">
@@ -71,7 +73,8 @@ export const ConsultationBanner: React.FC = () => {
               </div>
 
               <p className="text-[10px] text-slate-500 mt-3 text-center leading-normal">
-                Subject to scheduling confirmation by the firm. No prior attorney-client relationship is created by request submission.
+                Subject to scheduling confirmation by the firm. No prior
+                attorney-client relationship is created by request submission.
               </p>
             </div>
           </div>

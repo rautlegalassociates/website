@@ -1,6 +1,10 @@
-export type ConsultationMode = 'in-person' | 'online';
+export type ConsultationMode = "in-person" | "online";
 
-export type AppointmentStatus = 'pending' | 'confirmed' | 'cancelled' | 'completed';
+export type AppointmentStatus =
+  | "pending"
+  | "confirmed"
+  | "cancelled"
+  | "completed";
 
 export interface PracticeArea {
   id: string;

@@ -1,6 +1,6 @@
-import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import { getActiveSession } from '../../services/dashboardStorage';
+import React from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import { getActiveSession } from "../../services/dashboardStorage";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;

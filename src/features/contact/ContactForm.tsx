@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { contactFormSchema, ContactFormData } from '../../lib/validations';
-import { useSubmitContactMessageMutation } from '../../services/contactApi';
-import { useToast } from '../../components/ui/Toast';
-import { User, Mail, FileText, CheckCircle2, AlertCircle } from 'lucide-react';
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { contactFormSchema, ContactFormData } from "../../lib/validations";
+import { useSubmitContactMessageMutation } from "../../services/contactApi";
+import { useToast } from "../../components/ui/Toast";
+import { User, Mail, FileText, CheckCircle2, AlertCircle } from "lucide-react";
 
 export const ContactForm: React.FC = () => {
   const { showToast } = useToast();
@@ -19,10 +19,10 @@ export const ContactForm: React.FC = () => {
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
-      name: '',
-      emailOrPhone: '',
-      subject: '',
-      message: '',
+      name: "",
+      emailOrPhone: "",
+      subject: "",
+      message: "",
       agreedToPrivacy: false,
     },
   });
@@ -33,17 +33,18 @@ export const ContactForm: React.FC = () => {
       if (response.success) {
         setIsSuccess(true);
         showToast({
-          type: 'success',
-          title: 'Inquiry Received',
-          message: 'Your message has been received by our chamber coordinator.',
+          type: "success",
+          title: "Inquiry Received",
+          message: "Your message has been received by our chamber coordinator.",
         });
         reset();
       }
     } catch {
       showToast({
-        type: 'error',
-        title: 'Error Sending Inquiry',
-        message: 'Could not send message. Please contact +977 9706410516 directly.',
+        type: "error",
+        title: "Error Sending Inquiry",
+        message:
+          "Could not send message. Please contact +977 9706410516 directly.",
       });
     }
   };
@@ -56,7 +57,9 @@ export const ContactForm: React.FC = () => {
           Thank You for Contacting Us
         </h4>
         <p className="text-xs text-slate-600 max-w-md mx-auto leading-relaxed mb-6">
-          Your legal inquiry has been registered. Our legal team will review your matter and respond to you during our standard chamber hours (Sunday to Friday, 8:00 AM – 6:00 PM).
+          Your legal inquiry has been registered. Our legal team will review
+          your matter and respond to you during our standard chamber hours
+          (Sunday to Friday, 8:00 AM – 6:00 PM).
         </p>
         <button
           onClick={() => setIsSuccess(false)}
@@ -82,12 +85,12 @@ export const ContactForm: React.FC = () => {
           <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3 pointer-events-none" />
           <input
             type="text"
-            {...register('name')}
+            {...register("name")}
             placeholder="Full Name"
             className={`w-full pl-10 pr-3.5 py-2.5 bg-white border text-sm rounded-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 ${
               errors.name
-                ? 'border-rose-400 focus:ring-rose-500'
-                : 'border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]'
+                ? "border-rose-400 focus:ring-rose-500"
+                : "border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]"
             }`}
           />
         </div>
@@ -107,12 +110,12 @@ export const ContactForm: React.FC = () => {
           <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3 pointer-events-none" />
           <input
             type="text"
-            {...register('emailOrPhone')}
+            {...register("emailOrPhone")}
             placeholder="+977 98XXXXXXXX or email@domain.com"
             className={`w-full pl-10 pr-3.5 py-2.5 bg-white border text-sm rounded-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 ${
               errors.emailOrPhone
-                ? 'border-rose-400 focus:ring-rose-500'
-                : 'border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]'
+                ? "border-rose-400 focus:ring-rose-500"
+                : "border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]"
             }`}
           />
         </div>
@@ -130,12 +133,12 @@ export const ContactForm: React.FC = () => {
         </label>
         <input
           type="text"
-          {...register('subject')}
+          {...register("subject")}
           placeholder="e.g. Inquiries regarding Land Title verification in Kathmandu"
           className={`w-full px-3.5 py-2.5 bg-white border text-sm rounded-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 ${
             errors.subject
-              ? 'border-rose-400 focus:ring-rose-500'
-              : 'border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]'
+              ? "border-rose-400 focus:ring-rose-500"
+              : "border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]"
           }`}
         />
         {errors.subject && (
@@ -154,12 +157,12 @@ export const ContactForm: React.FC = () => {
           <FileText className="w-4 h-4 text-slate-400 absolute left-3.5 top-3 pointer-events-none" />
           <textarea
             rows={5}
-            {...register('message')}
+            {...register("message")}
             placeholder="Briefly state your inquiry, relevant dates, or background details..."
             className={`w-full pl-10 pr-3.5 py-2.5 bg-white border text-sm rounded-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 ${
               errors.message
-                ? 'border-rose-400 focus:ring-rose-500'
-                : 'border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]'
+                ? "border-rose-400 focus:ring-rose-500"
+                : "border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]"
             }`}
           />
         </div>
@@ -175,11 +178,12 @@ export const ContactForm: React.FC = () => {
         <label className="flex items-start gap-2.5 cursor-pointer">
           <input
             type="checkbox"
-            {...register('agreedToPrivacy')}
+            {...register("agreedToPrivacy")}
             className="mt-1 text-[#C7A56A] rounded-xs focus:ring-[#C7A56A]"
           />
           <span className="text-xs text-slate-600 leading-relaxed">
-            I agree that this message is for inquiry purposes and does not create an advocate-client relationship.
+            I agree that this message is for inquiry purposes and does not
+            create an advocate-client relationship.
           </span>
         </label>
         {errors.agreedToPrivacy && (

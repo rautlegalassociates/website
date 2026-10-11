@@ -1,11 +1,11 @@
-import React from 'react';
-import { useParams, Link, Navigate } from 'react-router-dom';
-import { Breadcrumbs } from '../components/common/Breadcrumbs';
-import { LegalDisclaimer } from '../components/common/LegalDisclaimer';
-import { ARTICLES } from '../data/articles';
-import { FIRM_DETAILS } from '../data/firm';
-import { Clock, Calendar, User, AlertTriangle, ArrowRight, BookOpen, CheckCircle2 } from 'lucide-react';
-import { SEOHead } from '../components/common/SEOHead';
+import React from "react";
+import { useParams, Link, Navigate } from "react-router-dom";
+import { Breadcrumbs } from "../components/common/Breadcrumbs";
+import { LegalDisclaimer } from "../components/common/LegalDisclaimer";
+import { ARTICLES } from "../data/articles";
+import { FIRM_DETAILS } from "../data/firm";
+import { User, AlertTriangle, ArrowRight, CheckCircle2 } from "lucide-react";
+import { SEOHead } from "../components/common/SEOHead";
 
 export const ResourceDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -18,7 +18,10 @@ export const ResourceDetailPage: React.FC = () => {
 
   // Related articles
   const relatedArticles = ARTICLES.filter(
-    (a) => a.id !== article.id && (article.relatedSlugs?.includes(a.slug) || a.category === article.category)
+    (a) =>
+      a.id !== article.id &&
+      (article.relatedSlugs?.includes(a.slug) ||
+        a.category === article.category),
   ).slice(0, 2);
 
   return (
@@ -37,49 +40,64 @@ export const ResourceDetailPage: React.FC = () => {
         keywords={[
           article.title.toLowerCase(),
           article.category.toLowerCase(),
-          'Nepal law guide',
-          'legal analysis Kathmandu',
-          'Raut Legal Associates'
+          "Nepal law guide",
+          "legal analysis Kathmandu",
+          "Raut Legal Associates",
         ]}
         jsonLd={{
-          '@context': 'https://schema.org',
-          '@graph': [
+          "@context": "https://schema.org",
+          "@graph": [
             {
-              '@type': 'Article',
-              'headline': article.title,
-              'description': article.summary,
-              'author': {
-                '@type': 'Organization',
-                'name': article.author,
-                'url': 'https://rautlegalassociates.com/'
+              "@type": "Article",
+              headline: article.title,
+              description: article.summary,
+              author: {
+                "@type": "Organization",
+                name: article.author,
+                url: "https://rautlegalassociates.com/",
               },
-              'publisher': {
-                '@type': 'LegalService',
-                'name': 'Raut Legal Associates',
-                'logo': {
-                  '@type': 'ImageObject',
-                  'url': 'https://rautlegalassociates.com/og-image.svg'
-                }
+              publisher: {
+                "@type": "LegalService",
+                name: "Raut Legal Associates",
+                logo: {
+                  "@type": "ImageObject",
+                  url: "https://rautlegalassociates.com/og-image.svg",
+                },
               },
-              'datePublished': article.publishedDate,
-              'dateModified': article.updatedDate,
-              'mainEntityOfPage': `https://rautlegalassociates.com/resources/${article.slug}`
+              datePublished: article.publishedDate,
+              dateModified: article.updatedDate,
+              mainEntityOfPage: `https://rautlegalassociates.com/resources/${article.slug}`,
             },
             {
-              '@type': 'BreadcrumbList',
-              'itemListElement': [
-                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://rautlegalassociates.com/' },
-                { '@type': 'ListItem', 'position': 2, 'name': 'Legal Resources', 'item': 'https://rautlegalassociates.com/resources' },
-                { '@type': 'ListItem', 'position': 3, 'name': article.title, 'item': `https://rautlegalassociates.com/resources/${article.slug}` }
-              ]
-            }
-          ]
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: "https://rautlegalassociates.com/",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Legal Resources",
+                  item: "https://rautlegalassociates.com/resources",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 3,
+                  name: article.title,
+                  item: `https://rautlegalassociates.com/resources/${article.slug}`,
+                },
+              ],
+            },
+          ],
         }}
       />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <Breadcrumbs
           items={[
-            { label: 'Legal Resources', path: '/resources' },
+            { label: "Legal Resources", path: "/resources" },
             { label: article.title },
           ]}
         />
@@ -88,7 +106,9 @@ export const ResourceDetailPage: React.FC = () => {
         <header className="mb-10 pb-8 border-b border-[#E2DBCD]">
           {/* Metadata */}
           <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500 mb-4">
-            <span className="text-[#B38E51] font-semibold">{article.category}</span>
+            <span className="text-[#B38E51] font-semibold">
+              {article.category}
+            </span>
             <span aria-hidden="true">·</span>
             <span>Published {article.publishedDate}</span>
             <span aria-hidden="true">·</span>
@@ -107,7 +127,10 @@ export const ResourceDetailPage: React.FC = () => {
 
           <div className="mt-6 flex items-center gap-3 text-xs text-slate-500">
             <User className="w-4 h-4 text-[#C7A56A]" />
-            <span>Authored by: <strong className="text-slate-800">{article.author}</strong></span>
+            <span>
+              Authored by:{" "}
+              <strong className="text-slate-800">{article.author}</strong>
+            </span>
           </div>
         </header>
 
@@ -116,7 +139,10 @@ export const ResourceDetailPage: React.FC = () => {
           <div className="mb-10 p-4 bg-[#EDE8DD] border border-[#C7A56A]/50 rounded-sm flex items-start gap-3 text-xs text-slate-700">
             <AlertTriangle className="w-4 h-4 text-[#B38E51] shrink-0 mt-0.5" />
             <div>
-              <strong>Editorial Notice:</strong> This article is an educational summary intended to guide readers on statutory principles in Nepal. It is undergoing periodic review and should not be construed as individualized legal counsel.
+              <strong>Editorial Notice:</strong> This article is an educational
+              summary intended to guide readers on statutory principles in
+              Nepal. It is undergoing periodic review and should not be
+              construed as individualized legal counsel.
             </div>
           </div>
         )}
@@ -128,7 +154,10 @@ export const ResourceDetailPage: React.FC = () => {
           </h2>
           <ul className="space-y-3">
             {article.keyTakeaways.map((takeaway, idx) => (
-              <li key={idx} className="flex items-start gap-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <li
+                key={idx}
+                className="flex items-start gap-3 text-xs sm:text-sm text-slate-700 leading-relaxed"
+              >
                 <CheckCircle2 className="w-4 h-4 text-[#C7A56A] shrink-0 mt-0.5" />
                 <span>{takeaway}</span>
               </li>
@@ -161,7 +190,9 @@ export const ResourceDetailPage: React.FC = () => {
             Have Questions Regarding This Legal Topic?
           </h3>
           <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed mb-6">
-            Book an initial consultation (NPR {FIRM_DETAILS.consultationFeeNPR}) with our legal team to review your relevant deeds, contracts, or notices.
+            Book an initial consultation (NPR {FIRM_DETAILS.consultationFeeNPR})
+            with our legal team to review your relevant deeds, contracts, or
+            notices.
           </p>
           <div className="flex flex-wrap items-center gap-4">
             <Link

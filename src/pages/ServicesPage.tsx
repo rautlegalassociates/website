@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Breadcrumbs } from '../components/common/Breadcrumbs';
-import { ConsultationBanner } from '../components/common/ConsultationBanner';
-import { PRACTICE_AREAS } from '../data/practiceAreas';
-import { SERVICES_PAGE_FAQS, getServicesFAQSchema } from '../data/faqs';
-import { MAJOR_DISTRICTS_SERVED, getDistrictsAreaServedSchema } from '../data/districts';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { Breadcrumbs } from "../components/common/Breadcrumbs";
+import { ConsultationBanner } from "../components/common/ConsultationBanner";
+import { PRACTICE_AREAS } from "../data/practiceAreas";
+import { SERVICES_PAGE_FAQS, getServicesFAQSchema } from "../data/faqs";
+import {
+  MAJOR_DISTRICTS_SERVED,
+  getDistrictsAreaServedSchema,
+} from "../data/districts";
 import {
   Building2,
   Scale,
@@ -25,8 +28,8 @@ import {
   ChevronDown,
   MapPin,
   Compass,
-} from 'lucide-react';
-import { SEOHead } from '../components/common/SEOHead';
+} from "lucide-react";
+import { SEOHead } from "../components/common/SEOHead";
 
 const iconMap: Record<string, React.ElementType> = {
   Building2,
@@ -44,17 +47,18 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 export const ServicesPage: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
-  const [selectedDistrictId, setSelectedDistrictId] = useState<string>('kathmandu');
+  const [selectedDistrictId, setSelectedDistrictId] =
+    useState<string>("kathmandu");
 
   const filteredAreas = PRACTICE_AREAS.filter(
     (area) =>
       area.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       area.shortDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
       area.commonIssues.some((issue) =>
-        issue.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+        issue.toLowerCase().includes(searchTerm.toLowerCase()),
+      ),
   );
 
   const selectedDistrict =
@@ -63,32 +67,32 @@ export const ServicesPage: React.FC = () => {
 
   const servicesStructuredData = [
     {
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
       itemListElement: [
         {
-          '@type': 'ListItem',
+          "@type": "ListItem",
           position: 1,
-          name: 'Home',
-          item: 'https://rautlegalassociates.com/',
+          name: "Home",
+          item: "https://rautlegalassociates.com/",
         },
         {
-          '@type': 'ListItem',
+          "@type": "ListItem",
           position: 2,
-          name: 'Practice Areas',
-          item: 'https://rautlegalassociates.com/services',
+          name: "Practice Areas",
+          item: "https://rautlegalassociates.com/services",
         },
       ],
     },
     {
-      '@context': 'https://schema.org',
-      '@type': 'LegalService',
-      name: 'Raut Legal Associates — Legal Services & Practice Areas',
-      url: 'https://rautlegalassociates.com/services',
+      "@context": "https://schema.org",
+      "@type": "LegalService",
+      name: "Raut Legal Associates — Legal Services & Practice Areas",
+      url: "https://rautlegalassociates.com/services",
       description:
-        'Comprehensive legal representation and advisory across 12 practice disciplines serving Kathmandu and nationwide courts in Nepal.',
+        "Comprehensive legal representation and advisory across 12 practice disciplines serving Kathmandu and nationwide courts in Nepal.",
       areaServed: getDistrictsAreaServedSchema(),
-      priceRange: 'NPR 500',
+      priceRange: "NPR 500",
     },
     getServicesFAQSchema(),
   ];
@@ -100,20 +104,20 @@ export const ServicesPage: React.FC = () => {
         description="Explore our 12 legal practice areas in Nepal: Corporate, Property, Civil, Criminal, Family, and ADR. Initial case evaluation fee NPR 500 in Kathmandu."
         canonicalPath="/services"
         keywords={[
-          'legal services Nepal',
-          'practice areas Kathmandu',
-          'corporate lawyer Nepal',
-          'civil litigation Kathmandu',
-          'property advocate Nepal',
-          'Kathmandu District Court lawyers',
-          'High Court Patan advocates',
-          'Nepal legal consultation NPR 500',
-          'Supreme Court advocate Nepal',
+          "legal services Nepal",
+          "practice areas Kathmandu",
+          "corporate lawyer Nepal",
+          "civil litigation Kathmandu",
+          "property advocate Nepal",
+          "Kathmandu District Court lawyers",
+          "High Court Patan advocates",
+          "Nepal legal consultation NPR 500",
+          "Supreme Court advocate Nepal",
         ]}
         jsonLd={servicesStructuredData}
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Breadcrumbs items={[{ label: 'Practice Areas' }]} />
+        <Breadcrumbs items={[{ label: "Practice Areas" }]} />
 
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
@@ -125,7 +129,9 @@ export const ServicesPage: React.FC = () => {
               Our Practice Areas
             </h1>
             <p className="mt-3 text-base text-slate-700 leading-relaxed font-light">
-              Explore our core legal disciplines, representing individuals, corporations, and institutions across Kathmandu Valley and nationwide courts in Nepal.
+              Explore our core legal disciplines, representing individuals,
+              corporations, and institutions across Kathmandu Valley and
+              nationwide courts in Nepal.
             </p>
           </div>
 
@@ -207,10 +213,11 @@ export const ServicesPage: React.FC = () => {
               No matching practice areas found
             </h3>
             <p className="text-xs text-slate-500 mb-4">
-              Try searching for terms like "land", "corporate", "criminal", "divorce", or "contract".
+              Try searching for terms like "land", "corporate", "criminal",
+              "divorce", or "contract".
             </p>
             <button
-              onClick={() => setSearchTerm('')}
+              onClick={() => setSearchTerm("")}
               className="text-xs text-[#B38E51] font-semibold underline"
             >
               Clear search query
@@ -229,7 +236,10 @@ export const ServicesPage: React.FC = () => {
               Districts & Court Jurisdictions Served
             </h2>
             <p className="mt-3 text-sm text-slate-600 leading-relaxed font-light">
-              While our central chambers are situated in Basundhara-5, Tokha, Kathmandu, Raut Legal Associates regularly represents clients and provides strategic advisory across major commercial hubs and District Courts in Nepal.
+              While our central chambers are situated in Basundhara-5, Tokha,
+              Kathmandu, Raut Legal Associates regularly represents clients and
+              provides strategic advisory across major commercial hubs and
+              District Courts in Nepal.
             </p>
           </div>
 
@@ -248,8 +258,8 @@ export const ServicesPage: React.FC = () => {
                       onClick={() => setSelectedDistrictId(d.id)}
                       className={`w-full text-left p-3 rounded-sm border transition-all flex items-center justify-between ${
                         isSelected
-                          ? 'bg-[#101C2C] border-[#101C2C] text-white shadow-xs'
-                          : 'bg-white border-[#E2DBCD] text-slate-800 hover:border-[#C7A56A] hover:bg-[#FAF8F5]'
+                          ? "bg-[#101C2C] border-[#101C2C] text-white shadow-xs"
+                          : "bg-white border-[#E2DBCD] text-slate-800 hover:border-[#C7A56A] hover:bg-[#FAF8F5]"
                       }`}
                     >
                       <div>
@@ -257,15 +267,15 @@ export const ServicesPage: React.FC = () => {
                           <span>{d.name}</span>
                           <span
                             className={`text-[11px] font-normal ${
-                              isSelected ? 'text-[#C7A56A]' : 'text-slate-500'
+                              isSelected ? "text-[#C7A56A]" : "text-slate-500"
                             }`}
                           >
-                            ({d.nepaliName.split(' ')[0]})
+                            ({d.nepaliName.split(" ")[0]})
                           </span>
                         </div>
                         <div
                           className={`text-[11px] mt-0.5 ${
-                            isSelected ? 'text-slate-300' : 'text-slate-500'
+                            isSelected ? "text-slate-300" : "text-slate-500"
                           }`}
                         >
                           {d.province} · {d.headquarters}
@@ -273,7 +283,7 @@ export const ServicesPage: React.FC = () => {
                       </div>
                       <MapPin
                         className={`w-4 h-4 shrink-0 ${
-                          isSelected ? 'text-[#C7A56A]' : 'text-slate-400'
+                          isSelected ? "text-[#C7A56A]" : "text-slate-400"
                         }`}
                       />
                     </button>
@@ -287,14 +297,17 @@ export const ServicesPage: React.FC = () => {
               <div className="flex items-center justify-between gap-4 pb-4 border-b border-slate-100 mb-6">
                 <div>
                   <span className="text-[11px] uppercase tracking-wider font-semibold text-[#B38E51]">
-                    {selectedDistrict.province} · ISO {selectedDistrict.isoRegion}
+                    {selectedDistrict.province} · ISO{" "}
+                    {selectedDistrict.isoRegion}
                   </span>
                   <h3 className="font-serif text-2xl font-bold text-[#101C2C] mt-1">
                     {selectedDistrict.name} ({selectedDistrict.nepaliName})
                   </h3>
                 </div>
                 <div className="text-right text-xs text-slate-500">
-                  <div className="font-semibold text-slate-700">Headquarters</div>
+                  <div className="font-semibold text-slate-700">
+                    Headquarters
+                  </div>
                   <div>{selectedDistrict.headquarters}</div>
                 </div>
               </div>
@@ -306,7 +319,10 @@ export const ServicesPage: React.FC = () => {
                   </h4>
                   <ul className="space-y-1.5">
                     {selectedDistrict.primaryCourts.map((court, idx) => (
-                      <li key={idx} className="flex items-start gap-2 text-slate-800">
+                      <li
+                        key={idx}
+                        className="flex items-start gap-2 text-slate-800"
+                      >
                         <CheckCircle2 className="w-3.5 h-3.5 text-[#C7A56A] shrink-0 mt-0.5" />
                         <span className="font-medium">{court}</span>
                       </li>
@@ -325,7 +341,7 @@ export const ServicesPage: React.FC = () => {
 
                 <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
                   <div className="text-[11px] text-slate-500">
-                    Coordinates: {selectedDistrict.coordinates.latitude}° N,{' '}
+                    Coordinates: {selectedDistrict.coordinates.latitude}° N,{" "}
                     {selectedDistrict.coordinates.longitude}° E
                   </div>
                   <Link
@@ -346,13 +362,17 @@ export const ServicesPage: React.FC = () => {
           <div className="max-w-3xl mb-10">
             <div className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#B38E51] font-semibold mb-2">
               <HelpCircle className="w-4 h-4 text-[#C7A56A]" />
-              <span>Common Legal Questions in Nepal · प्रायः सोधिने प्रश्नहरू</span>
+              <span>
+                Common Legal Questions in Nepal · प्रायः सोधिने प्रश्नहरू
+              </span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-[#101C2C]">
               Frequently Asked Legal Questions
             </h2>
             <p className="mt-3 text-sm text-slate-600 leading-relaxed font-light">
-              Clear answers to the most common procedural and regulatory questions regarding hiring advocates, court litigation, consultation fees, and legal documentation in Nepal.
+              Clear answers to the most common procedural and regulatory
+              questions regarding hiring advocates, court litigation,
+              consultation fees, and legal documentation in Nepal.
             </p>
           </div>
 
@@ -384,7 +404,7 @@ export const ServicesPage: React.FC = () => {
                     </div>
                     <div
                       className={`w-7 h-7 rounded-full bg-[#EDE8DD] flex items-center justify-center shrink-0 mt-0.5 text-[#101C2C] transition-transform duration-200 ${
-                        isOpen ? 'rotate-180 bg-[#101C2C] text-[#C7A56A]' : ''
+                        isOpen ? "rotate-180 bg-[#101C2C] text-[#C7A56A]" : ""
                       }`}
                     >
                       <ChevronDown className="w-4 h-4" />

@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppointmentRequest } from '../../types';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AppointmentRequest } from "../../types";
 
 interface AppointmentUiState {
   isModalOpen: boolean;
@@ -10,18 +10,18 @@ interface AppointmentUiState {
 
 const initialState: AppointmentUiState = {
   isModalOpen: false,
-  preselectedCategory: '',
-  preselectedLawyer: '',
+  preselectedCategory: "",
+  preselectedLawyer: "",
   lastSubmittedAppointment: null,
 };
 
 export const appointmentSlice = createSlice({
-  name: 'appointmentUi',
+  name: "appointmentUi",
   initialState,
   reducers: {
     openAppointmentModal: (
       state,
-      action: PayloadAction<{ category?: string; lawyer?: string } | undefined>
+      action: PayloadAction<{ category?: string; lawyer?: string } | undefined>,
     ) => {
       state.isModalOpen = true;
       if (action.payload?.category) {
@@ -37,12 +37,15 @@ export const appointmentSlice = createSlice({
     setPreselectedCategory: (state, action: PayloadAction<string>) => {
       state.preselectedCategory = action.payload;
     },
-    setLastSubmittedAppointment: (state, action: PayloadAction<AppointmentRequest | null>) => {
+    setLastSubmittedAppointment: (
+      state,
+      action: PayloadAction<AppointmentRequest | null>,
+    ) => {
       state.lastSubmittedAppointment = action.payload;
     },
     clearAppointmentSession: (state) => {
-      state.preselectedCategory = '';
-      state.preselectedLawyer = '';
+      state.preselectedCategory = "";
+      state.preselectedLawyer = "";
       state.lastSubmittedAppointment = null;
     },
   },

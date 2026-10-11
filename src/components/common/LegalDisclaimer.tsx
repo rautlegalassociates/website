@@ -1,6 +1,6 @@
-import React from 'react';
-import { Info } from 'lucide-react';
-import { FIRM_DETAILS } from '../../data/firm';
+import React from "react";
+import { Info } from "lucide-react";
+import { FIRM_DETAILS } from "../../data/firm";
 
 interface LegalDisclaimerProps {
   customText?: string;
@@ -9,7 +9,7 @@ interface LegalDisclaimerProps {
 
 export const LegalDisclaimer: React.FC<LegalDisclaimerProps> = ({
   customText,
-  className = '',
+  className = "",
 }) => {
   return (
     <div

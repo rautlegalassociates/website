@@ -1,38 +1,31 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from "react";
 import {
   MessageSquare,
   Search,
-  Filter,
   Download,
   Mail,
   Phone,
-  Clock,
-  CheckCircle2,
   AlertCircle,
   Trash2,
-  ExternalLink,
   MessageCircle,
   X,
-  User,
-  ShieldCheck,
-  Send,
-} from 'lucide-react';
+} from "lucide-react";
 import {
   getAllInquiries,
   updateInquiryStatus,
   deleteInquiry,
   DashboardInquiry,
   InquiryStatus,
-} from '../../services/dashboardStorage';
-import { FIRM_DETAILS } from '../../data/firm';
+} from "../../services/dashboardStorage";
 
 export const DashboardContactsPage: React.FC = () => {
   const [inquiries, setInquiries] = useState<DashboardInquiry[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [selectedInquiry, setSelectedInquiry] = useState<DashboardInquiry | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [selectedInquiry, setSelectedInquiry] =
+    useState<DashboardInquiry | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-  const [internalNotesDraft, setInternalNotesDraft] = useState('');
+  const [internalNotesDraft, setInternalNotesDraft] = useState("");
 
   const loadInquiries = () => {
     setInquiries(getAllInquiries());
@@ -41,8 +34,8 @@ export const DashboardContactsPage: React.FC = () => {
   useEffect(() => {
     loadInquiries();
     const handleStorage = () => loadInquiries();
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
   }, []);
 
   const filteredInquiries = useMemo(() => {
@@ -55,7 +48,8 @@ export const DashboardContactsPage: React.FC = () => {
         inq.subject.toLowerCase().includes(q) ||
         inq.message.toLowerCase().includes(q);
 
-      const matchesStatus = statusFilter === 'all' || inq.status === statusFilter;
+      const matchesStatus =
+        statusFilter === "all" || inq.status === statusFilter;
 
       return matchesSearch && matchesStatus;
     });
@@ -65,19 +59,29 @@ export const DashboardContactsPage: React.FC = () => {
     updateInquiryStatus(id, newStatus);
     loadInquiries();
     if (selectedInquiry && selectedInquiry.id === id) {
-      setSelectedInquiry((prev) => (prev ? { ...prev, status: newStatus } : null));
+      setSelectedInquiry((prev) =>
+        prev ? { ...prev, status: newStatus } : null,
+      );
     }
   };
 
   const handleSaveInternalNotes = () => {
     if (!selectedInquiry) return;
-    updateInquiryStatus(selectedInquiry.id, selectedInquiry.status, internalNotesDraft);
+    updateInquiryStatus(
+      selectedInquiry.id,
+      selectedInquiry.status,
+      internalNotesDraft,
+    );
     loadInquiries();
-    setSelectedInquiry((prev) => (prev ? { ...prev, internalNotes: internalNotesDraft } : null));
+    setSelectedInquiry((prev) =>
+      prev ? { ...prev, internalNotes: internalNotesDraft } : null,
+    );
   };
 
   const handleDelete = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this client inquiry?')) {
+    if (
+      window.confirm("Are you sure you want to delete this client inquiry?")
+    ) {
       deleteInquiry(id);
       loadInquiries();
       if (selectedInquiry?.id === id) {
@@ -88,7 +92,15 @@ export const DashboardContactsPage: React.FC = () => {
 
   // Export to CSV
   const handleExportCSV = () => {
-    const headers = ['ID', 'Client Name', 'Contact Info', 'Subject', 'Received Date', 'Status', 'Message'];
+    const headers = [
+      "ID",
+      "Client Name",
+      "Contact Info",
+      "Subject",
+      "Received Date",
+      "Status",
+      "Message",
+    ];
     const rows = filteredInquiries.map((i) => [
       `"${i.id}"`,
       `"${i.name.replace(/"/g, '""')}"`,
@@ -99,11 +111,16 @@ export const DashboardContactsPage: React.FC = () => {
       `"${i.message.replace(/"/g, '""')}"`,
     ]);
 
-    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
     const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `Raut_Legal_Inquiries_${new Date().toISOString().split('T')[0]}.csv`);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute(
+      "download",
+      `Raut_Legal_Inquiries_${new Date().toISOString().split("T")[0]}.csv`,
+    );
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -122,7 +139,8 @@ export const DashboardContactsPage: React.FC = () => {
             Client Queries &amp; Inquiries
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            Review incoming legal queries from the website contact form and client inquiries.
+            Review incoming legal queries from the website contact form and
+            client inquiries.
           </p>
         </div>
 
@@ -170,15 +188,19 @@ export const DashboardContactsPage: React.FC = () => {
         {/* Counter Summary */}
         <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 text-xs text-slate-500">
           <div>
-            Showing <strong className="text-slate-800">{filteredInquiries.length}</strong> of{' '}
-            <strong className="text-slate-800">{inquiries.length}</strong> total inquiries
+            Showing{" "}
+            <strong className="text-slate-800">
+              {filteredInquiries.length}
+            </strong>{" "}
+            of <strong className="text-slate-800">{inquiries.length}</strong>{" "}
+            total inquiries
           </div>
 
-          {(searchQuery || statusFilter !== 'all') && (
+          {(searchQuery || statusFilter !== "all") && (
             <button
               onClick={() => {
-                setSearchQuery('');
-                setStatusFilter('all');
+                setSearchQuery("");
+                setStatusFilter("all");
               }}
               className="text-xs text-[#B38E51] hover:underline font-semibold cursor-pointer"
             >
@@ -197,19 +219,20 @@ export const DashboardContactsPage: React.FC = () => {
               No Client Inquiries Found
             </h3>
             <p className="text-xs text-slate-500 max-w-sm mx-auto">
-              No messages matched your search query or filter. Incoming messages from `/contact` will appear here.
+              No messages matched your search query or filter. Incoming messages
+              from `/contact` will appear here.
             </p>
           </div>
         ) : (
           filteredInquiries.map((inq) => {
-            const isEmail = inq.emailOrPhone.includes('@');
+            const isEmail = inq.emailOrPhone.includes("@");
             return (
               <div
                 key={inq.id}
                 className={`bg-white rounded-sm border p-5 transition-all hover:shadow-xs ${
-                  inq.status === 'unread'
-                    ? 'border-rose-300 bg-gradient-to-r from-rose-50/20 via-white to-white'
-                    : 'border-[#E2DBCD]'
+                  inq.status === "unread"
+                    ? "border-rose-300 bg-gradient-to-r from-rose-50/20 via-white to-white"
+                    : "border-[#E2DBCD]"
                 }`}
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
@@ -220,16 +243,22 @@ export const DashboardContactsPage: React.FC = () => {
                     <div>
                       <div className="font-semibold text-slate-900 text-sm flex items-center gap-2">
                         <span>{inq.name}</span>
-                        {inq.status === 'unread' && (
-                          <span className="w-2 h-2 rounded-full bg-rose-600 inline-block" title="Unread" />
+                        {inq.status === "unread" && (
+                          <span
+                            className="w-2 h-2 rounded-full bg-rose-600 inline-block"
+                            title="Unread"
+                          />
                         )}
                       </div>
                       <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-2">
                         <span>{inq.emailOrPhone}</span>
                         <span>·</span>
                         <span className="text-slate-400">
-                          {new Date(inq.receivedAt).toLocaleDateString()} at{' '}
-                          {new Date(inq.receivedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          {new Date(inq.receivedAt).toLocaleDateString()} at{" "}
+                          {new Date(inq.receivedAt).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
                         </span>
                       </div>
                     </div>
@@ -239,13 +268,18 @@ export const DashboardContactsPage: React.FC = () => {
                   <div className="flex items-center gap-2">
                     <select
                       value={inq.status}
-                      onChange={(e) => handleStatusChange(inq.id, e.target.value as InquiryStatus)}
+                      onChange={(e) =>
+                        handleStatusChange(
+                          inq.id,
+                          e.target.value as InquiryStatus,
+                        )
+                      }
                       className={`text-[11px] font-semibold uppercase tracking-wider py-1 px-2.5 rounded-xs border focus:outline-none cursor-pointer ${
-                        inq.status === 'unread'
-                          ? 'bg-rose-50 text-rose-800 border-rose-300'
-                          : inq.status === 'in-review'
-                          ? 'bg-amber-50 text-amber-800 border-amber-300'
-                          : 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                        inq.status === "unread"
+                          ? "bg-rose-50 text-rose-800 border-rose-300"
+                          : inq.status === "in-review"
+                            ? "bg-amber-50 text-amber-800 border-amber-300"
+                            : "bg-emerald-50 text-emerald-800 border-emerald-300"
                       }`}
                     >
                       <option value="unread">Unread / New</option>
@@ -274,7 +308,8 @@ export const DashboardContactsPage: React.FC = () => {
 
                   {inq.internalNotes && (
                     <div className="mt-3 p-2.5 bg-amber-50/70 border border-amber-200 rounded-xs text-[11px] text-amber-900">
-                      <strong>Internal Advocate Remarks:</strong> {inq.internalNotes}
+                      <strong>Internal Advocate Remarks:</strong>{" "}
+                      {inq.internalNotes}
                     </div>
                   )}
                 </div>
@@ -300,7 +335,7 @@ export const DashboardContactsPage: React.FC = () => {
                           <span>Call Phone</span>
                         </a>
                         <a
-                          href={`https://wa.me/${inq.emailOrPhone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Namaste ${inq.name}, this is Raut Legal Associates replying to your legal query.`)}`}
+                          href={`https://wa.me/${inq.emailOrPhone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Namaste ${inq.name}, this is Raut Legal Associates replying to your legal query.`)}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="px-3 py-1.5 bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-xs font-semibold flex items-center gap-1.5 transition-colors"
@@ -316,7 +351,7 @@ export const DashboardContactsPage: React.FC = () => {
                     <button
                       onClick={() => {
                         setSelectedInquiry(inq);
-                        setInternalNotesDraft(inq.internalNotes || '');
+                        setInternalNotesDraft(inq.internalNotes || "");
                         setIsDetailModalOpen(true);
                       }}
                       className="px-3 py-1.5 bg-white border border-slate-300 hover:border-[#C7A56A] text-slate-700 hover:text-[#101C2C] rounded-xs font-semibold transition-colors cursor-pointer"
@@ -355,16 +390,28 @@ export const DashboardContactsPage: React.FC = () => {
             <div className="p-6 space-y-5 text-xs text-slate-700">
               <div className="bg-[#FAF8F5] p-3.5 rounded-sm border border-slate-200 space-y-1.5">
                 <div>
-                  <span className="text-[11px] text-slate-500 font-semibold uppercase">Contact: </span>
-                  <strong className="text-slate-900">{selectedInquiry.emailOrPhone}</strong>
+                  <span className="text-[11px] text-slate-500 font-semibold uppercase">
+                    Contact:{" "}
+                  </span>
+                  <strong className="text-slate-900">
+                    {selectedInquiry.emailOrPhone}
+                  </strong>
                 </div>
                 <div>
-                  <span className="text-[11px] text-slate-500 font-semibold uppercase">Received: </span>
-                  <span className="text-slate-800">{new Date(selectedInquiry.receivedAt).toLocaleString()}</span>
+                  <span className="text-[11px] text-slate-500 font-semibold uppercase">
+                    Received:{" "}
+                  </span>
+                  <span className="text-slate-800">
+                    {new Date(selectedInquiry.receivedAt).toLocaleString()}
+                  </span>
                 </div>
                 <div>
-                  <span className="text-[11px] text-slate-500 font-semibold uppercase">Subject: </span>
-                  <strong className="text-slate-900">{selectedInquiry.subject}</strong>
+                  <span className="text-[11px] text-slate-500 font-semibold uppercase">
+                    Subject:{" "}
+                  </span>
+                  <strong className="text-slate-900">
+                    {selectedInquiry.subject}
+                  </strong>
                 </div>
               </div>
 
@@ -380,7 +427,9 @@ export const DashboardContactsPage: React.FC = () => {
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-slate-800 mb-1 flex items-center justify-between">
                   <span>Advocate Internal Remarks</span>
-                  <span className="text-[11px] text-slate-400 font-normal">Confidential chamber use</span>
+                  <span className="text-[11px] text-slate-400 font-normal">
+                    Confidential chamber use
+                  </span>
                 </label>
                 <textarea
                   rows={3}
@@ -401,7 +450,12 @@ export const DashboardContactsPage: React.FC = () => {
               <div className="pt-3 border-t border-slate-200 flex items-center justify-between">
                 <select
                   value={selectedInquiry.status}
-                  onChange={(e) => handleStatusChange(selectedInquiry.id, e.target.value as InquiryStatus)}
+                  onChange={(e) =>
+                    handleStatusChange(
+                      selectedInquiry.id,
+                      e.target.value as InquiryStatus,
+                    )
+                  }
                   className="text-xs font-semibold py-1.5 px-3 rounded-xs border border-slate-300"
                 >
                   <option value="unread">Status: Unread</option>

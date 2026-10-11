@@ -1,24 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   CalendarCheck,
   Clock,
   MessageSquare,
   AlertCircle,
   CheckCircle2,
-  DollarSign,
   ArrowRight,
-  TrendingUp,
   MapPin,
   Laptop,
   Phone,
-  Mail,
-  User,
-  Plus,
-  FileSpreadsheet,
-  RefreshCw,
   Scale,
-} from 'lucide-react';
+} from "lucide-react";
 import {
   getAllAppointments,
   getAllInquiries,
@@ -27,8 +20,8 @@ import {
   DashboardInquiry,
   updateAppointmentStatus,
   updateInquiryStatus,
-} from '../../services/dashboardStorage';
-import { FIRM_DETAILS } from '../../data/firm';
+} from "../../services/dashboardStorage";
+import { FIRM_DETAILS } from "../../data/firm";
 
 export const DashboardOverviewPage: React.FC = () => {
   const session = getActiveSession();
@@ -43,27 +36,41 @@ export const DashboardOverviewPage: React.FC = () => {
   useEffect(() => {
     loadData();
     const handleStorage = () => loadData();
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
   }, []);
 
   // Compute metrics
   const totalAppointments = appointments.length;
-  const pendingAppointments = appointments.filter((a) => a.status === 'pending');
-  const confirmedAppointments = appointments.filter((a) => a.status === 'confirmed');
-  const completedAppointments = appointments.filter((a) => a.status === 'completed');
-  const unreadInquiries = inquiries.filter((i) => i.status === 'unread');
+  const pendingAppointments = appointments.filter(
+    (a) => a.status === "pending",
+  );
+  const confirmedAppointments = appointments.filter(
+    (a) => a.status === "confirmed",
+  );
+  const completedAppointments = appointments.filter(
+    (a) => a.status === "completed",
+  );
+  const unreadInquiries = inquiries.filter((i) => i.status === "unread");
 
   // Revenue calculation: NPR 500 per completed or confirmed consultation
-  const totalFeeCollected = (confirmedAppointments.length + completedAppointments.length) * 500;
+  const totalFeeCollected =
+    (confirmedAppointments.length + completedAppointments.length) * 500;
 
-  const handleQuickStatusChange = (refCode: string, newStatus: 'confirmed' | 'completed' | 'cancelled') => {
+  const handleQuickStatusChange = (
+    refCode: string,
+    newStatus: "confirmed" | "completed" | "cancelled",
+  ) => {
     updateAppointmentStatus(refCode, newStatus);
     loadData();
   };
 
   const handleMarkInquiryReplied = (id: string) => {
-    updateInquiryStatus(id, 'resolved', 'Marked as resolved from overview dashboard');
+    updateInquiryStatus(
+      id,
+      "resolved",
+      "Marked as resolved from overview dashboard",
+    );
     loadData();
   };
 
@@ -78,13 +85,19 @@ export const DashboardOverviewPage: React.FC = () => {
             <span>Chamber Management Dashboard · Kathmandu, Nepal</span>
           </div>
           <h1 className="font-serif text-2xl sm:text-3xl font-bold text-white tracking-tight">
-            Namaste, {session?.name || 'Adv. Sahil Raut Gaddi'}
+            Namaste, {session?.name || "Adv. Sahil Raut Gaddi"}
           </h1>
           <p className="text-xs text-slate-300 mt-1 max-w-xl leading-relaxed">
-            Here is the current chamber schedule and incoming client inquiries for{' '}
-            <strong>Raut Legal Associates</strong>. You have{' '}
-            <strong className="text-amber-300">{pendingAppointments.length} pending appointment requests</strong> and{' '}
-            <strong className="text-rose-300">{unreadInquiries.length} unread queries</strong> awaiting review.
+            Here is the current chamber schedule and incoming client inquiries
+            for <strong>Raut Legal Associates</strong>. You have{" "}
+            <strong className="text-amber-300">
+              {pendingAppointments.length} pending appointment requests
+            </strong>{" "}
+            and{" "}
+            <strong className="text-rose-300">
+              {unreadInquiries.length} unread queries
+            </strong>{" "}
+            awaiting review.
           </p>
         </div>
 
@@ -111,12 +124,16 @@ export const DashboardOverviewPage: React.FC = () => {
         {/* Card 1: Total Appointments */}
         <div className="bg-white p-5 rounded-sm border border-[#E2DBCD] shadow-xs">
           <div className="flex items-center justify-between text-slate-500 mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider">All Bookings</span>
+            <span className="text-xs font-semibold uppercase tracking-wider">
+              All Bookings
+            </span>
             <div className="p-2 bg-blue-50 text-blue-700 rounded-sm">
               <CalendarCheck className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold font-serif text-[#101C2C]">{totalAppointments}</div>
+          <div className="text-2xl font-bold font-serif text-[#101C2C]">
+            {totalAppointments}
+          </div>
           <div className="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
             <span>Website &amp; Chatbot submissions</span>
           </div>
@@ -125,12 +142,16 @@ export const DashboardOverviewPage: React.FC = () => {
         {/* Card 2: Pending Review */}
         <div className="bg-white p-5 rounded-sm border border-amber-300/80 shadow-xs bg-gradient-to-b from-amber-50/40 to-white">
           <div className="flex items-center justify-between text-amber-800 mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider">Pending Review</span>
+            <span className="text-xs font-semibold uppercase tracking-wider">
+              Pending Review
+            </span>
             <div className="p-2 bg-amber-100 text-amber-700 rounded-sm">
               <Clock className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold font-serif text-amber-900">{pendingAppointments.length}</div>
+          <div className="text-2xl font-bold font-serif text-amber-900">
+            {pendingAppointments.length}
+          </div>
           <div className="text-[11px] text-amber-700 mt-1 flex items-center gap-1">
             <AlertCircle className="w-3 h-3" />
             <span>Requires schedule confirmation</span>
@@ -140,12 +161,16 @@ export const DashboardOverviewPage: React.FC = () => {
         {/* Card 3: Confirmed / Scheduled */}
         <div className="bg-white p-5 rounded-sm border border-emerald-300/80 shadow-xs bg-gradient-to-b from-emerald-50/40 to-white">
           <div className="flex items-center justify-between text-emerald-800 mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider">Confirmed</span>
+            <span className="text-xs font-semibold uppercase tracking-wider">
+              Confirmed
+            </span>
             <div className="p-2 bg-emerald-100 text-emerald-700 rounded-sm">
               <CheckCircle2 className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold font-serif text-emerald-900">{confirmedAppointments.length}</div>
+          <div className="text-2xl font-bold font-serif text-emerald-900">
+            {confirmedAppointments.length}
+          </div>
           <div className="text-[11px] text-emerald-700 mt-1 flex items-center gap-1">
             <span>Client notified by coordinator</span>
           </div>
@@ -154,12 +179,16 @@ export const DashboardOverviewPage: React.FC = () => {
         {/* Card 4: Unread Inquiries */}
         <div className="bg-white p-5 rounded-sm border border-rose-300/80 shadow-xs bg-gradient-to-b from-rose-50/40 to-white">
           <div className="flex items-center justify-between text-rose-800 mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider">Unread Queries</span>
+            <span className="text-xs font-semibold uppercase tracking-wider">
+              Unread Queries
+            </span>
             <div className="p-2 bg-rose-100 text-rose-700 rounded-sm">
               <MessageSquare className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold font-serif text-rose-900">{unreadInquiries.length}</div>
+          <div className="text-2xl font-bold font-serif text-rose-900">
+            {unreadInquiries.length}
+          </div>
           <div className="text-[11px] text-rose-700 mt-1 flex items-center gap-1">
             <span>{inquiries.length} total client messages</span>
           </div>
@@ -168,7 +197,9 @@ export const DashboardOverviewPage: React.FC = () => {
         {/* Card 5: Estimated Consultation Fees */}
         <div className="bg-white p-5 rounded-sm border border-[#C7A56A]/60 shadow-xs bg-gradient-to-b from-[#FAF8F5] to-white">
           <div className="flex items-center justify-between text-slate-700 mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#A07A3B]">Assessment Fees</span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#A07A3B]">
+              Assessment Fees
+            </span>
             <div className="p-2 bg-amber-100 text-amber-800 rounded-sm font-bold text-xs">
               NPR
             </div>
@@ -204,20 +235,27 @@ export const DashboardOverviewPage: React.FC = () => {
 
           <div className="divide-y divide-slate-100">
             {appointments.slice(0, 4).map((apt) => (
-              <div key={apt.id} className="p-4 sm:p-5 hover:bg-slate-50/70 transition-colors">
+              <div
+                key={apt.id}
+                className="p-4 sm:p-5 hover:bg-slate-50/70 transition-colors"
+              >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-2">
                   <div>
                     <div className="flex items-center gap-2.5">
-                      <span className="font-semibold text-slate-900 text-sm">{apt.fullName}</span>
+                      <span className="font-semibold text-slate-900 text-sm">
+                        {apt.fullName}
+                      </span>
                       <span className="font-mono text-[11px] font-semibold px-2 py-0.5 rounded-xs bg-[#EDE8DD] text-[#101C2C]">
                         {apt.referenceCode}
                       </span>
                     </div>
                     <div className="text-xs text-slate-500 mt-0.5 flex flex-wrap items-center gap-2">
-                      <span className="text-[#A07A3B] font-medium">{apt.serviceCategory}</span>
+                      <span className="text-[#A07A3B] font-medium">
+                        {apt.serviceCategory}
+                      </span>
                       <span>·</span>
                       <span className="flex items-center gap-1">
-                        {apt.consultationMode === 'in-person' ? (
+                        {apt.consultationMode === "in-person" ? (
                           <>
                             <MapPin className="w-3 h-3 text-emerald-600" />
                             <span>In-Person Chamber</span>
@@ -236,13 +274,13 @@ export const DashboardOverviewPage: React.FC = () => {
                   <div>
                     <span
                       className={`inline-flex items-center px-2.5 py-1 rounded-xs text-[11px] font-semibold uppercase tracking-wider ${
-                        apt.status === 'pending'
-                          ? 'bg-amber-100 text-amber-800 border border-amber-300'
-                          : apt.status === 'confirmed'
-                          ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                          : apt.status === 'completed'
-                          ? 'bg-blue-100 text-blue-800 border border-blue-300'
-                          : 'bg-slate-100 text-slate-700 border border-slate-300'
+                        apt.status === "pending"
+                          ? "bg-amber-100 text-amber-800 border border-amber-300"
+                          : apt.status === "confirmed"
+                            ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
+                            : apt.status === "completed"
+                              ? "bg-blue-100 text-blue-800 border border-blue-300"
+                              : "bg-slate-100 text-slate-700 border border-slate-300"
                       }`}
                     >
                       {apt.status}
@@ -255,7 +293,9 @@ export const DashboardOverviewPage: React.FC = () => {
                   <div className="flex items-center gap-4">
                     <span className="flex items-center gap-1.5 font-medium text-slate-800">
                       <Clock className="w-3.5 h-3.5 text-slate-400" />
-                      <span>{apt.preferredDate} at {apt.preferredTime}</span>
+                      <span>
+                        {apt.preferredDate} at {apt.preferredTime}
+                      </span>
                     </span>
                     <a
                       href={`tel:${apt.phone}`}
@@ -268,17 +308,27 @@ export const DashboardOverviewPage: React.FC = () => {
 
                   {/* Quick Action */}
                   <div className="flex items-center gap-2">
-                    {apt.status === 'pending' && (
+                    {apt.status === "pending" && (
                       <button
-                        onClick={() => handleQuickStatusChange(apt.referenceCode, 'confirmed')}
+                        onClick={() =>
+                          handleQuickStatusChange(
+                            apt.referenceCode,
+                            "confirmed",
+                          )
+                        }
                         className="px-2.5 py-1 text-[11px] font-semibold bg-emerald-700 hover:bg-emerald-800 text-white rounded-xs transition-colors cursor-pointer"
                       >
                         Confirm
                       </button>
                     )}
-                    {apt.status === 'confirmed' && (
+                    {apt.status === "confirmed" && (
                       <button
-                        onClick={() => handleQuickStatusChange(apt.referenceCode, 'completed')}
+                        onClick={() =>
+                          handleQuickStatusChange(
+                            apt.referenceCode,
+                            "completed",
+                          )
+                        }
                         className="px-2.5 py-1 text-[11px] font-semibold bg-[#101C2C] hover:bg-[#17283F] text-white rounded-xs transition-colors cursor-pointer"
                       >
                         Mark Completed
@@ -320,19 +370,26 @@ export const DashboardOverviewPage: React.FC = () => {
 
           <div className="divide-y divide-slate-100">
             {inquiries.slice(0, 4).map((inq) => (
-              <div key={inq.id} className="p-4 sm:p-5 hover:bg-slate-50/70 transition-colors">
+              <div
+                key={inq.id}
+                className="p-4 sm:p-5 hover:bg-slate-50/70 transition-colors"
+              >
                 <div className="flex items-start justify-between gap-2 mb-1.5">
                   <div>
-                    <h3 className="font-semibold text-slate-900 text-xs">{inq.name}</h3>
-                    <div className="text-[11px] text-slate-500">{inq.emailOrPhone}</div>
+                    <h3 className="font-semibold text-slate-900 text-xs">
+                      {inq.name}
+                    </h3>
+                    <div className="text-[11px] text-slate-500">
+                      {inq.emailOrPhone}
+                    </div>
                   </div>
                   <span
                     className={`inline-flex items-center px-2 py-0.5 rounded-xs text-[10px] font-semibold uppercase tracking-wider ${
-                      inq.status === 'unread'
-                        ? 'bg-rose-100 text-rose-800 border border-rose-300'
-                        : inq.status === 'in-review'
-                        ? 'bg-amber-100 text-amber-800 border border-amber-300'
-                        : 'bg-slate-100 text-slate-700 border border-slate-300'
+                      inq.status === "unread"
+                        ? "bg-rose-100 text-rose-800 border border-rose-300"
+                        : inq.status === "in-review"
+                          ? "bg-amber-100 text-amber-800 border border-amber-300"
+                          : "bg-slate-100 text-slate-700 border border-slate-300"
                     }`}
                   >
                     {inq.status}
@@ -351,7 +408,7 @@ export const DashboardOverviewPage: React.FC = () => {
                     {new Date(inq.receivedAt).toLocaleDateString()}
                   </span>
                   <div className="flex items-center gap-2">
-                    {inq.status !== 'resolved' && (
+                    {inq.status !== "resolved" && (
                       <button
                         onClick={() => handleMarkInquiryReplied(inq.id)}
                         className="text-xs font-semibold text-emerald-700 hover:text-emerald-900"
@@ -390,8 +447,13 @@ export const DashboardOverviewPage: React.FC = () => {
             <span>Standard Chamber Working Schedule (Nepal Time)</span>
           </div>
           <p className="text-slate-600 leading-relaxed max-w-2xl">
-            Chamber doors in <strong>Basundhara-5, Tokha, Kathmandu</strong> are open{' '}
-            <strong className="text-slate-900">{FIRM_DETAILS.officeHours}</strong>. In-person client meetings must adhere to pre-booked slots to maintain document confidentiality.
+            Chamber doors in <strong>Basundhara-5, Tokha, Kathmandu</strong> are
+            open{" "}
+            <strong className="text-slate-900">
+              {FIRM_DETAILS.officeHours}
+            </strong>
+            . In-person client meetings must adhere to pre-booked slots to
+            maintain document confidentiality.
           </p>
         </div>
 

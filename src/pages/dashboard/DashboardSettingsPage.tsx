@@ -1,24 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Settings,
-  Scale,
-  ShieldCheck,
   Building2,
-  Clock,
-  Phone,
-  Mail,
   User,
   RotateCcw,
   CheckCircle2,
   AlertTriangle,
-} from 'lucide-react';
+} from "lucide-react";
 import {
   getActiveSession,
   loginStaff,
   resetChamberData,
   DEMO_STAFF_USERS,
-} from '../../services/dashboardStorage';
-import { FIRM_DETAILS } from '../../data/firm';
+} from "../../services/dashboardStorage";
+import { FIRM_DETAILS } from "../../data/firm";
 
 export const DashboardSettingsPage: React.FC = () => {
   const [activeSession, setActiveSession] = useState(getActiveSession());
@@ -31,7 +26,11 @@ export const DashboardSettingsPage: React.FC = () => {
   };
 
   const handleResetData = () => {
-    if (window.confirm('Reset all appointments and inquiries to original demo records? Any custom test entries will be replaced.')) {
+    if (
+      window.confirm(
+        "Reset all appointments and inquiries to original demo records? Any custom test entries will be replaced.",
+      )
+    ) {
       resetChamberData();
       setResetSuccess(true);
       setTimeout(() => setResetSuccess(false), 3000);
@@ -50,7 +49,8 @@ export const DashboardSettingsPage: React.FC = () => {
           Chamber Configuration &amp; Profile
         </h1>
         <p className="text-xs text-slate-500 mt-1">
-          Chamber credentials, working hours, consultation fee policies, and data management.
+          Chamber credentials, working hours, consultation fee policies, and
+          data management.
         </p>
       </div>
 
@@ -71,17 +71,20 @@ export const DashboardSettingsPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-[#FAF8F5] rounded-sm border border-slate-200">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-[#101C2C] border-2 border-[#C7A56A] flex items-center justify-center text-[#C7A56A] font-serif font-bold text-base">
-              {activeSession?.name ? activeSession.name.slice(0, 2).toUpperCase() : 'SR'}
+              {activeSession?.name
+                ? activeSession.name.slice(0, 2).toUpperCase()
+                : "SR"}
             </div>
             <div>
               <div className="font-bold text-slate-900 text-sm">
-                {activeSession?.name || 'Adv. Sahil Raut Gaddi'}
+                {activeSession?.name || "Adv. Sahil Raut Gaddi"}
               </div>
               <div className="text-xs text-[#A07A3B] font-medium">
-                {activeSession?.role || 'Senior Advocate'} · {activeSession?.chamber}
+                {activeSession?.role || "Senior Advocate"} ·{" "}
+                {activeSession?.chamber}
               </div>
               <div className="text-[11px] text-slate-500 mt-0.5">
-                {activeSession?.email || 'sahil@rautlegalassociates.com'}
+                {activeSession?.email || "sahil@rautlegalassociates.com"}
               </div>
             </div>
           </div>
@@ -93,11 +96,11 @@ export const DashboardSettingsPage: React.FC = () => {
                 onClick={() => handleSwitchUser(idx)}
                 className={`px-3 py-1.5 text-xs font-semibold rounded-xs border transition-colors cursor-pointer ${
                   activeSession?.email === user.email
-                    ? 'bg-[#101C2C] text-[#C7A56A] border-[#C7A56A]'
-                    : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
+                    ? "bg-[#101C2C] text-[#C7A56A] border-[#C7A56A]"
+                    : "bg-white text-slate-700 border-slate-300 hover:bg-slate-50"
                 }`}
               >
-                Switch to {user.name.split(' ')[1] || user.name}
+                Switch to {user.name.split(" ")[1] || user.name}
               </button>
             ))}
           </div>
@@ -113,27 +116,49 @@ export const DashboardSettingsPage: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-700">
           <div className="p-3.5 bg-[#FAF8F5] rounded-sm border border-slate-200">
-            <div className="text-slate-500 font-semibold uppercase text-[11px] mb-1">Chamber Office</div>
-            <div className="font-semibold text-slate-900">{FIRM_DETAILS.name}</div>
+            <div className="text-slate-500 font-semibold uppercase text-[11px] mb-1">
+              Chamber Office
+            </div>
+            <div className="font-semibold text-slate-900">
+              {FIRM_DETAILS.name}
+            </div>
             <div className="text-slate-600 mt-0.5">{FIRM_DETAILS.address}</div>
           </div>
 
           <div className="p-3.5 bg-[#FAF8F5] rounded-sm border border-slate-200">
-            <div className="text-slate-500 font-semibold uppercase text-[11px] mb-1">Standard Chamber Hours</div>
-            <div className="font-semibold text-slate-900">{FIRM_DETAILS.officeHours}</div>
-            <div className="text-slate-600 mt-0.5">Saturday: Closed for court preparation</div>
+            <div className="text-slate-500 font-semibold uppercase text-[11px] mb-1">
+              Standard Chamber Hours
+            </div>
+            <div className="font-semibold text-slate-900">
+              {FIRM_DETAILS.officeHours}
+            </div>
+            <div className="text-slate-600 mt-0.5">
+              Saturday: Closed for court preparation
+            </div>
           </div>
 
           <div className="p-3.5 bg-[#FAF8F5] rounded-sm border border-slate-200">
-            <div className="text-slate-500 font-semibold uppercase text-[11px] mb-1">Official Registry Phone</div>
-            <div className="font-semibold text-slate-900">{FIRM_DETAILS.phoneDisplay}</div>
-            <div className="text-slate-600 mt-0.5">WhatsApp enabled for rapid client queries</div>
+            <div className="text-slate-500 font-semibold uppercase text-[11px] mb-1">
+              Official Registry Phone
+            </div>
+            <div className="font-semibold text-slate-900">
+              {FIRM_DETAILS.phoneDisplay}
+            </div>
+            <div className="text-slate-600 mt-0.5">
+              WhatsApp enabled for rapid client queries
+            </div>
           </div>
 
           <div className="p-3.5 bg-[#FAF8F5] rounded-sm border border-slate-200">
-            <div className="text-slate-500 font-semibold uppercase text-[11px] mb-1">Initial Consultation Fee</div>
-            <div className="font-semibold text-[#101C2C]">NPR {FIRM_DETAILS.consultationFeeNPR}</div>
-            <div className="text-slate-600 mt-0.5">Covers 30–45 min matter analysis &amp; document scrutiny</div>
+            <div className="text-slate-500 font-semibold uppercase text-[11px] mb-1">
+              Initial Consultation Fee
+            </div>
+            <div className="font-semibold text-[#101C2C]">
+              NPR {FIRM_DETAILS.consultationFeeNPR}
+            </div>
+            <div className="text-slate-600 mt-0.5">
+              Covers 30–45 min matter analysis &amp; document scrutiny
+            </div>
           </div>
         </div>
       </div>
@@ -152,7 +177,9 @@ export const DashboardSettingsPage: React.FC = () => {
               <span>Reset Demo Appointments &amp; Inquiries</span>
             </div>
             <p className="text-slate-600 leading-relaxed text-[11px]">
-              Restores original sample consultation requests and client messages (Company registration, Tokha land dispute, cheque bounce defense, etc.).
+              Restores original sample consultation requests and client messages
+              (Company registration, Tokha land dispute, cheque bounce defense,
+              etc.).
             </p>
           </div>
 

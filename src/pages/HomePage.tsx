@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 import {
   Scale,
   Building2,
@@ -16,21 +16,17 @@ import {
   ArrowRight,
   CheckCircle2,
   Calendar,
-  Clock,
-  Phone,
-  MapPin,
-  BookOpen,
-} from 'lucide-react';
-import { FIRM_DETAILS, CORE_VALUES, CONSULTATION_STEPS } from '../data/firm';
-import { PRACTICE_AREAS } from '../data/practiceAreas';
-import { LAWYERS } from '../data/lawyers';
-import { ARTICLES } from '../data/articles';
-import { SectionHeading } from '../components/common/SectionHeading';
-import { LawyerPlaceholderCard } from '../components/common/LawyerPlaceholderCard';
-import { ConsultationBanner } from '../components/common/ConsultationBanner';
-import { LegalDisclaimer } from '../components/common/LegalDisclaimer';
-import { SEOHead } from '../components/common/SEOHead';
-import { BrandLogo } from '../components/common/BrandLogo';
+} from "lucide-react";
+import { CORE_VALUES, CONSULTATION_STEPS } from "../data/firm";
+import { PRACTICE_AREAS } from "../data/practiceAreas";
+import { LAWYERS } from "../data/lawyers";
+import { ARTICLES } from "../data/articles";
+import { SectionHeading } from "../components/common/SectionHeading";
+import { LawyerPlaceholderCard } from "../components/common/LawyerPlaceholderCard";
+import { ConsultationBanner } from "../components/common/ConsultationBanner";
+import { LegalDisclaimer } from "../components/common/LegalDisclaimer";
+import { SEOHead } from "../components/common/SEOHead";
+import { BrandLogo } from "../components/common/BrandLogo";
 
 const iconMap: Record<string, React.ElementType> = {
   Building2,
@@ -55,46 +51,46 @@ export const HomePage: React.FC = () => {
         description="Trusted advocates in Kathmandu, Nepal. Corporate, civil, land & criminal defense counsel. Schedule consultation for NPR 500. Call +977 9706410516."
         canonicalPath="/"
         keywords={[
-          'law firm Kathmandu',
-          'lawyers in Nepal',
-          'Raut Legal Associates',
-          'advocate in Kathmandu',
-          'legal counsel Nepal',
-          'corporate law Nepal',
-          'civil litigation Nepal',
-          'Tokha law chamber',
-          'property dispute Nepal',
-          'NPR 500 consultation'
+          "law firm Kathmandu",
+          "lawyers in Nepal",
+          "Raut Legal Associates",
+          "advocate in Kathmandu",
+          "legal counsel Nepal",
+          "corporate law Nepal",
+          "civil litigation Nepal",
+          "Tokha law chamber",
+          "property dispute Nepal",
+          "NPR 500 consultation",
         ]}
         jsonLd={{
-          '@context': 'https://schema.org',
-          '@type': 'FAQPage',
-          'mainEntity': [
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
             {
-              '@type': 'Question',
-              'name': 'What is the initial consultation fee at Raut Legal Associates?',
-              'acceptedAnswer': {
-                '@type': 'Answer',
-                'text': 'The initial consultation fee is NPR 500 for a 30 to 45 minute structured legal assessment with a licensed advocate in Tokha, Kathmandu or online.'
-              }
+              "@type": "Question",
+              name: "What is the initial consultation fee at Raut Legal Associates?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "The initial consultation fee is NPR 500 for a 30 to 45 minute structured legal assessment with a licensed advocate in Tokha, Kathmandu or online.",
+              },
             },
             {
-              '@type': 'Question',
-              'name': 'Where is the chamber of Raut Legal Associates located?',
-              'acceptedAnswer': {
-                '@type': 'Answer',
-                'text': 'The office is situated at Basundhara-5, Tokha, Kathmandu, Nepal, easily accessible via Ring Road.'
-              }
+              "@type": "Question",
+              name: "Where is the chamber of Raut Legal Associates located?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "The office is situated at Basundhara-5, Tokha, Kathmandu, Nepal, easily accessible via Ring Road.",
+              },
             },
             {
-              '@type': 'Question',
-              'name': 'Does submitting an appointment request create an advocate-client relationship?',
-              'acceptedAnswer': {
-                '@type': 'Answer',
-                'text': 'No. Submitting an online request or paying the initial consultation fee does not create an advocate-client relationship until a formal written engagement agreement is executed.'
-              }
-            }
-          ]
+              "@type": "Question",
+              name: "Does submitting an appointment request create an advocate-client relationship?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "No. Submitting an online request or paying the initial consultation fee does not create an advocate-client relationship until a formal written engagement agreement is executed.",
+              },
+            },
+          ],
         }}
       />
       {/* 1. Hero Section */}
@@ -133,7 +129,9 @@ export const HomePage: React.FC = () => {
 
             {/* Supporting text */}
             <p className="mt-6 text-lg sm:text-xl text-[#E2DBCD] max-w-2xl leading-relaxed font-light">
-              Raut Legal Associates provides thoughtful legal guidance, strategic representation, and practical solutions for individuals, businesses, and institutions across Nepal.
+              Raut Legal Associates provides thoughtful legal guidance,
+              strategic representation, and practical solutions for individuals,
+              businesses, and institutions across Nepal.
             </p>
 
             {/* CTAs */}
@@ -206,7 +204,11 @@ export const HomePage: React.FC = () => {
             {/* Visual Column: Official Brand Emblem Showcase */}
             <div className="lg:col-span-5">
               <div className="bg-[#101C2C] text-[#F7F5F0] rounded-sm p-8 sm:p-10 border border-[#C7A56A]/40 relative shadow-sm flex flex-col items-center">
-                <BrandLogo variant="full" theme="dark" className="w-full mb-6" />
+                <BrandLogo
+                  variant="full"
+                  theme="dark"
+                  className="w-full mb-6"
+                />
 
                 <div className="w-full pt-6 border-t border-slate-800 space-y-2.5 text-xs text-slate-400">
                   <div className="flex items-center gap-2">
@@ -236,11 +238,20 @@ export const HomePage: React.FC = () => {
               </h2>
 
               <p className="mt-6 text-base text-slate-700 leading-relaxed">
-                At Raut Legal Associates, we believe that effective legal counsel begins with a deep, objective understanding of every client’s unique reality. Whether guiding an enterprise through corporate compliance in Nepal or defending individual rights in civil and criminal litigation, our advocates prioritize pragmatic strategy and ethical advocacy.
+                At Raut Legal Associates, we believe that effective legal
+                counsel begins with a deep, objective understanding of every
+                client’s unique reality. Whether guiding an enterprise through
+                corporate compliance in Nepal or defending individual rights in
+                civil and criminal litigation, our advocates prioritize
+                pragmatic strategy and ethical advocacy.
               </p>
 
               <p className="mt-4 text-sm text-slate-600 leading-relaxed">
-                We reject exaggerated claims and superficial promises. Instead, we offer clients meticulous preparation, rigorous statutory research, clear procedural explanations, and dedicated representation before Kathmandu courts and regulatory authorities.
+                We reject exaggerated claims and superficial promises. Instead,
+                we offer clients meticulous preparation, rigorous statutory
+                research, clear procedural explanations, and dedicated
+                representation before Kathmandu courts and regulatory
+                authorities.
               </p>
 
               <div className="mt-8 flex items-center gap-6">
@@ -371,7 +382,9 @@ export const HomePage: React.FC = () => {
 
           <div className="mt-12 text-center text-xs text-slate-500 max-w-2xl mx-auto">
             <p>
-              Note: Professional biographies and qualifications include editable placeholders subject to verified Bar records. We uphold transparency in all public-facing representation.
+              Note: Professional biographies and qualifications include editable
+              placeholders subject to verified Bar records. We uphold
+              transparency in all public-facing representation.
             </p>
           </div>
         </div>
@@ -427,7 +440,11 @@ export const HomePage: React.FC = () => {
               Our Professional Commitment to Every Client
             </h2>
             <p className="text-sm text-slate-600 leading-relaxed mb-10">
-              In accordance with legal ethics in Nepal, we do not publish unverified client testimonials or manufactured ratings. Instead, we hold ourselves accountable to rigorous standards of professional conduct, candid risk assessments, and respectful client confidentiality.
+              In accordance with legal ethics in Nepal, we do not publish
+              unverified client testimonials or manufactured ratings. Instead,
+              we hold ourselves accountable to rigorous standards of
+              professional conduct, candid risk assessments, and respectful
+              client confidentiality.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
@@ -436,7 +453,9 @@ export const HomePage: React.FC = () => {
                   Honest Assessment of Case Merits
                 </h4>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  We will never encourage unnecessary litigation if an out-of-court settlement or dispute mitigation better protects your interests and financial resources.
+                  We will never encourage unnecessary litigation if an
+                  out-of-court settlement or dispute mitigation better protects
+                  your interests and financial resources.
                 </p>
               </div>
 
@@ -445,7 +464,9 @@ export const HomePage: React.FC = () => {
                   Protection of Privileged Data
                 </h4>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Your communications, business deeds, and personal circumstances remain protected under advocate confidentiality laws in Nepal.
+                  Your communications, business deeds, and personal
+                  circumstances remain protected under advocate confidentiality
+                  laws in Nepal.
                 </p>
               </div>
             </div>
@@ -483,7 +504,9 @@ export const HomePage: React.FC = () => {
                 <div className="p-6">
                   {/* Category & Date - Unboxed metadata */}
                   <div className="flex items-center gap-2 text-[11px] text-slate-500 mb-3">
-                    <span className="text-[#B38E51] font-medium">{art.category}</span>
+                    <span className="text-[#B38E51] font-medium">
+                      {art.category}
+                    </span>
                     <span aria-hidden="true">·</span>
                     <span>{art.publishedDate}</span>
                   </div>
@@ -498,7 +521,9 @@ export const HomePage: React.FC = () => {
                 </div>
 
                 <div className="p-6 pt-0 border-t border-[#EDE8DD] mt-4 flex items-center justify-between">
-                  <span className="text-[11px] text-slate-400">{art.readTime}</span>
+                  <span className="text-[11px] text-slate-400">
+                    {art.readTime}
+                  </span>
                   <Link
                     to={`/resources/${art.slug}`}
                     className="text-xs font-semibold text-[#101C2C] group-hover:text-[#B38E51] inline-flex items-center gap-1 transition-colors"
@@ -525,7 +550,8 @@ export const HomePage: React.FC = () => {
           </h2>
 
           <p className="text-base text-slate-300 max-w-2xl mx-auto leading-relaxed mb-10">
-            Reach out to schedule your preliminary consultation or visit our Kathmandu chamber. Initial consultation fee is NPR 500.
+            Reach out to schedule your preliminary consultation or visit our
+            Kathmandu chamber. Initial consultation fee is NPR 500.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4">

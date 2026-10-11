@@ -1,9 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { MapPin, Phone, Mail, Clock, ShieldCheck, Scale, ArrowUpRight } from 'lucide-react';
-import { FIRM_DETAILS } from '../../data/firm';
-import { PRACTICE_AREAS } from '../../data/practiceAreas';
-import { BrandLogo } from './BrandLogo';
+import React from "react";
+import { Link } from "react-router-dom";
+import { MapPin, Phone, Mail, Clock, Scale, ArrowUpRight } from "lucide-react";
+import { FIRM_DETAILS } from "../../data/firm";
+import { PRACTICE_AREAS } from "../../data/practiceAreas";
+import { BrandLogo } from "./BrandLogo";
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -21,13 +21,19 @@ export const Footer: React.FC = () => {
             </Link>
 
             <p className="text-xs text-slate-400 leading-relaxed mt-2">
-              Providing strategic legal counsel, dispute resolution, contract formulation, and advocate representation in Kathmandu, Nepal. Grounded in integrity, thorough preparation, and client-centered diligence.
+              Providing strategic legal counsel, dispute resolution, contract
+              formulation, and advocate representation in Kathmandu, Nepal.
+              Grounded in integrity, thorough preparation, and client-centered
+              diligence.
             </p>
 
             <div className="mt-2 pt-3 border-t border-slate-800/80 text-xs text-slate-300">
               <div className="text-slate-400">Consultation Fee:</div>
               <div className="text-sm font-semibold text-[#C7A56A]">
-                NPR {FIRM_DETAILS.consultationFeeNPR} <span className="text-xs text-slate-400 font-normal">/ initial assessment</span>
+                NPR {FIRM_DETAILS.consultationFeeNPR}{" "}
+                <span className="text-xs text-slate-400 font-normal">
+                  / initial assessment
+                </span>
               </div>
             </div>
           </div>
@@ -67,37 +73,58 @@ export const Footer: React.FC = () => {
             </h3>
             <ul className="flex flex-col gap-2.5 text-xs text-slate-300">
               <li>
-                <Link to="/about" className="hover:text-[#C7A56A] transition-colors">
+                <Link
+                  to="/about"
+                  className="hover:text-[#C7A56A] transition-colors"
+                >
                   About the Firm
                 </Link>
               </li>
               <li>
-                <Link to="/team" className="hover:text-[#C7A56A] transition-colors">
+                <Link
+                  to="/team"
+                  className="hover:text-[#C7A56A] transition-colors"
+                >
                   Our Legal Team & Advocates
                 </Link>
               </li>
               <li>
-                <Link to="/resources" className="hover:text-[#C7A56A] transition-colors">
+                <Link
+                  to="/resources"
+                  className="hover:text-[#C7A56A] transition-colors"
+                >
                   Legal Articles & Guides
                 </Link>
               </li>
               <li>
-                <Link to="/appointments" className="hover:text-[#C7A56A] transition-colors">
+                <Link
+                  to="/appointments"
+                  className="hover:text-[#C7A56A] transition-colors"
+                >
                   Book Consultation (NPR 500)
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:text-[#C7A56A] transition-colors">
+                <Link
+                  to="/contact"
+                  className="hover:text-[#C7A56A] transition-colors"
+                >
                   Contact & Office Directions
                 </Link>
               </li>
               <li>
-                <Link to="/privacy-policy" className="hover:text-[#C7A56A] transition-colors">
+                <Link
+                  to="/privacy-policy"
+                  className="hover:text-[#C7A56A] transition-colors"
+                >
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link to="/terms" className="hover:text-[#C7A56A] transition-colors">
+                <Link
+                  to="/terms"
+                  className="hover:text-[#C7A56A] transition-colors"
+                >
                   Terms & Conditions
                 </Link>
               </li>
@@ -112,9 +139,7 @@ export const Footer: React.FC = () => {
             <div className="flex flex-col gap-3 text-xs text-slate-300">
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#C7A56A] shrink-0 mt-0.5" />
-                <span className="leading-relaxed">
-                  {FIRM_DETAILS.address}
-                </span>
+                <span className="leading-relaxed">{FIRM_DETAILS.address}</span>
               </div>
 
               <div className="flex items-center gap-2.5">
@@ -155,7 +180,12 @@ export const Footer: React.FC = () => {
         {/* Bottom Bar: Disclaimer & Copyright */}
         <div className="pt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 text-xs text-slate-400">
           <p className="max-w-3xl leading-relaxed text-[11px] text-slate-500">
-            <strong>Legal Notice:</strong> The materials and articles on this website are for general informational purposes only and do not constitute formal legal counsel. Prior consultation or message transmission does not by itself establish an advocate-client relationship. Representation is formalized only after a formal agreement.
+            <strong>Legal Notice:</strong> The materials and articles on this
+            website are for general informational purposes only and do not
+            constitute formal legal counsel. Prior consultation or message
+            transmission does not by itself establish an advocate-client
+            relationship. Representation is formalized only after a formal
+            agreement.
           </p>
           <div className="shrink-0 text-slate-500 whitespace-nowrap">
             &copy; {currentYear} {FIRM_DETAILS.name}. All rights reserved.

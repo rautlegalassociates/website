@@ -1,25 +1,25 @@
-import React from 'react';
-import { MessageCircle } from 'lucide-react';
-import { FIRM_DETAILS } from '../../data/firm';
+import React from "react";
+import { MessageCircle } from "lucide-react";
+import { FIRM_DETAILS } from "../../data/firm";
 
 interface WhatsAppButtonProps {
-  variant?: 'floating' | 'button' | 'compact';
+  variant?: "floating" | "button" | "compact";
   customMessage?: string;
   className?: string;
   label?: string;
 }
 
 export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
-  variant = 'button',
-  customMessage = 'Hello Raut Legal Associates, I would like to inquire regarding a legal matter in Kathmandu.',
-  className = '',
-  label = 'Chat on WhatsApp',
+  variant = "button",
+  customMessage = "Hello Raut Legal Associates, I would like to inquire regarding a legal matter in Kathmandu.",
+  className = "",
+  label = "Chat on WhatsApp",
 }) => {
-  const cleanPhone = FIRM_DETAILS.phone.replace(/[^0-9]/g, '');
+  const cleanPhone = FIRM_DETAILS.phone.replace(/[^0-9]/g, "");
   const encodedText = encodeURIComponent(customMessage);
   const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodedText}`;
 
-  if (variant === 'floating') {
+  if (variant === "floating") {
     return (
       <a
         href={whatsappUrl}
@@ -31,7 +31,7 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
       >
         <MessageCircle className="w-6 h-6 fill-current text-white" />
         <span className="sr-only">Chat on WhatsApp</span>
-        
+
         {/* Tooltip on hover */}
         <span className="absolute right-full mr-3 px-2.5 py-1 text-xs font-medium text-slate-800 bg-white rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap hidden sm:block">
           WhatsApp: {FIRM_DETAILS.phoneDisplay}
@@ -40,7 +40,7 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
     );
   }
 
-  if (variant === 'compact') {
+  if (variant === "compact") {
     return (
       <a
         href={whatsappUrl}

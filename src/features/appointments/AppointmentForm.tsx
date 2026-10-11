@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { appointmentFormSchema, AppointmentFormData } from '../../lib/validations';
-import { useSubmitAppointmentMutation } from '../../services/appointmentApi';
-import { PRACTICE_AREAS } from '../../data/practiceAreas';
-import { FIRM_DETAILS } from '../../data/firm';
-import { useToast } from '../../components/ui/Toast';
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  appointmentFormSchema,
+  AppointmentFormData,
+} from "../../lib/validations";
+import { useSubmitAppointmentMutation } from "../../services/appointmentApi";
+import { PRACTICE_AREAS } from "../../data/practiceAreas";
+import { FIRM_DETAILS } from "../../data/firm";
+import { useToast } from "../../components/ui/Toast";
 import {
   Calendar,
   Clock,
@@ -19,7 +22,7 @@ import {
   Laptop,
   Scale,
   RefreshCw,
-} from 'lucide-react';
+} from "lucide-react";
 
 interface AppointmentFormProps {
   initialCategory?: string;
@@ -32,7 +35,9 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
 }) => {
   const { showToast } = useToast();
   const [submitAppointment, { isLoading }] = useSubmitAppointmentMutation();
-  const [submittedReference, setSubmittedReference] = useState<string | null>(null);
+  const [submittedReference, setSubmittedReference] = useState<string | null>(
+    null,
+  );
 
   const {
     register,
@@ -43,22 +48,22 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
   } = useForm<AppointmentFormData>({
     resolver: zodResolver(appointmentFormSchema),
     defaultValues: {
-      fullName: '',
-      phone: '',
-      email: '',
-      serviceCategory: initialCategory || '',
-      preferredDate: '',
-      preferredTime: '11:00 AM',
-      consultationMode: 'in-person',
-      notes: '',
+      fullName: "",
+      phone: "",
+      email: "",
+      serviceCategory: initialCategory || "",
+      preferredDate: "",
+      preferredTime: "11:00 AM",
+      consultationMode: "in-person",
+      notes: "",
       agreedToPrivacy: false,
     },
   });
 
-  const selectedMode = watch('consultationMode');
+  const selectedMode = watch("consultationMode");
 
   // Today's date string for min date in picker
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = new Date().toISOString().split("T")[0];
 
   const onSubmit = async (data: AppointmentFormData) => {
     try {
@@ -78,8 +83,8 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
       if (response.success) {
         setSubmittedReference(response.referenceCode);
         showToast({
-          type: 'success',
-          title: 'Appointment Request Submitted',
+          type: "success",
+          title: "Appointment Request Submitted",
           message: `Reference: ${response.referenceCode}. Awaiting confirmation by firm.`,
         });
         if (onSuccessCallback) {
@@ -88,9 +93,10 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
       }
     } catch (err: unknown) {
       showToast({
-        type: 'error',
-        title: 'Submission Error',
-        message: 'Unable to submit your appointment request at this moment. Please call +977 9706410516 directly.',
+        type: "error",
+        title: "Submission Error",
+        message:
+          "Unable to submit your appointment request at this moment. Please call +977 9706410516 directly.",
       });
     }
   };
@@ -115,7 +121,9 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
         </h3>
 
         <div className="my-6 p-4 bg-[#EDE8DD] border border-[#C7A56A]/40 rounded-sm">
-          <div className="text-xs text-slate-600 mb-1">Your Appointment Reference:</div>
+          <div className="text-xs text-slate-600 mb-1">
+            Your Appointment Reference:
+          </div>
           <div className="font-mono text-2xl font-bold text-[#101C2C] tracking-wider">
             {submittedReference}
           </div>
@@ -124,18 +132,28 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
         <div className="text-xs text-slate-600 text-left space-y-2 mb-6 bg-white p-4 rounded-sm border border-slate-200">
           <p className="flex items-start gap-2">
             <span className="font-semibold text-slate-800">Status:</span>
-            <span className="text-amber-800 font-medium">Pending Review & Scheduling Confirmation</span>
+            <span className="text-amber-800 font-medium">
+              Pending Review & Scheduling Confirmation
+            </span>
           </p>
           <p className="flex items-start gap-2">
-            <span className="font-semibold text-slate-800">Consultation Fee:</span>
-            <span>NPR {FIRM_DETAILS.consultationFeeNPR} (payable upon confirmation or arrival)</span>
+            <span className="font-semibold text-slate-800">
+              Consultation Fee:
+            </span>
+            <span>
+              NPR {FIRM_DETAILS.consultationFeeNPR} (payable upon confirmation
+              or arrival)
+            </span>
           </p>
           <p className="flex items-start gap-2">
-            <span className="font-semibold text-slate-800">Office Location:</span>
+            <span className="font-semibold text-slate-800">
+              Office Location:
+            </span>
             <span>{FIRM_DETAILS.address}</span>
           </p>
           <p className="pt-2 text-[11px] text-slate-500 border-t border-slate-100">
-            Our chamber coordinator will review your requested time slot and phone you at your registered number to finalize the schedule.
+            Our chamber coordinator will review your requested time slot and
+            phone you at your registered number to finalize the schedule.
           </p>
         </div>
 
@@ -175,7 +193,8 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
           </div>
         </div>
         <div className="text-xs text-slate-600 sm:text-right max-w-xs">
-          30–45 min structured discussion with a licensed advocate in Tokha, Kathmandu or online.
+          30–45 min structured discussion with a licensed advocate in Tokha,
+          Kathmandu or online.
         </div>
       </div>
 
@@ -190,12 +209,12 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
             <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3 pointer-events-none" />
             <input
               type="text"
-              {...register('fullName')}
+              {...register("fullName")}
               placeholder="e.g. Ramesh Shrestha"
               className={`w-full pl-10 pr-3.5 py-2.5 bg-white border text-sm rounded-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 ${
                 errors.fullName
-                  ? 'border-rose-400 focus:ring-rose-500'
-                  : 'border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]'
+                  ? "border-rose-400 focus:ring-rose-500"
+                  : "border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]"
               }`}
             />
           </div>
@@ -216,12 +235,12 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
             <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-3 pointer-events-none" />
             <input
               type="tel"
-              {...register('phone')}
+              {...register("phone")}
               placeholder="+977 98XXXXXXXX"
               className={`w-full pl-10 pr-3.5 py-2.5 bg-white border text-sm rounded-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 ${
                 errors.phone
-                  ? 'border-rose-400 focus:ring-rose-500'
-                  : 'border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]'
+                  ? "border-rose-400 focus:ring-rose-500"
+                  : "border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]"
               }`}
             />
           </div>
@@ -236,18 +255,21 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
         {/* Email Address */}
         <div>
           <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
-            Email Address <span className="text-slate-400 text-[10px] font-normal">(Optional)</span>
+            Email Address{" "}
+            <span className="text-slate-400 text-[10px] font-normal">
+              (Optional)
+            </span>
           </label>
           <div className="relative">
             <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3 pointer-events-none" />
             <input
               type="email"
-              {...register('email')}
+              {...register("email")}
               placeholder="name@example.com"
               className={`w-full pl-10 pr-3.5 py-2.5 bg-white border text-sm rounded-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 ${
                 errors.email
-                  ? 'border-rose-400 focus:ring-rose-500'
-                  : 'border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]'
+                  ? "border-rose-400 focus:ring-rose-500"
+                  : "border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]"
               }`}
             />
           </div>
@@ -262,16 +284,17 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
         {/* Practice Area / Service Category */}
         <div>
           <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
-            Practice Area / Matter Category <span className="text-rose-600">*</span>
+            Practice Area / Matter Category{" "}
+            <span className="text-rose-600">*</span>
           </label>
           <div className="relative">
             <Scale className="w-4 h-4 text-slate-400 absolute left-3.5 top-3 pointer-events-none" />
             <select
-              {...register('serviceCategory')}
+              {...register("serviceCategory")}
               className={`w-full pl-10 pr-3.5 py-2.5 bg-white border text-sm rounded-sm text-slate-900 focus:outline-none focus:ring-1 ${
                 errors.serviceCategory
-                  ? 'border-rose-400 focus:ring-rose-500'
-                  : 'border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]'
+                  ? "border-rose-400 focus:ring-rose-500"
+                  : "border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]"
               }`}
             >
               <option value="">-- Select Legal Practice Category --</option>
@@ -280,7 +303,9 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
                   {area.title}
                 </option>
               ))}
-              <option value="General Legal Opinion">General Legal Opinion / Notary Consultation</option>
+              <option value="General Legal Opinion">
+                General Legal Opinion / Notary Consultation
+              </option>
             </select>
           </div>
           {errors.serviceCategory && (
@@ -299,41 +324,49 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <label
               className={`flex items-center gap-3 p-3.5 rounded-sm border cursor-pointer transition-colors ${
-                selectedMode === 'in-person'
-                  ? 'bg-white border-[#C7A56A] ring-1 ring-[#C7A56A]'
-                  : 'bg-[#FAF8F5] border-slate-200 hover:border-slate-300'
+                selectedMode === "in-person"
+                  ? "bg-white border-[#C7A56A] ring-1 ring-[#C7A56A]"
+                  : "bg-[#FAF8F5] border-slate-200 hover:border-slate-300"
               }`}
             >
               <input
                 type="radio"
                 value="in-person"
-                {...register('consultationMode')}
+                {...register("consultationMode")}
                 className="text-[#C7A56A] focus:ring-[#C7A56A]"
               />
               <MapPin className="w-4 h-4 text-[#C7A56A] shrink-0" />
               <div>
-                <div className="text-xs font-semibold text-slate-900">In-Person Consultation</div>
-                <div className="text-[11px] text-slate-500">Chamber in Basundhara-5, Tokha, Kathmandu</div>
+                <div className="text-xs font-semibold text-slate-900">
+                  In-Person Consultation
+                </div>
+                <div className="text-[11px] text-slate-500">
+                  Chamber in Basundhara-5, Tokha, Kathmandu
+                </div>
               </div>
             </label>
 
             <label
               className={`flex items-center gap-3 p-3.5 rounded-sm border cursor-pointer transition-colors ${
-                selectedMode === 'online'
-                  ? 'bg-white border-[#C7A56A] ring-1 ring-[#C7A56A]'
-                  : 'bg-[#FAF8F5] border-slate-200 hover:border-slate-300'
+                selectedMode === "online"
+                  ? "bg-white border-[#C7A56A] ring-1 ring-[#C7A56A]"
+                  : "bg-[#FAF8F5] border-slate-200 hover:border-slate-300"
               }`}
             >
               <input
                 type="radio"
                 value="online"
-                {...register('consultationMode')}
+                {...register("consultationMode")}
                 className="text-[#C7A56A] focus:ring-[#C7A56A]"
               />
               <Laptop className="w-4 h-4 text-[#C7A56A] shrink-0" />
               <div>
-                <div className="text-xs font-semibold text-slate-900">Online Video / Phone Call</div>
-                <div className="text-[11px] text-slate-500">Google Meet or Phone for remote clients</div>
+                <div className="text-xs font-semibold text-slate-900">
+                  Online Video / Phone Call
+                </div>
+                <div className="text-[11px] text-slate-500">
+                  Google Meet or Phone for remote clients
+                </div>
               </div>
             </label>
           </div>
@@ -355,11 +388,11 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
             <input
               type="date"
               min={todayStr}
-              {...register('preferredDate')}
+              {...register("preferredDate")}
               className={`w-full pl-10 pr-3.5 py-2.5 bg-white border text-sm rounded-sm text-slate-900 focus:outline-none focus:ring-1 ${
                 errors.preferredDate
-                  ? 'border-rose-400 focus:ring-rose-500'
-                  : 'border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]'
+                  ? "border-rose-400 focus:ring-rose-500"
+                  : "border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]"
               }`}
             />
           </div>
@@ -379,11 +412,11 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
           <div className="relative">
             <Clock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3 pointer-events-none" />
             <select
-              {...register('preferredTime')}
+              {...register("preferredTime")}
               className={`w-full pl-10 pr-3.5 py-2.5 bg-white border text-sm rounded-sm text-slate-900 focus:outline-none focus:ring-1 ${
                 errors.preferredTime
-                  ? 'border-rose-400 focus:ring-rose-500'
-                  : 'border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]'
+                  ? "border-rose-400 focus:ring-rose-500"
+                  : "border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]"
               }`}
             >
               <option value="08:30 AM">08:30 AM - Early Morning Slot</option>
@@ -408,18 +441,19 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
       {/* Brief Notes */}
       <div>
         <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
-          Brief Summary of Legal Concern <span className="text-rose-600">*</span>
+          Brief Summary of Legal Concern{" "}
+          <span className="text-rose-600">*</span>
         </label>
         <div className="relative">
           <FileText className="w-4 h-4 text-slate-400 absolute left-3.5 top-3 pointer-events-none" />
           <textarea
             rows={4}
-            {...register('notes')}
+            {...register("notes")}
             placeholder="Please summarize the facts, dates, agreements, or court notices involved. Do not send highly sensitive credentials or private keys."
             className={`w-full pl-10 pr-3.5 py-2.5 bg-white border text-sm rounded-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 ${
               errors.notes
-                ? 'border-rose-400 focus:ring-rose-500'
-                : 'border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]'
+                ? "border-rose-400 focus:ring-rose-500"
+                : "border-slate-300 focus:border-[#C7A56A] focus:ring-[#C7A56A]"
             }`}
           />
         </div>
@@ -436,11 +470,14 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
         <label className="flex items-start gap-3 cursor-pointer">
           <input
             type="checkbox"
-            {...register('agreedToPrivacy')}
+            {...register("agreedToPrivacy")}
             className="mt-1 text-[#C7A56A] rounded-xs focus:ring-[#C7A56A]"
           />
           <span className="text-xs text-slate-600 leading-relaxed">
-            I understand that submitting this appointment request and paying the NPR 500 consultation fee does not create an advocate-client relationship until formally agreed upon in writing. I consent to Raut Legal Associates contacting me regarding this legal inquiry.
+            I understand that submitting this appointment request and paying the
+            NPR 500 consultation fee does not create an advocate-client
+            relationship until formally agreed upon in writing. I consent to
+            Raut Legal Associates contacting me regarding this legal inquiry.
           </span>
         </label>
         {errors.agreedToPrivacy && (

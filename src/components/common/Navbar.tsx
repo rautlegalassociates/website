@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ArrowRight } from 'lucide-react';
-import { FIRM_DETAILS } from '../../data/firm';
-import { useAppDispatch } from '../../app/hooks';
-import { openAppointmentModal } from '../../features/appointments/appointmentSlice';
-import { BrandLogo } from './BrandLogo';
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X, ArrowRight } from "lucide-react";
+import { FIRM_DETAILS } from "../../data/firm";
+import { useAppDispatch } from "../../app/hooks";
+import { BrandLogo } from "./BrandLogo";
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -16,8 +15,8 @@ export const Navbar: React.FC = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Close mobile menu on route change
@@ -28,24 +27,24 @@ export const Navbar: React.FC = () => {
   // Handle ESC key for mobile drawer
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isMobileMenuOpen) {
+      if (e.key === "Escape" && isMobileMenuOpen) {
         setIsMobileMenuOpen(false);
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isMobileMenuOpen]);
 
   const navLinks = [
-    { label: 'About Us', path: '/about' },
-    { label: 'Practice Areas', path: '/services' },
-    { label: 'Our Lawyers', path: '/team' },
-    { label: 'Resources', path: '/resources' },
-    { label: 'Contact', path: '/contact' },
+    { label: "About Us", path: "/about" },
+    { label: "Practice Areas", path: "/services" },
+    { label: "Our Lawyers", path: "/team" },
+    { label: "Resources", path: "/resources" },
+    { label: "Contact", path: "/contact" },
   ];
 
   const isActive = (path: string) => {
-    if (path === '/') return location.pathname === '/';
+    if (path === "/") return location.pathname === "/";
     return location.pathname.startsWith(path);
   };
 
@@ -53,8 +52,8 @@ export const Navbar: React.FC = () => {
     <header
       className={`sticky top-0 z-40 transition-all duration-300 ${
         isScrolled
-          ? 'bg-[#101C2C]/95 backdrop-blur-md shadow-md border-b border-[#223A5C]/40 py-3.5'
-          : 'bg-[#101C2C] border-b border-[#223A5C]/30 py-4.5'
+          ? "bg-[#101C2C]/95 backdrop-blur-md shadow-md border-b border-[#223A5C]/40 py-3.5"
+          : "bg-[#101C2C] border-b border-[#223A5C]/30 py-4.5"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -81,8 +80,8 @@ export const Navbar: React.FC = () => {
                   to={link.path}
                   className={`whitespace-nowrap shrink-0 transition-colors py-1 relative ${
                     active
-                      ? 'text-[#C7A56A] font-semibold'
-                      : 'text-[#E2DBCD] hover:text-white'
+                      ? "text-[#C7A56A] font-semibold"
+                      : "text-[#E2DBCD] hover:text-white"
                   }`}
                 >
                   {link.label}
@@ -109,10 +108,18 @@ export const Navbar: React.FC = () => {
               type="button"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden p-2 text-[#E2DBCD] hover:text-white hover:bg-[#17283F] rounded-md transition-colors"
-              aria-label={isMobileMenuOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
+              aria-label={
+                isMobileMenuOpen
+                  ? "Close Navigation Menu"
+                  : "Open Navigation Menu"
+              }
               aria-expanded={isMobileMenuOpen}
             >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
             </button>
           </div>
         </div>
@@ -128,7 +135,9 @@ export const Navbar: React.FC = () => {
             <Link
               to="/"
               className={`text-base py-2 transition-colors ${
-                location.pathname === '/' ? 'text-[#C7A56A] font-medium' : 'text-[#E2DBCD]'
+                location.pathname === "/"
+                  ? "text-[#C7A56A] font-medium"
+                  : "text-[#E2DBCD]"
               }`}
             >
               Home
@@ -138,7 +147,9 @@ export const Navbar: React.FC = () => {
                 key={link.path}
                 to={link.path}
                 className={`text-base py-2 transition-colors ${
-                  isActive(link.path) ? 'text-[#C7A56A] font-medium' : 'text-[#E2DBCD]'
+                  isActive(link.path)
+                    ? "text-[#C7A56A] font-medium"
+                    : "text-[#E2DBCD]"
                 }`}
               >
                 {link.label}
@@ -147,7 +158,8 @@ export const Navbar: React.FC = () => {
 
             <div className="pt-4 border-t border-slate-800 flex flex-col gap-3">
               <div className="text-xs text-slate-400">
-                Initial Legal Consultation Fee: <strong className="text-[#C7A56A]">NPR 500</strong>
+                Initial Legal Consultation Fee:{" "}
+                <strong className="text-[#C7A56A]">NPR 500</strong>
               </div>
               <Link
                 to="/appointments"

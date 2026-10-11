@@ -1,12 +1,16 @@
-import React, { useEffect } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
-import { TopBar } from '../components/common/TopBar';
-import { Navbar } from '../components/common/Navbar';
-import { Footer } from '../components/common/Footer';
-import { AppointmentModal } from '../features/appointments/AppointmentModal';
-import { FloatingActionHub } from '../components/common/FloatingActionHub';
+import React, { useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import { TopBar } from "../components/common/TopBar";
+import { Navbar } from "../components/common/Navbar";
+import { Footer } from "../components/common/Footer";
+import { AppointmentModal } from "../features/appointments/AppointmentModal";
+import { FloatingActionHub } from "../components/common/FloatingActionHub";
 
-export const RootLayout: React.FC = () => {
+interface RootLayoutProps {
+  children?: React.ReactNode;
+}
+
+export const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   const { pathname } = useLocation();
 
   // Scroll to top on route change
@@ -19,7 +23,7 @@ export const RootLayout: React.FC = () => {
       <TopBar />
       <Navbar />
       <main className="flex-1">
-        <Outlet />
+        {children || <Outlet />}
       </main>
       <Footer />
       <AppointmentModal />

@@ -1,11 +1,11 @@
-import { baseApi } from './api';
-import { AppointmentRequest, AppointmentResponse } from '../types';
+import { baseApi } from "./api";
+import { AppointmentRequest, AppointmentResponse } from "../types";
 
 // Helper for demo mode in client environment
 const isDemoMode = !import.meta.env.VITE_API_BASE_URL;
 
 // Local storage session key for client-only retrieval of the user's OWN submitted appointment
-const OWN_APPOINTMENTS_KEY = 'rla_own_appointments';
+const OWN_APPOINTMENTS_KEY = "rla_own_appointments";
 
 function getStoredOwnAppointments(): Record<string, AppointmentRequest> {
   try {
@@ -30,12 +30,15 @@ function saveOwnAppointment(app: AppointmentRequest) {
 
 export const appointmentApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    submitAppointment: builder.mutation<AppointmentResponse, AppointmentRequest>({
+    submitAppointment: builder.mutation<
+      AppointmentResponse,
+      AppointmentRequest
+    >({
       queryFn: async (requestData, _queryApi, _extraOptions, baseQuery) => {
         if (!isDemoMode) {
           const result = await baseQuery({
-            url: '/appointments',
-            method: 'POST',
+            url: "/appointments",
+            method: "POST",
             body: requestData,
           });
           if (result.error) return { error: result.error };
@@ -51,7 +54,7 @@ export const appointmentApi = baseApi.injectEndpoints({
           ...requestData,
           id: `apt_${Date.now()}`,
           referenceCode: refCode,
-          status: 'pending',
+          status: "pending",
           createdAt: new Date().toISOString(),
           feeAmount: 500,
         };
@@ -63,12 +66,12 @@ export const appointmentApi = baseApi.injectEndpoints({
             success: true,
             referenceCode: refCode,
             message:
-              'Appointment request received in Demo Mode. Your request is currently pending advocate review and scheduling confirmation by the firm. The NPR 500 consultation fee is payable upon appointment confirmation.',
+              "Appointment request received in Demo Mode. Your request is currently pending advocate review and scheduling confirmation by the firm. The NPR 500 consultation fee is payable upon appointment confirmation.",
             appointment,
           },
         };
       },
-      invalidatesTags: ['Appointments'],
+      invalidatesTags: ["Appointments"],
     }),
 
     getAppointmentStatus: builder.query<AppointmentRequest | null, string>({
@@ -76,7 +79,7 @@ export const appointmentApi = baseApi.injectEndpoints({
         if (!isDemoMode) {
           const result = await baseQuery({
             url: `/appointments/${encodeURIComponent(referenceCode)}`,
-            method: 'GET',
+            method: "GET",
           });
           if (result.error) return { error: result.error };
           return { data: result.data as AppointmentRequest };
@@ -87,9 +90,10 @@ export const appointmentApi = baseApi.injectEndpoints({
         const found = stored[referenceCode] || null;
         return { data: found };
       },
-      providesTags: ['Appointments'],
+      providesTags: ["Appointments"],
     }),
   }),
 });
 
-export const { useSubmitAppointmentMutation, useGetAppointmentStatusQuery } = appointmentApi;
+export const { useSubmitAppointmentMutation, useGetAppointmentStatusQuery } =
+  appointmentApi;

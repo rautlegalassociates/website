@@ -1,6 +1,6 @@
-import React from 'react';
-import { WhatsAppButton } from './WhatsAppButton';
-import { Chatbot } from './Chatbot';
+import React from "react";
+import { WhatsAppButton } from "./WhatsAppButton";
+import { Chatbot } from "./Chatbot";
 
 export const FloatingActionHub: React.FC = () => {
   return (

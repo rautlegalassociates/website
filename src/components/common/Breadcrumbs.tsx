@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 export interface BreadcrumbItem {
   label: string;
@@ -15,7 +15,10 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items }) => {
     <nav aria-label="Breadcrumbs" className="mb-6">
       <ol className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
         <li>
-          <Link to="/" className="text-slate-400 hover:text-slate-700 transition-colors">
+          <Link
+            to="/"
+            className="text-slate-400 hover:text-slate-700 transition-colors"
+          >
             Home
           </Link>
         </li>
@@ -35,7 +38,10 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items }) => {
                     {item.label}
                   </Link>
                 ) : (
-                  <span className="text-slate-800 font-medium" aria-current="page">
+                  <span
+                    className="text-slate-800 font-medium"
+                    aria-current="page"
+                  >
                     {item.label}
                   </span>
                 )}

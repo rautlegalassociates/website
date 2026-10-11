@@ -1,14 +1,14 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
-import { useLocation } from 'react-router-dom';
-import { MAJOR_DISTRICTS_SERVED } from '../../data/districts';
+import React from "react";
+import { Helmet } from "react-helmet-async";
+import { useLocation } from "react-router-dom";
+import { MAJOR_DISTRICTS_SERVED } from "../../data/districts";
 
 export interface SEOHeadProps {
   title: string;
   description: string;
   keywords?: string[];
   canonicalPath?: string;
-  ogType?: 'website' | 'article' | 'profile';
+  ogType?: "website" | "article" | "profile";
   ogImage?: string;
   ogImageAlt?: string;
   districtFocus?: string;
@@ -23,28 +23,28 @@ export interface SEOHeadProps {
 }
 
 const DEFAULT_KEYWORDS = [
-  'law firm Kathmandu',
-  'lawyers in Nepal',
-  'Raut Legal Associates',
-  'advocates in Kathmandu',
-  'कानूनी सल्लाह काठमाडौं',
-  'नेपालका वकिलहरू',
-  'legal counsel Nepal',
-  'corporate law Nepal',
-  'civil litigation Kathmandu',
-  'Tokha law chamber',
-  'property dispute Nepal',
-  'Supreme Court advocate Nepal',
-  'initial consultation fee NPR 500',
-  'Muluki Civil Code 2074',
-  'Companies Act 2063 Nepal',
-  'Kathmandu District Court',
-  'High Court Patan',
-  'Pokhara lawyers',
-  'Chitwan advocates',
-  'Butwal legal services',
-  'Biratnagar advocates',
-  'Birgunj law firm',
+  "law firm Kathmandu",
+  "lawyers in Nepal",
+  "Raut Legal Associates",
+  "advocates in Kathmandu",
+  "कानूनी सल्लाह काठमाडौं",
+  "नेपालका वकिलहरू",
+  "legal counsel Nepal",
+  "corporate law Nepal",
+  "civil litigation Kathmandu",
+  "Tokha law chamber",
+  "property dispute Nepal",
+  "Supreme Court advocate Nepal",
+  "initial consultation fee NPR 500",
+  "Muluki Civil Code 2074",
+  "Companies Act 2063 Nepal",
+  "Kathmandu District Court",
+  "High Court Patan",
+  "Pokhara lawyers",
+  "Chitwan advocates",
+  "Butwal legal services",
+  "Biratnagar advocates",
+  "Birgunj law firm",
 ];
 
 export const SEOHead: React.FC<SEOHeadProps> = ({
@@ -52,9 +52,9 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
   description,
   keywords = DEFAULT_KEYWORDS,
   canonicalPath,
-  ogType = 'website',
-  ogImage = '/og-image.svg',
-  ogImageAlt = 'Raut Legal Associates — Official Emblem & Monogram',
+  ogType = "website",
+  ogImage = "/og-image.svg",
+  ogImageAlt = "Raut Legal Associates — Official Emblem & Monogram",
   districtFocus,
   articleMeta,
   jsonLd,
@@ -64,7 +64,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
 
   // Smart title formatting: ensure concise branded title within 30-60 characters
   let fullTitle = title.trim();
-  if (!fullTitle.includes('Raut Legal') && !fullTitle.includes('RLA')) {
+  if (!fullTitle.includes("Raut Legal") && !fullTitle.includes("RLA")) {
     if (fullTitle.length + 24 <= 60) {
       fullTitle = `${fullTitle} | Raut Legal Associates`;
     } else if (fullTitle.length + 12 <= 60) {
@@ -81,38 +81,39 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
   }
 
   const origin =
-    typeof window !== 'undefined' && window.location.origin
+    typeof window !== "undefined" && window.location.origin
       ? window.location.origin
-      : 'https://rautlegalassociates.com';
+      : "https://rautlegalassociates.com";
   const currentPath = canonicalPath || location.pathname;
-  const canonicalUrl = `${origin}${currentPath === '/' ? '' : currentPath}`;
-  const fullImageUrl = ogImage.startsWith('http') ? ogImage : `${origin}${ogImage}`;
+  const canonicalUrl = `${origin}${currentPath === "/" ? "" : currentPath}`;
+  const fullImageUrl = ogImage.startsWith("http")
+    ? ogImage
+    : `${origin}${ogImage}`;
 
   // Find optional district focus or fallback to Kathmandu chamber
-  const focusedDistrict =
-    districtFocus
-      ? MAJOR_DISTRICTS_SERVED.find(
-          (d) =>
-            d.id.toLowerCase() === districtFocus.toLowerCase() ||
-            d.name.toLowerCase().includes(districtFocus.toLowerCase())
-        )
-      : null;
+  const focusedDistrict = districtFocus
+    ? MAJOR_DISTRICTS_SERVED.find(
+        (d) =>
+          d.id.toLowerCase() === districtFocus.toLowerCase() ||
+          d.name.toLowerCase().includes(districtFocus.toLowerCase()),
+      )
+    : null;
 
   // Build breadcrumb JSON-LD if breadcrumb items provided
   const autoBreadcrumb =
     breadcrumbItems && breadcrumbItems.length > 0
       ? {
-          '@context': 'https://schema.org',
-          '@type': 'BreadcrumbList',
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
           itemListElement: [
             {
-              '@type': 'ListItem',
+              "@type": "ListItem",
               position: 1,
-              name: 'Home',
+              name: "Home",
               item: `${origin}/`,
             },
             ...breadcrumbItems.map((item, idx) => ({
-              '@type': 'ListItem',
+              "@type": "ListItem",
               position: idx + 2,
               name: item.label,
               item: item.path ? `${origin}${item.path}` : canonicalUrl,
@@ -127,8 +128,11 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       <title>{fullTitle}</title>
       <meta name="title" content={fullTitle} />
       <meta name="description" content={cleanDescription} />
-      <meta name="keywords" content={keywords.join(', ')} />
-      <meta name="author" content={articleMeta?.author || 'Raut Legal Associates'} />
+      <meta name="keywords" content={keywords.join(", ")} />
+      <meta
+        name="author"
+        content={articleMeta?.author || "Raut Legal Associates"}
+      />
       <meta
         name="robots"
         content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
@@ -142,14 +146,14 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       {/* Primary Regional Nepal Geo-targeting Tags */}
       <meta
         name="geo.region"
-        content={focusedDistrict ? focusedDistrict.isoRegion : 'NP-BA'}
+        content={focusedDistrict ? focusedDistrict.isoRegion : "NP-BA"}
       />
       <meta
         name="geo.placename"
         content={
           focusedDistrict
             ? `${focusedDistrict.name}, ${focusedDistrict.headquarters}`
-            : 'Kathmandu, Tokha'
+            : "Kathmandu, Tokha"
         }
       />
       <meta
@@ -157,7 +161,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
         content={
           focusedDistrict
             ? `${focusedDistrict.coordinates.latitude};${focusedDistrict.coordinates.longitude}`
-            : '27.7511;85.3262'
+            : "27.7511;85.3262"
         }
       />
       <meta
@@ -165,7 +169,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
         content={
           focusedDistrict
             ? `${focusedDistrict.coordinates.latitude}, ${focusedDistrict.coordinates.longitude}`
-            : '27.7511, 85.3262'
+            : "27.7511, 85.3262"
         }
       />
 
@@ -261,8 +265,14 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       {/* Optional Article Metadata */}
       {articleMeta && (
         <>
-          <meta property="article:published_time" content={articleMeta.publishedTime} />
-          <meta property="article:modified_time" content={articleMeta.modifiedTime} />
+          <meta
+            property="article:published_time"
+            content={articleMeta.publishedTime}
+          />
+          <meta
+            property="article:modified_time"
+            content={articleMeta.modifiedTime}
+          />
           <meta property="article:author" content={articleMeta.author} />
           <meta property="article:section" content={articleMeta.section} />
         </>
@@ -270,7 +280,9 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
 
       {/* Auto Breadcrumb Schema */}
       {autoBreadcrumb && (
-        <script type="application/ld+json">{JSON.stringify(autoBreadcrumb)}</script>
+        <script type="application/ld+json">
+          {JSON.stringify(autoBreadcrumb)}
+        </script>
       )}
 
       {/* Dynamic JSON-LD Structured Data */}

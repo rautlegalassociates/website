@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from "react";
 import {
   CalendarCheck,
   Search,
-  Filter,
   Download,
   Plus,
   Clock,
@@ -10,58 +9,53 @@ import {
   Laptop,
   Phone,
   Mail,
-  User,
   AlertCircle,
-  CheckCircle2,
-  XCircle,
-  MoreVertical,
-  ExternalLink,
   MessageCircle,
   Copy,
   Trash2,
-  Edit3,
   X,
-  FileText,
-  ChevronDown,
-} from 'lucide-react';
+} from "lucide-react";
 import {
   getAllAppointments,
   saveAppointment,
   updateAppointmentStatus,
   deleteAppointment,
   DashboardAppointment,
-} from '../../services/dashboardStorage';
-import { PRACTICE_AREAS } from '../../data/practiceAreas';
-import { AppointmentStatus, ConsultationMode } from '../../types';
-import { FIRM_DETAILS } from '../../data/firm';
+} from "../../services/dashboardStorage";
+import { PRACTICE_AREAS } from "../../data/practiceAreas";
+import { AppointmentStatus, ConsultationMode } from "../../types";
+import { FIRM_DETAILS } from "../../data/firm";
 
 export const DashboardAppointmentsPage: React.FC = () => {
   const [appointments, setAppointments] = useState<DashboardAppointment[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [modeFilter, setModeFilter] = useState<string>('all');
-  const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [modeFilter, setModeFilter] = useState<string>("all");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
 
   // Modal states
-  const [selectedAppointment, setSelectedAppointment] = useState<DashboardAppointment | null>(null);
+  const [selectedAppointment, setSelectedAppointment] =
+    useState<DashboardAppointment | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [advocateNotesDraft, setAdvocateNotesDraft] = useState('');
+  const [advocateNotesDraft, setAdvocateNotesDraft] = useState("");
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
   // New Appointment Form State
-  const [newClientName, setNewClientName] = useState('');
-  const [newClientPhone, setNewClientPhone] = useState('');
-  const [newClientEmail, setNewClientEmail] = useState('');
-  const [newCategory, setNewCategory] = useState(PRACTICE_AREAS[0]?.title || 'Corporate & Commercial Law');
+  const [newClientName, setNewClientName] = useState("");
+  const [newClientPhone, setNewClientPhone] = useState("");
+  const [newClientEmail, setNewClientEmail] = useState("");
+  const [newCategory, setNewCategory] = useState(
+    PRACTICE_AREAS[0]?.title || "Corporate & Commercial Law",
+  );
   const [newDate, setNewDate] = useState(() => {
     const d = new Date();
     d.setDate(d.getDate() + 1);
-    return d.toISOString().split('T')[0];
+    return d.toISOString().split("T")[0];
   });
-  const [newTime, setNewTime] = useState('10:30 AM');
-  const [newMode, setNewMode] = useState<ConsultationMode>('in-person');
-  const [newNotes, setNewNotes] = useState('');
+  const [newTime, setNewTime] = useState("10:30 AM");
+  const [newMode, setNewMode] = useState<ConsultationMode>("in-person");
+  const [newNotes, setNewNotes] = useState("");
 
   const loadAppointments = () => {
     setAppointments(getAllAppointments());
@@ -70,8 +64,8 @@ export const DashboardAppointmentsPage: React.FC = () => {
   useEffect(() => {
     loadAppointments();
     const handleStorage = () => loadAppointments();
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
   }, []);
 
   // Filtered Appointments
@@ -89,38 +83,54 @@ export const DashboardAppointmentsPage: React.FC = () => {
         apt.notes.toLowerCase().includes(q);
 
       // Status
-      const matchesStatus = statusFilter === 'all' || apt.status === statusFilter;
+      const matchesStatus =
+        statusFilter === "all" || apt.status === statusFilter;
 
       // Mode
-      const matchesMode = modeFilter === 'all' || apt.consultationMode === modeFilter;
+      const matchesMode =
+        modeFilter === "all" || apt.consultationMode === modeFilter;
 
       // Category
-      const matchesCategory = categoryFilter === 'all' || apt.serviceCategory === categoryFilter;
+      const matchesCategory =
+        categoryFilter === "all" || apt.serviceCategory === categoryFilter;
 
       return matchesSearch && matchesStatus && matchesMode && matchesCategory;
     });
   }, [appointments, searchQuery, statusFilter, modeFilter, categoryFilter]);
 
   // Handle status change
-  const handleStatusChange = (refCode: string, newStatus: AppointmentStatus) => {
+  const handleStatusChange = (
+    refCode: string,
+    newStatus: AppointmentStatus,
+  ) => {
     updateAppointmentStatus(refCode, newStatus);
     loadAppointments();
     if (selectedAppointment && selectedAppointment.referenceCode === refCode) {
-      setSelectedAppointment((prev) => (prev ? { ...prev, status: newStatus } : null));
+      setSelectedAppointment((prev) =>
+        prev ? { ...prev, status: newStatus } : null,
+      );
     }
   };
 
   // Handle save advocate notes
   const handleSaveNotes = () => {
     if (!selectedAppointment) return;
-    updateAppointmentStatus(selectedAppointment.referenceCode, selectedAppointment.status, advocateNotesDraft);
+    updateAppointmentStatus(
+      selectedAppointment.referenceCode,
+      selectedAppointment.status,
+      advocateNotesDraft,
+    );
     loadAppointments();
-    setSelectedAppointment((prev) => (prev ? { ...prev, advocateNotes: advocateNotesDraft } : null));
+    setSelectedAppointment((prev) =>
+      prev ? { ...prev, advocateNotes: advocateNotesDraft } : null,
+    );
   };
 
   // Handle delete
   const handleDelete = (refCode: string) => {
-    if (window.confirm(`Are you sure you want to delete appointment ${refCode}?`)) {
+    if (
+      window.confirm(`Are you sure you want to delete appointment ${refCode}?`)
+    ) {
       deleteAppointment(refCode);
       loadAppointments();
       if (selectedAppointment?.referenceCode === refCode) {
@@ -153,12 +163,12 @@ export const DashboardAppointmentsPage: React.FC = () => {
       preferredDate: newDate,
       preferredTime: newTime,
       consultationMode: newMode,
-      notes: newNotes.trim() || 'Manual booking recorded at Tokha chamber.',
+      notes: newNotes.trim() || "Manual booking recorded at Tokha chamber.",
       agreedToPrivacy: true,
       feeAmount: 500,
-      status: 'confirmed',
+      status: "confirmed",
       createdAt: new Date().toISOString(),
-      assignedAdvocate: 'Adv. Sahil Raut Gaddi',
+      assignedAdvocate: "Adv. Sahil Raut Gaddi",
     };
 
     saveAppointment(newApt);
@@ -166,47 +176,52 @@ export const DashboardAppointmentsPage: React.FC = () => {
     setIsAddModalOpen(false);
 
     // Reset fields
-    setNewClientName('');
-    setNewClientPhone('');
-    setNewClientEmail('');
-    setNewNotes('');
+    setNewClientName("");
+    setNewClientPhone("");
+    setNewClientEmail("");
+    setNewNotes("");
   };
 
   // Export to CSV
   const handleExportCSV = () => {
     const headers = [
-      'Reference Code',
-      'Client Name',
-      'Phone',
-      'Email',
-      'Service Category',
-      'Consultation Date',
-      'Time Slot',
-      'Mode',
-      'Fee NPR',
-      'Status',
-      'Notes',
+      "Reference Code",
+      "Client Name",
+      "Phone",
+      "Email",
+      "Service Category",
+      "Consultation Date",
+      "Time Slot",
+      "Mode",
+      "Fee NPR",
+      "Status",
+      "Notes",
     ];
 
     const rows = filteredAppointments.map((a) => [
-      `"${a.referenceCode || ''}"`,
+      `"${a.referenceCode || ""}"`,
       `"${a.fullName.replace(/"/g, '""')}"`,
       `"${a.phone}"`,
-      `"${a.email || ''}"`,
+      `"${a.email || ""}"`,
       `"${a.serviceCategory}"`,
       `"${a.preferredDate}"`,
       `"${a.preferredTime}"`,
       `"${a.consultationMode}"`,
       `"${a.feeAmount}"`,
       `"${a.status}"`,
-      `"${(a.notes || '').replace(/"/g, '""')}"`,
+      `"${(a.notes || "").replace(/"/g, '""')}"`,
     ]);
 
-    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
     const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `Raut_Legal_Appointments_${new Date().toISOString().split('T')[0]}.csv`);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute(
+      "download",
+      `Raut_Legal_Appointments_${new Date().toISOString().split("T")[0]}.csv`,
+    );
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -225,7 +240,8 @@ export const DashboardAppointmentsPage: React.FC = () => {
             Appointments &amp; Consultations
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            Manage incoming consultation bookings, schedule confirmations, and client matter files.
+            Manage incoming consultation bookings, schedule confirmations, and
+            client matter files.
           </p>
         </div>
 
@@ -310,17 +326,24 @@ export const DashboardAppointmentsPage: React.FC = () => {
         {/* Filter Pills & Result Summary */}
         <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 text-xs text-slate-500">
           <div>
-            Showing <strong className="text-slate-800">{filteredAppointments.length}</strong> of{' '}
-            <strong className="text-slate-800">{appointments.length}</strong> total registered consultations
+            Showing{" "}
+            <strong className="text-slate-800">
+              {filteredAppointments.length}
+            </strong>{" "}
+            of <strong className="text-slate-800">{appointments.length}</strong>{" "}
+            total registered consultations
           </div>
 
-          {(searchQuery || statusFilter !== 'all' || modeFilter !== 'all' || categoryFilter !== 'all') && (
+          {(searchQuery ||
+            statusFilter !== "all" ||
+            modeFilter !== "all" ||
+            categoryFilter !== "all") && (
             <button
               onClick={() => {
-                setSearchQuery('');
-                setStatusFilter('all');
-                setModeFilter('all');
-                setCategoryFilter('all');
+                setSearchQuery("");
+                setStatusFilter("all");
+                setModeFilter("all");
+                setCategoryFilter("all");
               }}
               className="text-xs text-[#B38E51] hover:underline font-semibold cursor-pointer"
             >
@@ -339,7 +362,8 @@ export const DashboardAppointmentsPage: React.FC = () => {
               No Appointments Found
             </h3>
             <p className="text-xs text-slate-500 max-w-sm mx-auto">
-              No appointments matched your query or filter criteria. Try clearing your filters or creating a new manual booking.
+              No appointments matched your query or filter criteria. Try
+              clearing your filters or creating a new manual booking.
             </p>
           </div>
         ) : (
@@ -357,7 +381,10 @@ export const DashboardAppointmentsPage: React.FC = () => {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredAppointments.map((apt) => (
-                  <tr key={apt.id} className="hover:bg-slate-50/80 transition-colors">
+                  <tr
+                    key={apt.id}
+                    className="hover:bg-slate-50/80 transition-colors"
+                  >
                     {/* Reference Code */}
                     <td className="py-4 px-4 whitespace-nowrap">
                       <div className="flex items-center gap-1.5">
@@ -373,7 +400,9 @@ export const DashboardAppointmentsPage: React.FC = () => {
                         </button>
                       </div>
                       {copiedCode === apt.referenceCode && (
-                        <span className="text-[10px] text-emerald-600 block mt-0.5">Copied!</span>
+                        <span className="text-[10px] text-emerald-600 block mt-0.5">
+                          Copied!
+                        </span>
                       )}
                     </td>
 
@@ -391,7 +420,7 @@ export const DashboardAppointmentsPage: React.FC = () => {
                           <span>{apt.phone}</span>
                         </a>
                         <a
-                          href={`https://wa.me/${apt.phone.replace(/[^0-9]/g, '')}`}
+                          href={`https://wa.me/${apt.phone.replace(/[^0-9]/g, "")}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-[#25D366] hover:text-[#20BD5A] flex items-center gap-1"
@@ -415,7 +444,7 @@ export const DashboardAppointmentsPage: React.FC = () => {
                         {apt.serviceCategory}
                       </div>
                       <div className="flex items-center gap-1.5 text-[11px] text-slate-500 mt-1">
-                        {apt.consultationMode === 'in-person' ? (
+                        {apt.consultationMode === "in-person" ? (
                           <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-emerald-50 text-emerald-700 rounded-xs border border-emerald-200">
                             <MapPin className="w-3 h-3" />
                             <span>In-Person Chamber</span>
@@ -436,7 +465,10 @@ export const DashboardAppointmentsPage: React.FC = () => {
                         <span>{apt.preferredDate}</span>
                       </div>
                       <div className="text-[11px] text-slate-500 mt-0.5">
-                        Slot: <strong className="text-slate-700">{apt.preferredTime}</strong>
+                        Slot:{" "}
+                        <strong className="text-slate-700">
+                          {apt.preferredTime}
+                        </strong>
                       </div>
                     </td>
 
@@ -445,16 +477,19 @@ export const DashboardAppointmentsPage: React.FC = () => {
                       <select
                         value={apt.status}
                         onChange={(e) =>
-                          handleStatusChange(apt.referenceCode, e.target.value as AppointmentStatus)
+                          handleStatusChange(
+                            apt.referenceCode,
+                            e.target.value as AppointmentStatus,
+                          )
                         }
                         className={`text-[11px] font-semibold uppercase tracking-wider py-1 px-2.5 rounded-xs border focus:outline-none cursor-pointer ${
-                          apt.status === 'pending'
-                            ? 'bg-amber-50 text-amber-800 border-amber-300'
-                            : apt.status === 'confirmed'
-                            ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
-                            : apt.status === 'completed'
-                            ? 'bg-blue-50 text-blue-800 border-blue-300'
-                            : 'bg-slate-100 text-slate-700 border-slate-300'
+                          apt.status === "pending"
+                            ? "bg-amber-50 text-amber-800 border-amber-300"
+                            : apt.status === "confirmed"
+                              ? "bg-emerald-50 text-emerald-800 border-emerald-300"
+                              : apt.status === "completed"
+                                ? "bg-blue-50 text-blue-800 border-blue-300"
+                                : "bg-slate-100 text-slate-700 border-slate-300"
                         }`}
                       >
                         <option value="pending">Pending</option>
@@ -470,7 +505,7 @@ export const DashboardAppointmentsPage: React.FC = () => {
                         <button
                           onClick={() => {
                             setSelectedAppointment(apt);
-                            setAdvocateNotesDraft(apt.advocateNotes || '');
+                            setAdvocateNotesDraft(apt.advocateNotes || "");
                             setIsDetailModalOpen(true);
                           }}
                           className="px-2.5 py-1 text-xs font-semibold bg-[#101C2C] text-white hover:bg-[#17283F] rounded-xs transition-colors cursor-pointer"
@@ -503,7 +538,9 @@ export const DashboardAppointmentsPage: React.FC = () => {
               <div>
                 <div className="flex items-center gap-2 text-xs text-[#C7A56A] font-semibold uppercase tracking-wider mb-1">
                   <CalendarCheck className="w-4 h-4" />
-                  <span>Case Matter File · {selectedAppointment.referenceCode}</span>
+                  <span>
+                    Case Matter File · {selectedAppointment.referenceCode}
+                  </span>
                 </div>
                 <h3 className="font-serif text-xl sm:text-2xl font-bold text-white">
                   {selectedAppointment.fullName}
@@ -522,29 +559,38 @@ export const DashboardAppointmentsPage: React.FC = () => {
               {/* Top Summary Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-[#FAF8F5] p-4 rounded-sm border border-slate-200">
                 <div>
-                  <div className="text-[11px] text-slate-500 uppercase font-semibold">Contact Phone</div>
+                  <div className="text-[11px] text-slate-500 uppercase font-semibold">
+                    Contact Phone
+                  </div>
                   <div className="text-sm font-semibold text-slate-900 mt-0.5">
                     {selectedAppointment.phone}
                   </div>
                 </div>
                 <div>
-                  <div className="text-[11px] text-slate-500 uppercase font-semibold">Email Address</div>
+                  <div className="text-[11px] text-slate-500 uppercase font-semibold">
+                    Email Address
+                  </div>
                   <div className="text-sm font-semibold text-slate-900 mt-0.5">
-                    {selectedAppointment.email || 'Not provided'}
+                    {selectedAppointment.email || "Not provided"}
                   </div>
                 </div>
                 <div>
-                  <div className="text-[11px] text-slate-500 uppercase font-semibold">Scheduled Date &amp; Time</div>
+                  <div className="text-[11px] text-slate-500 uppercase font-semibold">
+                    Scheduled Date &amp; Time
+                  </div>
                   <div className="text-sm font-semibold text-[#101C2C] mt-0.5">
-                    {selectedAppointment.preferredDate} at {selectedAppointment.preferredTime}
+                    {selectedAppointment.preferredDate} at{" "}
+                    {selectedAppointment.preferredTime}
                   </div>
                 </div>
                 <div>
-                  <div className="text-[11px] text-slate-500 uppercase font-semibold">Consultation Mode</div>
+                  <div className="text-[11px] text-slate-500 uppercase font-semibold">
+                    Consultation Mode
+                  </div>
                   <div className="text-sm font-semibold text-slate-900 mt-0.5 capitalize">
-                    {selectedAppointment.consultationMode === 'in-person'
-                      ? 'In-Person Chamber (Tokha)'
-                      : 'Online Video / Phone'}
+                    {selectedAppointment.consultationMode === "in-person"
+                      ? "In-Person Chamber (Tokha)"
+                      : "Online Video / Phone"}
                   </div>
                 </div>
               </div>
@@ -552,16 +598,28 @@ export const DashboardAppointmentsPage: React.FC = () => {
               {/* Practice Area & Fee */}
               <div className="flex flex-wrap items-center justify-between gap-4 p-3 bg-white border border-slate-200 rounded-sm">
                 <div>
-                  <span className="text-[11px] text-slate-500 block">Practice Area Category</span>
-                  <strong className="text-slate-900 text-sm">{selectedAppointment.serviceCategory}</strong>
+                  <span className="text-[11px] text-slate-500 block">
+                    Practice Area Category
+                  </span>
+                  <strong className="text-slate-900 text-sm">
+                    {selectedAppointment.serviceCategory}
+                  </strong>
                 </div>
                 <div>
-                  <span className="text-[11px] text-slate-500 block">Consultation Fee</span>
-                  <strong className="text-[#C7A56A] text-sm">NPR {selectedAppointment.feeAmount}</strong>
+                  <span className="text-[11px] text-slate-500 block">
+                    Consultation Fee
+                  </span>
+                  <strong className="text-[#C7A56A] text-sm">
+                    NPR {selectedAppointment.feeAmount}
+                  </strong>
                 </div>
                 <div>
-                  <span className="text-[11px] text-slate-500 block">Status</span>
-                  <span className="font-semibold uppercase text-xs">{selectedAppointment.status}</span>
+                  <span className="text-[11px] text-slate-500 block">
+                    Status
+                  </span>
+                  <span className="font-semibold uppercase text-xs">
+                    {selectedAppointment.status}
+                  </span>
                 </div>
               </div>
 
@@ -571,7 +629,8 @@ export const DashboardAppointmentsPage: React.FC = () => {
                   Client Stated Legal Issue / Notes
                 </label>
                 <div className="p-3.5 bg-slate-50 rounded-sm border border-slate-200 text-slate-800 leading-relaxed">
-                  {selectedAppointment.notes || 'No preliminary notes provided.'}
+                  {selectedAppointment.notes ||
+                    "No preliminary notes provided."}
                 </div>
               </div>
 
@@ -579,7 +638,9 @@ export const DashboardAppointmentsPage: React.FC = () => {
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-slate-800 mb-1.5 flex items-center justify-between">
                   <span>Advocate Internal Notes &amp; Preparation</span>
-                  <span className="text-[11px] text-slate-400 font-normal">Confidential chamber use</span>
+                  <span className="text-[11px] text-slate-400 font-normal">
+                    Confidential chamber use
+                  </span>
                 </label>
                 <textarea
                   rows={3}
@@ -608,7 +669,7 @@ export const DashboardAppointmentsPage: React.FC = () => {
                     <span>Call Client</span>
                   </a>
                   <a
-                    href={`https://wa.me/${selectedAppointment.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Namaste ${selectedAppointment.fullName}, this is Raut Legal Associates regarding your appointment ${selectedAppointment.referenceCode}.`)}`}
+                    href={`https://wa.me/${selectedAppointment.phone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Namaste ${selectedAppointment.fullName}, this is Raut Legal Associates regarding your appointment ${selectedAppointment.referenceCode}.`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-3.5 py-2 bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-sm font-semibold flex items-center gap-1.5"
@@ -620,13 +681,23 @@ export const DashboardAppointmentsPage: React.FC = () => {
 
                 <div className="flex items-center gap-2">
                   <button
-                    onClick={() => handleStatusChange(selectedAppointment.referenceCode, 'confirmed')}
+                    onClick={() =>
+                      handleStatusChange(
+                        selectedAppointment.referenceCode,
+                        "confirmed",
+                      )
+                    }
                     className="px-3 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-sm font-semibold"
                   >
                     Confirm
                   </button>
                   <button
-                    onClick={() => handleStatusChange(selectedAppointment.referenceCode, 'completed')}
+                    onClick={() =>
+                      handleStatusChange(
+                        selectedAppointment.referenceCode,
+                        "completed",
+                      )
+                    }
                     className="px-3 py-2 bg-[#101C2C] hover:bg-[#17283F] text-white rounded-sm font-semibold"
                   >
                     Complete
@@ -661,7 +732,10 @@ export const DashboardAppointmentsPage: React.FC = () => {
             </div>
 
             {/* Form */}
-            <form onSubmit={handleAddAppointmentSubmit} className="p-6 space-y-4 text-xs text-slate-700">
+            <form
+              onSubmit={handleAddAppointmentSubmit}
+              className="p-6 space-y-4 text-xs text-slate-700"
+            >
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">
                   Client Full Name <span className="text-rose-600">*</span>
@@ -743,13 +817,21 @@ export const DashboardAppointmentsPage: React.FC = () => {
                     onChange={(e) => setNewTime(e.target.value)}
                     className="w-full px-3 py-2 bg-white border border-slate-300 text-xs rounded-sm text-slate-900 focus:outline-none focus:border-[#C7A56A]"
                   >
-                    <option value="08:30 AM">08:30 AM - Early Morning Slot</option>
+                    <option value="08:30 AM">
+                      08:30 AM - Early Morning Slot
+                    </option>
                     <option value="09:30 AM">09:30 AM - Morning Slot</option>
-                    <option value="10:30 AM">10:30 AM - Mid-Morning Slot</option>
-                    <option value="11:30 AM">11:30 AM - Late Morning Slot</option>
+                    <option value="10:30 AM">
+                      10:30 AM - Mid-Morning Slot
+                    </option>
+                    <option value="11:30 AM">
+                      11:30 AM - Late Morning Slot
+                    </option>
                     <option value="01:30 PM">01:30 PM - Afternoon Slot</option>
                     <option value="03:00 PM">03:00 PM - Afternoon Slot</option>
-                    <option value="04:30 PM">04:30 PM - Late Afternoon Slot</option>
+                    <option value="04:30 PM">
+                      04:30 PM - Late Afternoon Slot
+                    </option>
                     <option value="05:30 PM">05:30 PM - Evening Slot</option>
                   </select>
                 </div>
@@ -765,8 +847,8 @@ export const DashboardAppointmentsPage: React.FC = () => {
                       type="radio"
                       name="mode"
                       value="in-person"
-                      checked={newMode === 'in-person'}
-                      onChange={() => setNewMode('in-person')}
+                      checked={newMode === "in-person"}
+                      onChange={() => setNewMode("in-person")}
                       className="text-[#C7A56A] focus:ring-[#C7A56A]"
                     />
                     <span>In-Person Chamber (Tokha)</span>
@@ -776,8 +858,8 @@ export const DashboardAppointmentsPage: React.FC = () => {
                       type="radio"
                       name="mode"
                       value="online"
-                      checked={newMode === 'online'}
-                      onChange={() => setNewMode('online')}
+                      checked={newMode === "online"}
+                      onChange={() => setNewMode("online")}
                       className="text-[#C7A56A] focus:ring-[#C7A56A]"
                     />
                     <span>Online (Video / Phone Call)</span>

@@ -1,28 +1,28 @@
-import React, { useEffect } from 'react';
-import { X } from 'lucide-react';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { closeAppointmentModal } from './appointmentSlice';
-import { AppointmentForm } from './AppointmentForm';
+import React, { useEffect } from "react";
+import { X } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { closeAppointmentModal } from "./appointmentSlice";
+import { AppointmentForm } from "./AppointmentForm";
 
 export const AppointmentModal: React.FC = () => {
   const dispatch = useAppDispatch();
   const { isModalOpen, preselectedCategory } = useAppSelector(
-    (state) => state.appointmentUi
+    (state) => state.appointmentUi,
   );
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isModalOpen) {
+      if (e.key === "Escape" && isModalOpen) {
         dispatch(closeAppointmentModal());
       }
     };
     if (isModalOpen) {
-      document.body.style.overflow = 'hidden';
-      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleKeyDown);
     }
     return () => {
-      document.body.style.overflow = 'auto';
-      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = "auto";
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isModalOpen, dispatch]);
 
@@ -41,7 +41,10 @@ export const AppointmentModal: React.FC = () => {
             <span className="text-[10px] uppercase tracking-widest text-[#B38E51] font-semibold block">
               Consultation Fee: NPR 500
             </span>
-            <h3 id="modal-title" className="font-serif text-xl sm:text-2xl font-bold text-[#101C2C]">
+            <h3
+              id="modal-title"
+              className="font-serif text-xl sm:text-2xl font-bold text-[#101C2C]"
+            >
               Book an Advocate Consultation
             </h3>
           </div>
