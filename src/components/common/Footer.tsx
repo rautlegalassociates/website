@@ -21,10 +21,10 @@ export const Footer: React.FC = () => {
             </Link>
 
             <p className="text-xs text-slate-400 leading-relaxed mt-2">
-              Providing strategic legal counsel, dispute resolution, contract
-              formulation, and advocate representation in Kathmandu, Nepal.
-              Grounded in integrity, thorough preparation, and client-centered
-              diligence.
+              Premier matrimonial law chambers in Kathmandu specializing in
+              fast-track divorce, court marriage registration, custody, and
+              property division, with full-spectrum advisory in corporate,
+              property, and civil litigation.
             </p>
 
             <div className="mt-2 pt-3 border-t border-slate-800/80 text-xs text-slate-300">

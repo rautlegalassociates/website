@@ -29,7 +29,63 @@ interface ChatMessage {
   timestamp: string;
   isConfirmationCard?: boolean;
   appointmentData?: Partial<AppointmentRequest>;
+  isTyping?: boolean;
 }
+
+interface TypewriterMessageProps {
+  text: string;
+  onComplete: () => void;
+  onTick?: () => void;
+}
+
+const TypewriterMessage: React.FC<TypewriterMessageProps> = ({
+  text,
+  onComplete,
+  onTick,
+}) => {
+  const [displayedText, setDisplayedText] = useState("");
+  const onCompleteRef = useRef(onComplete);
+  const onTickRef = useRef(onTick);
+
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+    onTickRef.current = onTick;
+  });
+
+  useEffect(() => {
+    let index = 0;
+    let tickCount = 0;
+    const interval = setInterval(() => {
+      // Advance by 3 characters per tick for smooth, responsive typing
+      index += 3;
+      tickCount++;
+      if (index >= text.length) {
+        setDisplayedText(text);
+        clearInterval(interval);
+        onCompleteRef.current?.();
+      } else {
+        setDisplayedText(text.slice(0, index));
+        if (tickCount % 2 === 0) {
+          onTickRef.current?.();
+        }
+      }
+    }, 12);
+
+    return () => clearInterval(interval);
+  }, [text]);
+
+  return (
+    <span>
+      {displayedText}
+      {displayedText.length < text.length && (
+        <span
+          className="inline-block w-1.5 h-3.5 bg-[#C7A56A] ml-0.5 animate-pulse align-middle rounded-xs"
+          aria-hidden="true"
+        />
+      )}
+    </span>
+  );
+};
 
 type BookingStep =
   | "IDLE"
@@ -90,6 +146,7 @@ export const Chatbot: React.FC = () => {
   ]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Auto-scroll on new messages
@@ -117,6 +174,13 @@ export const Chatbot: React.FC = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen]);
 
+  // Helper to mark typing effect complete for a message
+  const markMessageComplete = (id: string) => {
+    setMessages((prev) =>
+      prev.map((m) => (m.id === id ? { ...m, isTyping: false } : m)),
+    );
+  };
+
   // Helper to append a user message
   const addUserMessage = (text: string) => {
     const userMsg: ChatMessage = {
@@ -137,9 +201,10 @@ export const Chatbot: React.FC = () => {
     text: string,
     isCard = false,
     appointmentData?: Partial<AppointmentRequest>,
+    shouldType = true,
   ) => {
     const botMsg: ChatMessage = {
-      id: `bot_${Date.now()}`,
+      id: `bot_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
       role: "model",
       text,
       timestamp: new Date().toLocaleTimeString([], {
@@ -148,6 +213,7 @@ export const Chatbot: React.FC = () => {
       }),
       isConfirmationCard: isCard,
       appointmentData,
+      isTyping: shouldType && !isCard,
     };
     setMessages((prev) => [...prev, botMsg]);
     return botMsg;
@@ -550,7 +616,10 @@ export const Chatbot: React.FC = () => {
           </div>
 
           {/* Messages Thread */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs">
+          <div
+            ref={messagesContainerRef}
+            className="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs"
+          >
             {messages.map((msg) => {
               const isUser = msg.role === "user";
               return (
@@ -561,13 +630,34 @@ export const Chatbot: React.FC = () => {
                   {/* Normal Text Message */}
                   {!msg.isConfirmationCard ? (
                     <div
+                      onClick={() => {
+                        if (msg.isTyping) markMessageComplete(msg.id);
+                      }}
                       className={`max-w-[88%] rounded-sm p-3.5 leading-relaxed whitespace-pre-wrap ${
                         isUser
                           ? "bg-[#101C2C] text-[#F7F5F0] border border-[#223A5C]"
                           : "bg-white text-slate-800 border border-slate-200 shadow-2xs"
-                      }`}
+                      } ${msg.isTyping ? "cursor-pointer" : ""}`}
+                      title={
+                        msg.isTyping
+                          ? "Click to display entire response immediately"
+                          : undefined
+                      }
                     >
-                      {msg.text}
+                      {msg.role === "model" && msg.isTyping ? (
+                        <TypewriterMessage
+                          text={msg.text}
+                          onComplete={() => markMessageComplete(msg.id)}
+                          onTick={() => {
+                            if (messagesContainerRef.current) {
+                              messagesContainerRef.current.scrollTop =
+                                messagesContainerRef.current.scrollHeight;
+                            }
+                          }}
+                        />
+                      ) : (
+                        msg.text
+                      )}
                     </div>
                   ) : (
                     /* In-Chat Official Booking Confirmation Card */

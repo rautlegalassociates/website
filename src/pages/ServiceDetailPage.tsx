@@ -11,6 +11,8 @@ import {
   Phone,
   ArrowRight,
   ListChecks,
+  Clock,
+  Sparkles,
 } from "lucide-react";
 import { SEOHead } from "../components/common/SEOHead";
 
@@ -132,9 +134,24 @@ export const ServiceDetailPage: React.FC = () => {
         {/* Hero Section */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start pb-16 border-b border-[#E2DBCD]">
           <div className="lg:col-span-8">
-            <span className="text-xs uppercase tracking-widest text-[#B38E51] font-semibold block mb-2">
-              Practice Discipline · Nepal Legal Framework
-            </span>
+            <div className="flex flex-wrap items-center gap-2 mb-3">
+              <span className="text-xs uppercase tracking-widest text-[#B38E51] font-semibold">
+                {practiceArea.category === "matrimonial"
+                  ? "Primary Specialization · Divorce & Matrimonial Law"
+                  : "Practice Discipline · Nepal Legal Framework"}
+              </span>
+              {practiceArea.badge && (
+                <span className="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-[#101C2C] text-[#C7A56A] rounded-xs border border-[#C7A56A]/40">
+                  {practiceArea.badge}
+                </span>
+              )}
+              {practiceArea.highlightTimeline && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xs">
+                  <Clock className="w-3 h-3 text-emerald-600" />
+                  <span>{practiceArea.highlightTimeline}</span>
+                </span>
+              )}
+            </div>
             <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-[#101C2C] leading-tight">
               {practiceArea.title}
             </h1>

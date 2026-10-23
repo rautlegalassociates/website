@@ -9,7 +9,6 @@ import {
   ExternalLink,
   Menu,
   X,
-  Shield,
   Clock,
 } from "lucide-react";
 import { BrandLogo } from "../components/common/BrandLogo";

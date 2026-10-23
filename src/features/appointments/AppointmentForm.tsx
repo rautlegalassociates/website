@@ -299,14 +299,23 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
               }`}
             >
               <option value="">-- Select Legal Practice Category --</option>
-              {PRACTICE_AREAS.map((area) => (
-                <option key={area.id} value={area.title}>
-                  {area.title}
+              <optgroup label="Primary Specialization: Divorce & Family Law">
+                {PRACTICE_AREAS.filter((a) => a.category === "matrimonial").map((area) => (
+                  <option key={area.id} value={area.title}>
+                    {area.title} {area.badge ? `(${area.badge})` : ""}
+                  </option>
+                ))}
+              </optgroup>
+              <optgroup label="Secondary Practice Disciplines">
+                {PRACTICE_AREAS.filter((a) => a.category !== "matrimonial").map((area) => (
+                  <option key={area.id} value={area.title}>
+                    {area.title}
+                  </option>
+                ))}
+                <option value="General Legal Opinion">
+                  General Legal Opinion / Notary Consultation
                 </option>
-              ))}
-              <option value="General Legal Opinion">
-                General Legal Opinion / Notary Consultation
-              </option>
+              </optgroup>
             </select>
           </div>
           {errors.serviceCategory && (

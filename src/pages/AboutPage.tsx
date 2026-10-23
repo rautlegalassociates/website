@@ -54,8 +54,9 @@ export const AboutPage: React.FC = () => {
             About Raut Legal Associates
           </h1>
           <p className="mt-4 text-lg text-slate-700 leading-relaxed font-light">
-            Providing structured legal counsel, court advocacy, and commercial
-            advisory to individuals, businesses, and institutions across Nepal.
+            Premier matrimonial advocates specializing in divorce, court marriage,
+            and family dispute resolution in Nepal, alongside established practice in
+            corporate, property, and civil litigation.
           </p>
         </div>
 
@@ -66,17 +67,19 @@ export const AboutPage: React.FC = () => {
               Founded on Responsible Representation & Legal Rigor
             </h2>
             <p>
-              Raut Legal Associates is a modern law firm headquartered in
-              Basundhara-5, Tokha, Kathmandu. We were established to bridge the
-              gap between high-calibre statutory precision and transparent,
-              client-centred legal problem-solving.
+              Raut Legal Associates is a leading law firm headquartered in
+              Basundhara-5, Tokha, Kathmandu. We are widely recognized for our
+              specialized matrimonial and family law practice—guiding clients through
+              fast-track mutual consent divorce (2–3 days), court marriage
+              registration for Nepalis and foreign nationals, child custody, and
+              property partition under the Muluki Civil Code 2074.
             </p>
             <p>
-              In an evolving economic and regulatory climate in Nepal,
-              individuals and enterprises face increasingly nuanced legal
-              questions—from complex land title verifications and corporate
-              filings at the Office of Company Registrar to delicate matrimonial
-              divisions and commercial arbitration.
+              In addition to our matrimonial leadership, our chambers maintain a
+              robust civil and commercial practice, assisting clients with
+              corporate compliance at the Office of Company Registrar, land title
+              due diligence, commercial agreements, and trial representation across
+              Kathmandu District Court, the High Court Patan, and the Supreme Court of Nepal.
             </p>
             <p>
               Our firm approaches every legal matter with disciplined

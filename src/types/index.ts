@@ -13,6 +13,9 @@ export interface PracticeArea {
   shortDescription: string;
   overview: string;
   iconName: string;
+  category?: "matrimonial" | "secondary";
+  badge?: string;
+  highlightTimeline?: string;
   commonIssues: string[];
   howWeAssist: string[];
   processSteps: { title: string; description: string }[];

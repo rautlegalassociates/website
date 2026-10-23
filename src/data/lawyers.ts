@@ -29,7 +29,6 @@ export const LAWYERS: Lawyer[] = [
       "[Editable Placeholder: Nepal Bar Council Registration No. Verified on request]",
     languages: ["English", "Nepali", "Maithili / Bhojpuri (Conversational)"],
     officeLocation: "Basundhara-5, Tokha, Kathmandu, Nepal",
-    imageUrl: "/images/lawyers/adv-sahil-raut.svg",
   },
   {
     id: "avishek-raut",

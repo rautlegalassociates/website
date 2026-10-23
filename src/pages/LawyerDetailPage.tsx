@@ -38,8 +38,8 @@ export const LawyerDetailPage: React.FC = () => {
         description={`${lawyer.shortBio.slice(0, 85)} Practice: ${lawyer.practiceAreas.slice(0, 2).join(", ")}. Book consultation for NPR 500.`}
         canonicalPath={`/team/${lawyer.slug}`}
         ogType="profile"
-        ogImage={lawyer.imageUrl || "/og-image.svg"}
-        ogImageAlt={`${lawyer.name} — Profile Portrait`}
+        ogImage="/og-image.svg"
+        ogImageAlt={`${lawyer.name} — Profile`}
         keywords={[
           lawyer.name,
           `${lawyer.name} Kathmandu`,
@@ -54,9 +54,6 @@ export const LawyerDetailPage: React.FC = () => {
               "@type": "Person",
               name: lawyer.name,
               jobTitle: lawyer.designation,
-              ...(lawyer.imageUrl
-                ? { image: `https://rautlegalassociates.com${lawyer.imageUrl}` }
-                : {}),
               worksFor: {
                 "@type": "LegalService",
                 name: "Raut Legal Associates",
@@ -111,23 +108,12 @@ export const LawyerDetailPage: React.FC = () => {
 
         {/* Profile Header Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start pb-16 border-b border-[#E2DBCD]">
-          {/* Left Column: Portrait Monogram or Photo Card */}
+          {/* Left Column: Portrait Monogram Card */}
           <div className="lg:col-span-4">
             <div className="bg-[#101C2C] rounded-sm p-8 text-center border border-[#C7A56A]/50 shadow-sm">
-              {lawyer.imageUrl ? (
-                <div className="w-44 h-44 rounded-full border-3 border-[#C7A56A] overflow-hidden mx-auto mb-6 shadow-xl relative bg-[#17283F] group">
-                  <img
-                    src={lawyer.imageUrl}
-                    alt={`${lawyer.name} - Profile Portrait`}
-                    className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-              ) : (
-                <div className="w-32 h-32 rounded-full border-2 border-[#C7A56A]/60 bg-[#17283F] flex items-center justify-center text-[#C7A56A] font-serif font-bold text-4xl mx-auto mb-6 shadow-inner">
-                  {initials}
-                </div>
-              )}
+              <div className="w-32 h-32 rounded-full border-2 border-[#C7A56A]/60 bg-[#17283F] flex items-center justify-center text-[#C7A56A] font-serif font-bold text-4xl mx-auto mb-6 shadow-inner">
+                {initials}
+              </div>
 
               <div className="text-xs uppercase tracking-widest text-[#C7A56A] font-semibold flex items-center justify-center gap-1.5 mb-1">
                 <Scale className="w-3.5 h-3.5" />

@@ -2,10 +2,15 @@ export const FIRM_DETAILS = {
   name: "Raut Legal Associates",
   shortName: "RLA",
   motto: "Your Rights · Our Priority",
-  corePillars: ["Corporate", "Civil", "Criminal", "Advisory"],
-  tagline: "Trusted Legal Counsel. Stronger Foundations for Your Future.",
+  corePillars: [
+    "Divorce & Family Law",
+    "Court Marriage",
+    "Child Custody & Property",
+    "Corporate & Civil Advisory",
+  ],
+  tagline: "Specialized Divorce & Marriage Lawyers in Kathmandu, Nepal.",
   subTagline:
-    "Thoughtful legal guidance, strategic representation, and practical solutions for individuals, businesses, and institutions across Nepal.",
+    "Confidential, compassionate, and decisive counsel for mutual consent divorce, contested divorce, court marriage registration, child custody, and property partition under the Muluki Civil Code 2074.",
   phone: "+9779706410516",
   phoneDisplay: "+977 9706410516",
   address: "Basundhara-5, Tokha, Kathmandu, Nepal",
@@ -24,9 +29,9 @@ export const FIRM_DETAILS = {
   email: "rautlegalassociates@gmail.com",
   officialEmailPlaceholder: "rautlegalassociates@gmail.com",
   feePolicyNotice:
-    "Initial legal consultation fee is NPR 500. This nominal fee covers an preliminary assessment of your legal documents and matter. Submitting an inquiry or paying the consultation fee does not create an advocate-client representation agreement until formally agreed upon in writing.",
+    "Initial legal consultation fee is NPR 500. This nominal fee covers an preliminary assessment of your legal documents, marriage certificates, or family dispute. Submitting an inquiry or paying the consultation fee does not create an advocate-client representation agreement until formally agreed upon in writing.",
   disclaimer:
-    "The legal information presented on this website is for general informational and educational purposes only and does not constitute formal legal counsel. Prior results or general overviews do not guarantee future case outcomes. Consult a licensed advocate in Nepal for advice regarding your specific circumstances.",
+    "The legal information presented on this website is for general informational and educational purposes regarding Nepalese family law, divorce proceedings, and court marriage under the Muluki Civil Code 2074. It does not constitute formal legal counsel. Prior results or general overviews do not guarantee future case outcomes. Consult a licensed advocate in Nepal for advice regarding your specific circumstances.",
 };
 
 export const CORE_VALUES = [
