@@ -70,7 +70,9 @@ export const LoginPage: React.FC = () => {
         loginStaff(staffObj, response.token);
         navigate(from, { replace: true });
       } else {
-        setError(response.error || "Authentication failed. Please verify credentials.");
+        setError(
+          response.error || "Authentication failed. Please verify credentials.",
+        );
       }
     } catch (err: any) {
       console.error("Login failure:", err);

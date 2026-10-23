@@ -296,10 +296,7 @@ export const DashboardOverviewPage: React.FC = () => {
                     {apt.status === "pending" && (
                       <button
                         onClick={() =>
-                          handleQuickStatusChange(
-                            apt.id,
-                            "confirmed",
-                          )
+                          handleQuickStatusChange(apt.id, "confirmed")
                         }
                         className="px-2.5 py-1 text-[11px] font-semibold bg-emerald-700 hover:bg-emerald-800 text-white rounded-xs transition-colors cursor-pointer"
                       >
@@ -309,10 +306,7 @@ export const DashboardOverviewPage: React.FC = () => {
                     {apt.status === "confirmed" && (
                       <button
                         onClick={() =>
-                          handleQuickStatusChange(
-                            apt.id,
-                            "completed",
-                          )
+                          handleQuickStatusChange(apt.id, "completed")
                         }
                         className="px-2.5 py-1 text-[11px] font-semibold bg-[#101C2C] hover:bg-[#17283F] text-white rounded-xs transition-colors cursor-pointer"
                       >

@@ -137,7 +137,9 @@ export const DashboardSettingsPage: React.FC = () => {
               <span>Real-time Cloud Firebase Firestore Active</span>
             </div>
             <p className="text-slate-600 leading-relaxed text-[11px]">
-              All appointments and client inquiries are directly synchronized with Cloud Firestore via the secure backend REST API. Client-side local storage has been removed.
+              All appointments and client inquiries are directly synchronized
+              with Cloud Firestore via the secure backend REST API. Client-side
+              local storage has been removed.
             </p>
           </div>
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import {
   CalendarCheck,
   Search,
@@ -116,9 +116,7 @@ export const DashboardAppointmentsPage: React.FC = () => {
 
   // Handle delete
   const handleDelete = async (appointmentId: string) => {
-    if (
-      window.confirm(`Are you sure you want to delete this appointment?`)
-    ) {
+    if (window.confirm(`Are you sure you want to delete this appointment?`)) {
       await deleteAppointment(appointmentId);
       if (selectedAppointment?.id === appointmentId) {
         setIsDetailModalOpen(false);
@@ -627,10 +625,7 @@ export const DashboardAppointmentsPage: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() =>
-                      handleStatusChange(
-                        selectedAppointment.id,
-                        "confirmed",
-                      )
+                      handleStatusChange(selectedAppointment.id, "confirmed")
                     }
                     className="px-3 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-sm font-semibold cursor-pointer"
                   >
@@ -638,10 +633,7 @@ export const DashboardAppointmentsPage: React.FC = () => {
                   </button>
                   <button
                     onClick={() =>
-                      handleStatusChange(
-                        selectedAppointment.id,
-                        "completed",
-                      )
+                      handleStatusChange(selectedAppointment.id, "completed")
                     }
                     className="px-3 py-2 bg-[#101C2C] hover:bg-[#17283F] text-white rounded-sm font-semibold cursor-pointer"
                   >

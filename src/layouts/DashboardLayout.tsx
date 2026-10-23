@@ -13,7 +13,11 @@ import {
   Clock,
 } from "lucide-react";
 import { BrandLogo } from "../components/common/BrandLogo";
-import { getActiveSession, logoutStaff, StaffUser } from "../services/dashboardStorage";
+import {
+  getActiveSession,
+  logoutStaff,
+  StaffUser,
+} from "../services/dashboardStorage";
 import { useGetAppointmentsQuery } from "../services/appointmentApi";
 import { useGetContactInquiriesQuery } from "../services/contactApi";
 import { useLogoutStaffMutation } from "../services/authApi";
@@ -114,10 +118,6 @@ export const DashboardLayout: React.FC = () => {
               <Link to="/dashboard" className="flex items-center gap-2 group">
                 <BrandLogo variant="horizontal" theme="dark" />
               </Link>
-              <div className="hidden md:flex items-center gap-2 px-2.5 py-1 bg-[#17283F] border border-[#C7A56A]/30 rounded-xs text-[11px] text-[#C7A56A] font-semibold uppercase tracking-wider">
-                <Shield className="w-3 h-3" />
-                <span>Chamber Portal</span>
-              </div>
             </div>
 
             {/* Right: Date/Time, User profile, Website Link, Logout */}
