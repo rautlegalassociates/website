@@ -19,6 +19,8 @@ import { FIRM_DETAILS } from "../../data/firm";
 import { PRACTICE_AREAS } from "../../data/practiceAreas";
 import { BrandLogo } from "./BrandLogo";
 import { AppointmentRequest } from "../../types";
+import { useSubmitAppointmentMutation } from "../../services/appointmentApi";
+import { useSendChatMessageMutation } from "../../services/chatApi";
 
 interface ChatMessage {
   id: string;
@@ -61,30 +63,14 @@ const TIME_SLOTS = [
   "05:30 PM",
 ];
 
-// Helper to save appointments in localStorage
-const OWN_APPOINTMENTS_KEY = "rla_own_appointments";
-function saveToLocalStorage(appointment: AppointmentRequest) {
-  try {
-    const raw = localStorage.getItem(OWN_APPOINTMENTS_KEY);
-    const stored: Record<string, AppointmentRequest> = raw
-      ? JSON.parse(raw)
-      : {};
-    if (appointment.referenceCode) {
-      stored[appointment.referenceCode] = appointment;
-      localStorage.setItem(OWN_APPOINTMENTS_KEY, JSON.stringify(stored));
-      // Dispatch storage event so other components update if listening
-      window.dispatchEvent(new Event("storage"));
-    }
-  } catch (e) {
-    console.error("Failed to save appointment to local storage", e);
-  }
-}
-
 export const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+
+  const [submitAppointment] = useSubmitAppointmentMutation();
+  const [sendChatMessage] = useSendChatMessageMutation();
 
   // In-Chat Appointment Booking State Machine
   const [bookingStep, setBookingStep] = useState<BookingStep>("IDLE");
@@ -315,12 +301,9 @@ export const Chatbot: React.FC = () => {
   // Finalize and submit appointment
   const handleFinalSubmit = async () => {
     setIsLoading(true);
-    const randomCode = Math.floor(1000 + Math.random() * 9000);
-    const refCode = `RLA-2026-${randomCode}`;
 
     const appointmentPayload: AppointmentRequest = {
       id: `apt_${Date.now()}`,
-      referenceCode: refCode,
       fullName: bookingData.fullName || "Valued Client",
       phone: bookingData.phone || "",
       serviceCategory: bookingData.serviceCategory || "Legal Consultation",
@@ -335,19 +318,14 @@ export const Chatbot: React.FC = () => {
       createdAt: new Date().toISOString(),
     };
 
+    const refCode = appointmentPayload.id;
+
     try {
-      // Send to server endpoint
-      await fetch("/api/appointments", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(appointmentPayload),
-      });
+      // Send to server endpoint via RTK Query mutation
+      await submitAppointment(appointmentPayload).unwrap();
     } catch {
       // Continue even if network is restricted in demo mode
     }
-
-    // Save to local storage for site-wide continuity
-    saveToLocalStorage(appointmentPayload);
 
     setIsLoading(false);
     setBookingStep("IDLE");
@@ -401,28 +379,17 @@ export const Chatbot: React.FC = () => {
       const history = messages
         .filter((m) => m.id !== "welcome" && !m.isConfirmationCard)
         .map((m) => ({
-          role: m.role === "user" ? "user" : "model",
+          role: m.role === "user" ? ("user" as const) : ("model" as const),
           text: m.text,
         }));
 
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: messageContent,
-          history,
-        }),
-      });
+      const res = await sendChatMessage({
+        message: messageContent,
+        history,
+      }).unwrap();
 
-      if (!res.ok) {
-        throw new Error("Server error");
-      }
-
-      const data = await res.json();
       const replyText =
-        data.reply ||
+        res.reply ||
         "Thank you for your question. You can schedule an initial consultation (NPR 500) with our advocates directly in this chat or at /appointments.";
 
       addBotMessage(replyText);
@@ -613,29 +580,11 @@ export const Chatbot: React.FC = () => {
                       <div className="bg-[#FAF8F5] border border-[#E2DBCD] p-3 rounded-xs space-y-2">
                         <div className="flex items-center justify-between">
                           <span className="text-[10.5px] uppercase font-bold tracking-wider text-[#737780]">
-                            Reference Code
+                            Appointment Booking
                           </span>
-                          <div className="flex items-center gap-1.5">
-                            <span className="font-mono font-bold text-sm text-[#101C2C]">
-                              {msg.appointmentData?.referenceCode}
-                            </span>
-                            <button
-                              onClick={() =>
-                                copyRefCode(
-                                  msg.appointmentData?.referenceCode || "",
-                                )
-                              }
-                              className="p-1 text-slate-500 hover:text-slate-800 cursor-pointer"
-                              title="Copy Reference Code"
-                            >
-                              {copiedCode ===
-                              msg.appointmentData?.referenceCode ? (
-                                <Check className="w-3.5 h-3.5 text-emerald-600" />
-                              ) : (
-                                <Copy className="w-3.5 h-3.5" />
-                              )}
-                            </button>
-                          </div>
+                          <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-xs">
+                            Submitted
+                          </span>
                         </div>
 
                         <div className="pt-2 border-t border-slate-200 text-[11px] text-slate-700 grid grid-cols-2 gap-2">
@@ -695,7 +644,7 @@ export const Chatbot: React.FC = () => {
                       <div className="flex flex-col sm:flex-row gap-2 pt-1">
                         <a
                           href={`https://wa.me/${cleanPhone}?text=${encodeURIComponent(
-                            `Namaste, I booked a consultation via chatbot with Reference Code: ${msg.appointmentData?.referenceCode}. Client: ${msg.appointmentData?.fullName}. Please confirm my slot.`,
+                            `Namaste, I booked a consultation via chatbot. Client: ${msg.appointmentData?.fullName}. Please confirm my slot.`,
                           )}`}
                           target="_blank"
                           rel="noopener noreferrer"

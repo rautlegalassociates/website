@@ -59,7 +59,6 @@ export interface LegalArticle {
 
 export interface AppointmentRequest {
   id?: string;
-  referenceCode?: string;
   fullName: string;
   phone: string;
   email?: string;
@@ -76,7 +75,7 @@ export interface AppointmentRequest {
 
 export interface AppointmentResponse {
   success: boolean;
-  referenceCode: string;
+  id?: string;
   message: string;
   appointment: AppointmentRequest;
 }

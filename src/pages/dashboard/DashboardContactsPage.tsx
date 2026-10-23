@@ -11,32 +11,24 @@ import {
   X,
 } from "lucide-react";
 import {
-  getAllInquiries,
-  updateInquiryStatus,
-  deleteInquiry,
+  useGetContactInquiriesQuery,
+  useUpdateContactInquiryMutation,
+  useDeleteContactInquiryMutation,
   DashboardInquiry,
   InquiryStatus,
-} from "../../services/dashboardStorage";
+} from "../../services/contactApi";
 
 export const DashboardContactsPage: React.FC = () => {
-  const [inquiries, setInquiries] = useState<DashboardInquiry[]>([]);
+  const { data: inquiries = [], isLoading } = useGetContactInquiriesQuery();
+  const [updateInquiry] = useUpdateContactInquiryMutation();
+  const [deleteInquiry] = useDeleteContactInquiryMutation();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [selectedInquiry, setSelectedInquiry] =
     useState<DashboardInquiry | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [internalNotesDraft, setInternalNotesDraft] = useState("");
-
-  const loadInquiries = () => {
-    setInquiries(getAllInquiries());
-  };
-
-  useEffect(() => {
-    loadInquiries();
-    const handleStorage = () => loadInquiries();
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
-  }, []);
 
   const filteredInquiries = useMemo(() => {
     return inquiries.filter((inq) => {
@@ -55,9 +47,8 @@ export const DashboardContactsPage: React.FC = () => {
     });
   }, [inquiries, searchQuery, statusFilter]);
 
-  const handleStatusChange = (id: string, newStatus: InquiryStatus) => {
-    updateInquiryStatus(id, newStatus);
-    loadInquiries();
+  const handleStatusChange = async (id: string, newStatus: InquiryStatus) => {
+    await updateInquiry({ id, status: newStatus });
     if (selectedInquiry && selectedInquiry.id === id) {
       setSelectedInquiry((prev) =>
         prev ? { ...prev, status: newStatus } : null,
@@ -65,25 +56,23 @@ export const DashboardContactsPage: React.FC = () => {
     }
   };
 
-  const handleSaveInternalNotes = () => {
+  const handleSaveInternalNotes = async () => {
     if (!selectedInquiry) return;
-    updateInquiryStatus(
-      selectedInquiry.id,
-      selectedInquiry.status,
-      internalNotesDraft,
-    );
-    loadInquiries();
+    await updateInquiry({
+      id: selectedInquiry.id,
+      status: selectedInquiry.status,
+      internalNotes: internalNotesDraft,
+    });
     setSelectedInquiry((prev) =>
       prev ? { ...prev, internalNotes: internalNotesDraft } : null,
     );
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (
       window.confirm("Are you sure you want to delete this client inquiry?")
     ) {
-      deleteInquiry(id);
-      loadInquiries();
+      await deleteInquiry(id);
       if (selectedInquiry?.id === id) {
         setIsDetailModalOpen(false);
       }

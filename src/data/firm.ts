@@ -10,6 +10,10 @@ export const FIRM_DETAILS = {
   phoneDisplay: "+977 9706410516",
   address: "Basundhara-5, Tokha, Kathmandu, Nepal",
   locationCity: "Kathmandu, Nepal",
+  googleMapsUrl:
+    "https://www.google.com/maps/search/?api=1&query=Basundhara-5%2C+Tokha%2C+Kathmandu%2C+Nepal",
+  googleMapsEmbedUrl:
+    "https://maps.google.com/maps?q=Basundhara-5%2C%20Tokha%2C%20Kathmandu%2C%20Nepal&t=&z=16&ie=UTF8&iwloc=&output=embed",
   consultationFeeNPR: 500,
   consultationDuration: "30–45 minutes initial consultation",
   officeHours: "Sunday – Friday: 8:00 AM – 6:00 PM (Saturday Closed)",

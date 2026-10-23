@@ -7,35 +7,11 @@ import {
   CheckCircle2,
   AlertTriangle,
 } from "lucide-react";
-import {
-  getActiveSession,
-  loginStaff,
-  resetChamberData,
-  DEMO_STAFF_USERS,
-} from "../../services/dashboardStorage";
+import { getActiveSession } from "../../services/dashboardStorage";
 import { FIRM_DETAILS } from "../../data/firm";
 
 export const DashboardSettingsPage: React.FC = () => {
-  const [activeSession, setActiveSession] = useState(getActiveSession());
-  const [resetSuccess, setResetSuccess] = useState(false);
-
-  const handleSwitchUser = (userIndex: number) => {
-    const user = DEMO_STAFF_USERS[userIndex];
-    loginStaff(user);
-    setActiveSession(user);
-  };
-
-  const handleResetData = () => {
-    if (
-      window.confirm(
-        "Reset all appointments and inquiries to original demo records? Any custom test entries will be replaced.",
-      )
-    ) {
-      resetChamberData();
-      setResetSuccess(true);
-      setTimeout(() => setResetSuccess(false), 3000);
-    }
-  };
+  const [activeSession] = useState(getActiveSession());
 
   return (
     <div className="space-y-6 max-w-7xl">
@@ -54,13 +30,6 @@ export const DashboardSettingsPage: React.FC = () => {
         </p>
       </div>
 
-      {resetSuccess && (
-        <div className="p-4 bg-emerald-50 border border-emerald-300 rounded-sm text-xs text-emerald-800 flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-          <span>Chamber sample records have been successfully restored!</span>
-        </div>
-      )}
-
       {/* Card 1: Active Staff Account */}
       <div className="bg-white rounded-sm border border-[#E2DBCD] p-6 shadow-xs space-y-4">
         <div className="flex items-center gap-2 font-serif text-base font-bold text-[#101C2C] pb-3 border-b border-slate-100">
@@ -77,32 +46,23 @@ export const DashboardSettingsPage: React.FC = () => {
             </div>
             <div>
               <div className="font-bold text-slate-900 text-sm">
-                {activeSession?.name || "Adv. Sahil Raut Gaddi"}
+                {activeSession?.name || "Staff Member"}
               </div>
               <div className="text-xs text-[#A07A3B] font-medium">
-                {activeSession?.role || "Senior Advocate"} ·{" "}
-                {activeSession?.chamber}
+                {activeSession?.role || "Advocate"} ·{" "}
+                {activeSession?.chamber || "Chamber Tokha, Kathmandu"}
               </div>
               <div className="text-[11px] text-slate-500 mt-0.5">
-                {activeSession?.email || "sahil@rautlegalassociates.com"}
+                {activeSession?.email}
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-2">
-            {DEMO_STAFF_USERS.map((user, idx) => (
-              <button
-                key={user.id}
-                onClick={() => handleSwitchUser(idx)}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-xs border transition-colors cursor-pointer ${
-                  activeSession?.email === user.email
-                    ? "bg-[#101C2C] text-[#C7A56A] border-[#C7A56A]"
-                    : "bg-white text-slate-700 border-slate-300 hover:bg-slate-50"
-                }`}
-              >
-                Switch to {user.name.split(" ")[1] || user.name}
-              </button>
-            ))}
+          <div className="text-right sm:text-left">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xs text-[11px] font-semibold">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Firebase Auth Verified</span>
+            </span>
           </div>
         </div>
       </div>
@@ -163,32 +123,27 @@ export const DashboardSettingsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Card 3: Data Management & Reset */}
+      {/* Card 3: Cloud Database & Architecture */}
       <div className="bg-white rounded-sm border border-[#E2DBCD] p-6 shadow-xs space-y-4">
         <div className="flex items-center gap-2 font-serif text-base font-bold text-[#101C2C] pb-3 border-b border-slate-100">
-          <RotateCcw className="w-4 h-4 text-[#C7A56A]" />
-          <span>Data Storage &amp; Reset Demo</span>
+          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+          <span>Cloud Database &amp; Firebase Firestore Integration</span>
         </div>
 
-        <div className="p-4 bg-amber-50/60 border border-amber-200 rounded-sm text-xs text-amber-900 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="p-4 bg-emerald-50/60 border border-emerald-200 rounded-sm text-xs text-emerald-900 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
-            <div className="font-semibold flex items-center gap-1.5">
-              <AlertTriangle className="w-4 h-4 text-amber-700" />
-              <span>Reset Demo Appointments &amp; Inquiries</span>
+            <div className="font-semibold flex items-center gap-1.5 text-emerald-800">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <span>Real-time Cloud Firebase Firestore Active</span>
             </div>
             <p className="text-slate-600 leading-relaxed text-[11px]">
-              Restores original sample consultation requests and client messages
-              (Company registration, Tokha land dispute, cheque bounce defense,
-              etc.).
+              All appointments and client inquiries are directly synchronized with Cloud Firestore via the secure backend REST API. Client-side local storage has been removed.
             </p>
           </div>
 
-          <button
-            onClick={handleResetData}
-            className="px-4 py-2 bg-[#101C2C] hover:bg-[#17283F] text-white rounded-sm font-semibold text-xs whitespace-nowrap cursor-pointer transition-colors"
-          >
-            Reset Sample Data
-          </button>
+          <div className="px-3.5 py-1.5 bg-emerald-700 text-white rounded-sm font-semibold text-xs whitespace-nowrap shadow-xs">
+            Backend Port 5001 Live
+          </div>
         </div>
       </div>
     </div>

@@ -26,7 +26,7 @@ import {
 
 interface AppointmentFormProps {
   initialCategory?: string;
-  onSuccessCallback?: (refCode: string) => void;
+  onSuccessCallback?: (id?: string) => void;
 }
 
 export const AppointmentForm: React.FC<AppointmentFormProps> = ({
@@ -35,7 +35,7 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
 }) => {
   const { showToast } = useToast();
   const [submitAppointment, { isLoading }] = useSubmitAppointmentMutation();
-  const [submittedReference, setSubmittedReference] = useState<string | null>(
+  const [submittedAppointmentId, setSubmittedAppointmentId] = useState<string | null>(
     null,
   );
 
@@ -81,14 +81,15 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
       }).unwrap();
 
       if (response.success) {
-        setSubmittedReference(response.referenceCode);
+        const appointmentId = response.id || response.appointment?.id || "submitted";
+        setSubmittedAppointmentId(appointmentId);
         showToast({
           type: "success",
           title: "Appointment Request Submitted",
-          message: `Reference: ${response.referenceCode}. Awaiting confirmation by firm.`,
+          message: "Your consultation request has been submitted. Awaiting confirmation by firm.",
         });
         if (onSuccessCallback) {
-          onSuccessCallback(response.referenceCode);
+          onSuccessCallback(appointmentId);
         }
       }
     } catch (err: unknown) {
@@ -102,11 +103,11 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
   };
 
   const handleBookAnother = () => {
-    setSubmittedReference(null);
+    setSubmittedAppointmentId(null);
     reset();
   };
 
-  if (submittedReference) {
+  if (submittedAppointmentId) {
     return (
       <div className="bg-[#FAF8F5] border border-[#C7A56A]/50 rounded-sm p-8 sm:p-10 text-center max-w-xl mx-auto shadow-sm">
         <div className="w-16 h-16 rounded-full bg-[#101C2C] text-[#C7A56A] flex items-center justify-center mx-auto mb-6">
@@ -122,10 +123,10 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
 
         <div className="my-6 p-4 bg-[#EDE8DD] border border-[#C7A56A]/40 rounded-sm">
           <div className="text-xs text-slate-600 mb-1">
-            Your Appointment Reference:
+            Appointment Request Status:
           </div>
-          <div className="font-mono text-2xl font-bold text-[#101C2C] tracking-wider">
-            {submittedReference}
+          <div className="font-serif text-lg font-bold text-[#101C2C] tracking-wide">
+            Registered with Chamber
           </div>
         </div>
 

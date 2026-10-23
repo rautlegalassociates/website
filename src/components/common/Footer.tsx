@@ -139,7 +139,15 @@ export const Footer: React.FC = () => {
             <div className="flex flex-col gap-3 text-xs text-slate-300">
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#C7A56A] shrink-0 mt-0.5" />
-                <span className="leading-relaxed">{FIRM_DETAILS.address}</span>
+                <a
+                  href={FIRM_DETAILS.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="leading-relaxed hover:text-[#C7A56A] transition-colors"
+                  title="View chamber on Google Maps"
+                >
+                  {FIRM_DETAILS.address}
+                </a>
               </div>
 
               <div className="flex items-center gap-2.5">

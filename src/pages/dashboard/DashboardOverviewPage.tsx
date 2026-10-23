@@ -12,33 +12,23 @@ import {
   Phone,
   Scale,
 } from "lucide-react";
+import { getActiveSession } from "../../services/dashboardStorage";
 import {
-  getAllAppointments,
-  getAllInquiries,
-  getActiveSession,
-  DashboardAppointment,
-  DashboardInquiry,
-  updateAppointmentStatus,
-  updateInquiryStatus,
-} from "../../services/dashboardStorage";
+  useGetAppointmentsQuery,
+  useUpdateAppointmentMutation,
+} from "../../services/appointmentApi";
+import {
+  useGetContactInquiriesQuery,
+  useUpdateContactInquiryMutation,
+} from "../../services/contactApi";
 import { FIRM_DETAILS } from "../../data/firm";
 
 export const DashboardOverviewPage: React.FC = () => {
   const session = getActiveSession();
-  const [appointments, setAppointments] = useState<DashboardAppointment[]>([]);
-  const [inquiries, setInquiries] = useState<DashboardInquiry[]>([]);
-
-  const loadData = () => {
-    setAppointments(getAllAppointments());
-    setInquiries(getAllInquiries());
-  };
-
-  useEffect(() => {
-    loadData();
-    const handleStorage = () => loadData();
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
-  }, []);
+  const { data: appointments = [] } = useGetAppointmentsQuery();
+  const { data: inquiries = [] } = useGetContactInquiriesQuery();
+  const [updateAppointment] = useUpdateAppointmentMutation();
+  const [updateInquiry] = useUpdateContactInquiryMutation();
 
   // Compute metrics
   const totalAppointments = appointments.length;
@@ -57,21 +47,19 @@ export const DashboardOverviewPage: React.FC = () => {
   const totalFeeCollected =
     (confirmedAppointments.length + completedAppointments.length) * 500;
 
-  const handleQuickStatusChange = (
+  const handleQuickStatusChange = async (
     refCode: string,
     newStatus: "confirmed" | "completed" | "cancelled",
   ) => {
-    updateAppointmentStatus(refCode, newStatus);
-    loadData();
+    await updateAppointment({ idOrRef: refCode, status: newStatus });
   };
 
-  const handleMarkInquiryReplied = (id: string) => {
-    updateInquiryStatus(
+  const handleMarkInquiryReplied = async (id: string) => {
+    await updateInquiry({
       id,
-      "resolved",
-      "Marked as resolved from overview dashboard",
-    );
-    loadData();
+      status: "resolved",
+      internalNotes: "Marked as resolved from overview dashboard",
+    });
   };
 
   return (
@@ -245,9 +233,6 @@ export const DashboardOverviewPage: React.FC = () => {
                       <span className="font-semibold text-slate-900 text-sm">
                         {apt.fullName}
                       </span>
-                      <span className="font-mono text-[11px] font-semibold px-2 py-0.5 rounded-xs bg-[#EDE8DD] text-[#101C2C]">
-                        {apt.referenceCode}
-                      </span>
                     </div>
                     <div className="text-xs text-slate-500 mt-0.5 flex flex-wrap items-center gap-2">
                       <span className="text-[#A07A3B] font-medium">
@@ -312,7 +297,7 @@ export const DashboardOverviewPage: React.FC = () => {
                       <button
                         onClick={() =>
                           handleQuickStatusChange(
-                            apt.referenceCode,
+                            apt.id,
                             "confirmed",
                           )
                         }
@@ -325,7 +310,7 @@ export const DashboardOverviewPage: React.FC = () => {
                       <button
                         onClick={() =>
                           handleQuickStatusChange(
-                            apt.referenceCode,
+                            apt.id,
                             "completed",
                           )
                         }

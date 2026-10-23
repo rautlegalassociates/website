@@ -13,13 +13,10 @@ import {
   Clock,
 } from "lucide-react";
 import { BrandLogo } from "../components/common/BrandLogo";
-import {
-  getActiveSession,
-  logoutStaff,
-  getAllAppointments,
-  getAllInquiries,
-  StaffUser,
-} from "../services/dashboardStorage";
+import { getActiveSession, logoutStaff, StaffUser } from "../services/dashboardStorage";
+import { useGetAppointmentsQuery } from "../services/appointmentApi";
+import { useGetContactInquiriesQuery } from "../services/contactApi";
+import { useLogoutStaffMutation } from "../services/authApi";
 import { FIRM_DETAILS } from "../data/firm";
 
 export const DashboardLayout: React.FC = () => {
@@ -28,27 +25,19 @@ export const DashboardLayout: React.FC = () => {
   const [session, setSession] = useState<StaffUser | null>(getActiveSession());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState("");
-  const [pendingAppointmentsCount, setPendingAppointmentsCount] = useState(0);
-  const [unreadInquiriesCount, setUnreadInquiriesCount] = useState(0);
 
-  // Sync session and counts
-  const syncData = () => {
-    setSession(getActiveSession());
-    const apps = getAllAppointments();
-    const inqs = getAllInquiries();
-    setPendingAppointmentsCount(
-      apps.filter((a) => a.status === "pending").length,
-    );
-    setUnreadInquiriesCount(inqs.filter((i) => i.status === "unread").length);
-  };
+  const [logoutStaffMutation] = useLogoutStaffMutation();
+  const { data: appointments = [] } = useGetAppointmentsQuery();
+  const { data: inquiries = [] } = useGetContactInquiriesQuery();
+
+  const pendingAppointmentsCount = appointments.filter(
+    (a) => a.status === "pending",
+  ).length;
+  const unreadInquiriesCount = inquiries.filter(
+    (i) => i.status === "unread",
+  ).length;
 
   useEffect(() => {
-    syncData();
-
-    // Listen to local storage changes
-    const handleStorageChange = () => syncData();
-    window.addEventListener("storage", handleStorageChange);
-
     // Live clock
     const updateTime = () => {
       const now = new Date();
@@ -66,12 +55,16 @@ export const DashboardLayout: React.FC = () => {
     const interval = setInterval(updateTime, 1000 * 30);
 
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
       clearInterval(interval);
     };
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await logoutStaffMutation().unwrap();
+    } catch {
+      // Continue even if server logout request fails
+    }
     logoutStaff();
     navigate("/login", { replace: true });
   };

@@ -11,23 +11,25 @@ import {
   Mail,
   AlertCircle,
   MessageCircle,
-  Copy,
   Trash2,
   X,
 } from "lucide-react";
 import {
-  getAllAppointments,
-  saveAppointment,
-  updateAppointmentStatus,
-  deleteAppointment,
+  useGetAppointmentsQuery,
+  useSubmitAppointmentMutation,
+  useUpdateAppointmentMutation,
+  useDeleteAppointmentMutation,
   DashboardAppointment,
-} from "../../services/dashboardStorage";
+} from "../../services/appointmentApi";
 import { PRACTICE_AREAS } from "../../data/practiceAreas";
 import { AppointmentStatus, ConsultationMode } from "../../types";
-import { FIRM_DETAILS } from "../../data/firm";
 
 export const DashboardAppointmentsPage: React.FC = () => {
-  const [appointments, setAppointments] = useState<DashboardAppointment[]>([]);
+  const { data: appointments = [], isLoading } = useGetAppointmentsQuery();
+  const [submitAppointment] = useSubmitAppointmentMutation();
+  const [updateAppointment] = useUpdateAppointmentMutation();
+  const [deleteAppointment] = useDeleteAppointmentMutation();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [modeFilter, setModeFilter] = useState<string>("all");
@@ -39,7 +41,6 @@ export const DashboardAppointmentsPage: React.FC = () => {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [advocateNotesDraft, setAdvocateNotesDraft] = useState("");
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
   // New Appointment Form State
   const [newClientName, setNewClientName] = useState("");
@@ -57,17 +58,6 @@ export const DashboardAppointmentsPage: React.FC = () => {
   const [newMode, setNewMode] = useState<ConsultationMode>("in-person");
   const [newNotes, setNewNotes] = useState("");
 
-  const loadAppointments = () => {
-    setAppointments(getAllAppointments());
-  };
-
-  useEffect(() => {
-    loadAppointments();
-    const handleStorage = () => loadAppointments();
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
-  }, []);
-
   // Filtered Appointments
   const filteredAppointments = useMemo(() => {
     return appointments.filter((apt) => {
@@ -75,10 +65,10 @@ export const DashboardAppointmentsPage: React.FC = () => {
       const q = searchQuery.toLowerCase().trim();
       const matchesSearch =
         !q ||
+        apt.id.toLowerCase().includes(q) ||
         apt.fullName.toLowerCase().includes(q) ||
         apt.phone.toLowerCase().includes(q) ||
         (apt.email && apt.email.toLowerCase().includes(q)) ||
-        (apt.referenceCode && apt.referenceCode.toLowerCase().includes(q)) ||
         apt.serviceCategory.toLowerCase().includes(q) ||
         apt.notes.toLowerCase().includes(q);
 
@@ -99,13 +89,12 @@ export const DashboardAppointmentsPage: React.FC = () => {
   }, [appointments, searchQuery, statusFilter, modeFilter, categoryFilter]);
 
   // Handle status change
-  const handleStatusChange = (
-    refCode: string,
+  const handleStatusChange = async (
+    appointmentId: string,
     newStatus: AppointmentStatus,
   ) => {
-    updateAppointmentStatus(refCode, newStatus);
-    loadAppointments();
-    if (selectedAppointment && selectedAppointment.referenceCode === refCode) {
+    await updateAppointment({ idOrRef: appointmentId, status: newStatus });
+    if (selectedAppointment && selectedAppointment.id === appointmentId) {
       setSelectedAppointment((prev) =>
         prev ? { ...prev, status: newStatus } : null,
       );
@@ -113,49 +102,36 @@ export const DashboardAppointmentsPage: React.FC = () => {
   };
 
   // Handle save advocate notes
-  const handleSaveNotes = () => {
+  const handleSaveNotes = async () => {
     if (!selectedAppointment) return;
-    updateAppointmentStatus(
-      selectedAppointment.referenceCode,
-      selectedAppointment.status,
-      advocateNotesDraft,
-    );
-    loadAppointments();
+    await updateAppointment({
+      idOrRef: selectedAppointment.id,
+      status: selectedAppointment.status,
+      advocateNotes: advocateNotesDraft,
+    });
     setSelectedAppointment((prev) =>
       prev ? { ...prev, advocateNotes: advocateNotesDraft } : null,
     );
   };
 
   // Handle delete
-  const handleDelete = (refCode: string) => {
+  const handleDelete = async (appointmentId: string) => {
     if (
-      window.confirm(`Are you sure you want to delete appointment ${refCode}?`)
+      window.confirm(`Are you sure you want to delete this appointment?`)
     ) {
-      deleteAppointment(refCode);
-      loadAppointments();
-      if (selectedAppointment?.referenceCode === refCode) {
+      await deleteAppointment(appointmentId);
+      if (selectedAppointment?.id === appointmentId) {
         setIsDetailModalOpen(false);
       }
     }
   };
 
-  // Copy code helper
-  const handleCopy = (code: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedCode(code);
-    setTimeout(() => setCopiedCode(null), 2000);
-  };
-
   // Handle Add Appointment submit
-  const handleAddAppointmentSubmit = (e: React.FormEvent) => {
+  const handleAddAppointmentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newClientName || !newClientPhone) return;
 
-    const randomNum = Math.floor(1000 + Math.random() * 9000);
-    const newRefCode = `RLA-2026-${randomNum}`;
-    const newApt: DashboardAppointment = {
-      id: `apt_manual_${Date.now()}`,
-      referenceCode: newRefCode,
+    await submitAppointment({
       fullName: newClientName.trim(),
       phone: newClientPhone.trim(),
       email: newClientEmail.trim() || undefined,
@@ -166,13 +142,8 @@ export const DashboardAppointmentsPage: React.FC = () => {
       notes: newNotes.trim() || "Manual booking recorded at Tokha chamber.",
       agreedToPrivacy: true,
       feeAmount: 500,
-      status: "confirmed",
-      createdAt: new Date().toISOString(),
-      assignedAdvocate: "Adv. Sahil Raut Gaddi",
-    };
+    });
 
-    saveAppointment(newApt);
-    loadAppointments();
     setIsAddModalOpen(false);
 
     // Reset fields
@@ -185,7 +156,6 @@ export const DashboardAppointmentsPage: React.FC = () => {
   // Export to CSV
   const handleExportCSV = () => {
     const headers = [
-      "Reference Code",
       "Client Name",
       "Phone",
       "Email",
@@ -199,7 +169,6 @@ export const DashboardAppointmentsPage: React.FC = () => {
     ];
 
     const rows = filteredAppointments.map((a) => [
-      `"${a.referenceCode || ""}"`,
       `"${a.fullName.replace(/"/g, '""')}"`,
       `"${a.phone}"`,
       `"${a.email || ""}"`,
@@ -371,7 +340,6 @@ export const DashboardAppointmentsPage: React.FC = () => {
             <table className="w-full text-left border-collapse text-xs">
               <thead>
                 <tr className="bg-[#FAF8F5] border-b border-[#E2DBCD] text-slate-600 font-semibold uppercase tracking-wider text-[11px]">
-                  <th className="py-3.5 px-4">Ref Code</th>
                   <th className="py-3.5 px-4">Client Details</th>
                   <th className="py-3.5 px-4">Service &amp; Mode</th>
                   <th className="py-3.5 px-4">Date &amp; Slot</th>
@@ -385,27 +353,6 @@ export const DashboardAppointmentsPage: React.FC = () => {
                     key={apt.id}
                     className="hover:bg-slate-50/80 transition-colors"
                   >
-                    {/* Reference Code */}
-                    <td className="py-4 px-4 whitespace-nowrap">
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-mono font-bold text-[#101C2C] bg-[#EDE8DD] px-2 py-0.5 rounded-xs">
-                          {apt.referenceCode}
-                        </span>
-                        <button
-                          onClick={() => handleCopy(apt.referenceCode)}
-                          className="text-slate-400 hover:text-slate-700 p-1"
-                          title="Copy reference code"
-                        >
-                          <Copy className="w-3 h-3" />
-                        </button>
-                      </div>
-                      {copiedCode === apt.referenceCode && (
-                        <span className="text-[10px] text-emerald-600 block mt-0.5">
-                          Copied!
-                        </span>
-                      )}
-                    </td>
-
                     {/* Client Details */}
                     <td className="py-4 px-4">
                       <div className="font-semibold text-slate-900 text-xs mb-0.5">
@@ -478,7 +425,7 @@ export const DashboardAppointmentsPage: React.FC = () => {
                         value={apt.status}
                         onChange={(e) =>
                           handleStatusChange(
-                            apt.referenceCode,
+                            apt.id,
                             e.target.value as AppointmentStatus,
                           )
                         }
@@ -513,7 +460,7 @@ export const DashboardAppointmentsPage: React.FC = () => {
                           View Case
                         </button>
                         <button
-                          onClick={() => handleDelete(apt.referenceCode)}
+                          onClick={() => handleDelete(apt.id)}
                           className="p-1 text-slate-400 hover:text-rose-600 transition-colors cursor-pointer"
                           title="Delete appointment"
                         >
@@ -538,9 +485,7 @@ export const DashboardAppointmentsPage: React.FC = () => {
               <div>
                 <div className="flex items-center gap-2 text-xs text-[#C7A56A] font-semibold uppercase tracking-wider mb-1">
                   <CalendarCheck className="w-4 h-4" />
-                  <span>
-                    Case Matter File · {selectedAppointment.referenceCode}
-                  </span>
+                  <span>Case Matter File</span>
                 </div>
                 <h3 className="font-serif text-xl sm:text-2xl font-bold text-white">
                   {selectedAppointment.fullName}
@@ -669,7 +614,7 @@ export const DashboardAppointmentsPage: React.FC = () => {
                     <span>Call Client</span>
                   </a>
                   <a
-                    href={`https://wa.me/${selectedAppointment.phone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Namaste ${selectedAppointment.fullName}, this is Raut Legal Associates regarding your appointment ${selectedAppointment.referenceCode}.`)}`}
+                    href={`https://wa.me/${selectedAppointment.phone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Namaste ${selectedAppointment.fullName}, this is Raut Legal Associates regarding your legal consultation appointment.`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-3.5 py-2 bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-sm font-semibold flex items-center gap-1.5"
@@ -683,22 +628,22 @@ export const DashboardAppointmentsPage: React.FC = () => {
                   <button
                     onClick={() =>
                       handleStatusChange(
-                        selectedAppointment.referenceCode,
+                        selectedAppointment.id,
                         "confirmed",
                       )
                     }
-                    className="px-3 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-sm font-semibold"
+                    className="px-3 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-sm font-semibold cursor-pointer"
                   >
                     Confirm
                   </button>
                   <button
                     onClick={() =>
                       handleStatusChange(
-                        selectedAppointment.referenceCode,
+                        selectedAppointment.id,
                         "completed",
                       )
                     }
-                    className="px-3 py-2 bg-[#101C2C] hover:bg-[#17283F] text-white rounded-sm font-semibold"
+                    className="px-3 py-2 bg-[#101C2C] hover:bg-[#17283F] text-white rounded-sm font-semibold cursor-pointer"
                   >
                     Complete
                   </button>

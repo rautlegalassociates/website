@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import {
   Lock,
@@ -9,17 +9,17 @@ import {
   EyeOff,
   AlertCircle,
   ArrowRight,
-  CheckCircle2,
-  KeyRound,
   ArrowLeft,
 } from "lucide-react";
 import { BrandLogo } from "../components/common/BrandLogo";
 import { SEOHead } from "../components/common/SEOHead";
 import {
-  DEMO_STAFF_USERS,
   loginStaff,
   getActiveSession,
+  getActiveToken,
+  StaffUser,
 } from "../services/dashboardStorage";
+import { useLoginStaffMutation } from "../services/authApi";
 import { FIRM_DETAILS } from "../data/firm";
 
 export const LoginPage: React.FC = () => {
@@ -27,58 +27,59 @@ export const LoginPage: React.FC = () => {
   const location = useLocation();
 
   // If already logged in, redirect to dashboard
-  const currentSession = getActiveSession();
-  if (currentSession) {
-    navigate("/dashboard", { replace: true });
-  }
+  useEffect(() => {
+    const currentSession = getActiveSession();
+    const currentToken = getActiveToken();
+    if (currentSession && currentToken) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [navigate]);
 
-  const [email, setEmail] = useState("sahil@rautlegalassociates.com");
-  const [password, setPassword] = useState("admin123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+
+  const [loginStaffMutation, { isLoading }] = useLoginStaffMutation();
 
   const from =
     (location.state as { from?: { pathname: string } })?.from?.pathname ||
     "/dashboard";
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    setIsLoading(true);
 
-    setTimeout(() => {
-      // Find staff user by email or allow demo password 'admin123'
-      const matchedUser = DEMO_STAFF_USERS.find(
-        (u) => u.email.toLowerCase() === email.trim().toLowerCase(),
-      );
+    try {
+      const response = await loginStaffMutation({
+        email: email.trim(),
+        password: password.trim(),
+      }).unwrap();
 
-      if (matchedUser && password.trim().length >= 4) {
-        loginStaff(matchedUser);
-        setIsLoading(false);
-        navigate(from, { replace: true });
-      } else if (
-        password.trim() === "admin123" ||
-        password.trim() === "raut123"
-      ) {
-        // Fallback demo user
-        loginStaff(DEMO_STAFF_USERS[0]);
-        setIsLoading(false);
+      if (response.success && response.user) {
+        const staffObj: StaffUser = {
+          id: response.user.uid,
+          uid: response.user.uid,
+          name: response.user.displayName,
+          email: response.user.email,
+          role: response.user.role,
+          chamber: response.user.chamber,
+          customToken: response.user.customToken,
+        };
+
+        loginStaff(staffObj, response.token);
         navigate(from, { replace: true });
       } else {
-        setIsLoading(false);
-        setError(
-          "Invalid credentials. Please use the demo accounts below or enter valid chamber details.",
-        );
+        setError(response.error || "Authentication failed. Please verify credentials.");
       }
-    }, 450);
-  };
-
-  const handleQuickSelect = (userIndex: number) => {
-    const user = DEMO_STAFF_USERS[userIndex];
-    setEmail(user.email);
-    setPassword("admin123");
-    setError(null);
+    } catch (err: any) {
+      console.error("Login failure:", err);
+      const errMsg =
+        err?.data?.error ||
+        err?.error ||
+        "Unable to authenticate with backend. Please make sure backend is running.";
+      setError(errMsg);
+    }
   };
 
   return (
@@ -145,7 +146,7 @@ export const LoginPage: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  placeholder="e.g. sahil@rautlegalassociates.com"
+                  placeholder="e.g. rautlegalassociates@gmail.com"
                   className="w-full pl-10 pr-3.5 py-2.5 bg-[#0C1522] border border-[#223A5C] text-sm rounded-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#C7A56A] focus:ring-1 focus:ring-[#C7A56A]"
                 />
               </div>
@@ -156,9 +157,6 @@ export const LoginPage: React.FC = () => {
                 <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
                   Password
                 </label>
-                <span className="text-[11px] text-slate-400">
-                  Demo: <strong className="text-slate-300">admin123</strong>
-                </span>
               </div>
               <div className="relative">
                 <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3 pointer-events-none" />
@@ -173,7 +171,7 @@ export const LoginPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-200 transition-colors p-0.5"
+                  className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-200 transition-colors p-0.5 cursor-pointer"
                   aria-label="Toggle password visibility"
                 >
                   {showPassword ? (
@@ -203,46 +201,7 @@ export const LoginPage: React.FC = () => {
             </div>
           </form>
 
-          {/* Quick Demo Credentials Picker */}
-          <div className="mt-7 pt-6 border-t border-[#223A5C]/60">
-            <div className="flex items-center justify-between mb-3 text-xs text-slate-400">
-              <span className="font-semibold text-slate-300 uppercase tracking-wider text-[11px]">
-                Quick Demo Sign-In
-              </span>
-              <KeyRound className="w-3.5 h-3.5 text-[#C7A56A]" />
-            </div>
-
-            <div className="space-y-2">
-              {DEMO_STAFF_USERS.map((user, idx) => (
-                <button
-                  key={user.id}
-                  type="button"
-                  onClick={() => handleQuickSelect(idx)}
-                  className={`w-full text-left p-2.5 rounded-sm border text-xs flex items-center justify-between transition-colors cursor-pointer ${
-                    email === user.email
-                      ? "bg-[#17283F] border-[#C7A56A] text-white"
-                      : "bg-[#0C1522]/70 border-[#223A5C]/50 text-slate-300 hover:bg-[#17283F]/60 hover:border-slate-500"
-                  }`}
-                >
-                  <div>
-                    <div className="font-semibold">{user.name}</div>
-                    <div className="text-[11px] text-slate-400">
-                      {user.role} · {user.email}
-                    </div>
-                  </div>
-                  {email === user.email ? (
-                    <CheckCircle2 className="w-4 h-4 text-[#C7A56A]" />
-                  ) : (
-                    <span className="text-[10px] text-[#C7A56A] font-medium uppercase tracking-wider">
-                      Select
-                    </span>
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-5 text-center text-[11px] text-slate-400 flex items-center justify-center gap-1.5">
+          <div className="mt-7 pt-6 border-t border-[#223A5C]/60 text-center text-[11px] text-slate-400 flex items-center justify-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-[#C7A56A]" />
             <span>Encrypted internal advocate session · Tokha Chamber</span>
           </div>
